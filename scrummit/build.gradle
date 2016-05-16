@@ -1,0 +1,68 @@
+configure(allprojects) { project ->
+    group = "com.mitrais.bootcamp.scrummit"
+    version = "1.0.0"
+    
+    apply plugin: "java"
+    apply plugin: "war"
+
+    // extra properties
+    ext.junitVersion = "4.12"
+    ext.assertjVersion = "3.4.1"
+    ext.springBootVersion = "1.3.4.RELEASE"
+    ext.mongodbVersion = "1.3.4.RELEASE"
+    ext.webStarterVersion = "1.3.4.RELEASE"
+    ext.tomcatStarterVersion = "1.3.4.RELEASE"
+    
+
+
+    repositories {
+        mavenCentral()
+    }
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+configure(subprojects - project(":scrummit-lib")) { subproject ->
+    dependencies {
+        compile project(":scrummit-lib")
+        testCompile "junit:junit:${junitVersion}"
+        testCompile "org.assertj:assertj-core:${assertjVersion}"
+        compile "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        compile "org.springframework.boot:spring-boot-starter-data-mongodb:${mongodbVersion}"
+        
+        
+    }
+    
+}
+
+project("scrummit-lib"){
+
+}
+
+project("scrummit-core"){
+}
+
+project("scrummit-rest"){
+    dependencies{
+        compile "org.springframework.boot:spring-boot-starter-web:${webStarterVersion}"
+        providedRuntime "org.springframework.boot:spring-boot-starter-tomcat:${tomcatStarterVersion}"
+    }
+}
+
+project("scrummit-web"){
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.5.RELEASE")
+    }
+}
+apply plugin: "eclipse"
+apply plugin: "spring-boot"
+
+springBoot {
+  mainClass = "com.mitrais.bootcamp.scrummit.Runner"
+}
