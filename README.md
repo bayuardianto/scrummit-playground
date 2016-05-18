@@ -1,2 +1,2 @@
 # scrummit-playground
-A web based scrum management tool
+A simple web based scrum management tool
