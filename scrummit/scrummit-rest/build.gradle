@@ -1,0 +1,4 @@
+dependencies {
+    compile project(":scrummit-core")
+    compile project(":scrummit-web")
+}
