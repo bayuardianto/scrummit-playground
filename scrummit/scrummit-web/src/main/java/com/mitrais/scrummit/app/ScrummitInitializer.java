@@ -17,6 +17,7 @@ AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
 	protected String[] getServletMappings() {
+		//test
 		return new String[] { "/" };
 	}
 
