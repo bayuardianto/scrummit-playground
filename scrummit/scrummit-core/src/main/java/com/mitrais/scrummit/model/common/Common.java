@@ -13,19 +13,19 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 public class Common {
     @CreatedDate
     @Field(value = "createdDate")
-    private Date     createdDate;
+    protected Date     createdDate;
 
     @LastModifiedDate
     @Field(value = "modifiedDate")
-    private Date     modifiedDate;
+    protected Date     modifiedDate;
 
     @JsonSerialize(using = ToStringSerializer.class)
     @Field(value = "createdBy")
-    private ObjectId createdBy;
+    protected ObjectId createdBy;
 
     @JsonSerialize(using = ToStringSerializer.class)
     @Field(value = "modifiedBy")
-    private ObjectId modifiedBy;
+    protected ObjectId modifiedBy;
 
     public Date getCreatedDate() {
         return createdDate;
