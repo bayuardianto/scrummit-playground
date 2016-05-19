@@ -34,4 +34,10 @@ public class ProjectBOImpl implements ProjectBO {
         return projectDAO.findByName(projectName);
     }
 
+    @Override
+    public Project createProject(Project project) {
+        log.info(String.format("save a project with project name: %s", project.getName()));
+        return projectDAO.save(project);
+    }
+
 }

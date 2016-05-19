@@ -5,9 +5,10 @@ import org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoCo
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.repository.support.MongoRepositoryFactory;
 
-
+@EnableMongoAuditing()
 @Configuration
 @Import(ApplicationConfig.class)
 public class DAOConfig extends MongoRepositoriesAutoConfiguration {
