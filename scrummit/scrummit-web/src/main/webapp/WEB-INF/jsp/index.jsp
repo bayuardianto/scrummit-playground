@@ -29,13 +29,13 @@
     <!-- Main Inspinia CSS files -->
     <link href="${contextPath}/resources/css/animate.css" rel="stylesheet">
     <link id="loadBefore" href="${contextPath}/resources/css/style.css" rel="stylesheet">
-
+	<link id="loadBefore" href="${contextPath}/resources/css/scrummit.css" rel="stylesheet">
 
 </head>
 
 <!-- ControllerAs syntax -->
 <!-- Main controller with serveral data used in Inspinia theme on diferent view -->
-<body ng-controller="MainCtrl as main">
+<body ng-controller="MainCtrl as main" class="{{$state.current.data.specialClass}}">
 
 <!-- Main view  -->
 <div ui-view></div>
