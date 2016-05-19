@@ -9,12 +9,14 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.mitrais.scrummit.model.common.Common;
 @SuppressWarnings("serial")
 @Document(collection = "project")
-public class Project implements Serializable {
+public class Project extends Common implements Serializable {
     @Id
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId _id;
+
     @Field(value="name")
     private String name;
 
