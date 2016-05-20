@@ -27,6 +27,9 @@ public class Common {
     @Field(value = "modifiedBy")
     protected ObjectId modifiedBy;
 
+    @Field(value = "isDeleted")
+    protected Boolean  isDeleted;
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -57,5 +60,13 @@ public class Common {
 
     public void setModifiedBy(ObjectId modifiedBy) {
         this.modifiedBy = modifiedBy;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

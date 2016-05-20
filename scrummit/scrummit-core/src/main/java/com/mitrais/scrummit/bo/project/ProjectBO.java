@@ -13,4 +13,8 @@ public interface ProjectBO {
     public List<Project> getProjectByName(String projectName);
 
     public Project createProject(Project project);
+
+    public Project deleteProject(String id);
+
+    public List<Project> getProjectCreatedBy(String id);
 }
