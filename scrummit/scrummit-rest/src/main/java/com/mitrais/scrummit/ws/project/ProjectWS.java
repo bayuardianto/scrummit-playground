@@ -41,8 +41,20 @@ public class ProjectWS {
 
     }
 
+    @RequestMapping(path = "/createdBy/{id}", method = RequestMethod.GET)
+    public @ResponseBody List<Project> getByProjectCreatedBy(@PathVariable("id") String id) {
+
+        return projectBO.getProjectCreatedBy(id);
+
+    }
+
     @RequestMapping(path = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Project create(@RequestBody Project project) {
         return projectBO.createProject(project);
+    }
+
+    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Project delete(@PathVariable("id") String id) {
+        return projectBO.deleteProject(id);
     }
 }
