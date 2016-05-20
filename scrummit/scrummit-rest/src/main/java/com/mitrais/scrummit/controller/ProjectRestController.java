@@ -1,4 +1,4 @@
-package com.mitrais.scrummit.ws.project;
+package com.mitrais.scrummit.controller;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import com.mitrais.scrummit.model.project.Project;
 
 @RestController
 @RequestMapping("/project")
-public class ProjectWS {
+public class ProjectRestController {
     @Autowired
     private ProjectBO           projectBO;
 

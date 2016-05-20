@@ -1,5 +1,7 @@
 package com.mitrais.scrummit.app;
 
+import javax.servlet.Filter;
+
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class ScrummitInitializer extends
@@ -20,5 +22,4 @@ AbstractAnnotationConfigDispatcherServletInitializer {
 		//test
 		return new String[] { "/" };
 	}
-
 }

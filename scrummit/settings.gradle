@@ -1,4 +1,3 @@
-include "scrummit-web"
-include "scrummit-rest"
 include "scrummit-core"
-include "scrummit-lib"
+include "scrummit-rest"
+include "scrummit-web"
