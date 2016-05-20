@@ -1,4 +1,4 @@
-package com.mitrais.scrummit.ws.card;
+package com.mitrais.scrummit.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/card")
-public class CardWS {
+public class CardRestController {
 
     @RequestMapping(path = "/list", method = RequestMethod.GET)
     public @ResponseBody String list() {
