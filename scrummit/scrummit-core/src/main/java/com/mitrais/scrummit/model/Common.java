@@ -1,4 +1,4 @@
-package com.mitrais.scrummit.model.common;
+package com.mitrais.scrummit.model;
 
 import java.util.Date;
 

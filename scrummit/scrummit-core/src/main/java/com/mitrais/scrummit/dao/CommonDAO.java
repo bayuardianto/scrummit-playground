@@ -1,4 +1,4 @@
-package com.mitrais.scrummit.dao.common;
+package com.mitrais.scrummit.dao;
 
 import java.io.Serializable;
 import java.util.List;

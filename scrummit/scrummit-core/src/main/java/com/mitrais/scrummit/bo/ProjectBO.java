@@ -1,8 +1,10 @@
-package com.mitrais.scrummit.bo.project;
+package com.mitrais.scrummit.bo;
 
 import java.util.List;
 
-import com.mitrais.scrummit.model.project.Project;
+import com.mitrais.scrummit.model.Project;
+
+
 
 
 public interface ProjectBO {

@@ -1,4 +1,4 @@
-package com.mitrais.scrummit.dao.common;
+package com.mitrais.scrummit.dao;
 
 import java.io.Serializable;
 
@@ -17,7 +17,7 @@ import org.springframework.data.repository.NoRepositoryBean;
  *            String serializeable
  */
 @NoRepositoryBean
-public abstract class CommonDAOCustom<T, ID extends Serializable> {
+public abstract class CommonCustomDAO<T, ID extends Serializable> {
     @Autowired
     protected MongoTemplate mongoTemplate;
 

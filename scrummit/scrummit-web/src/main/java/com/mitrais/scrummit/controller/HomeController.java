@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.mitrais.scrummit.dao.UserDAO;
-import com.mitrais.scrummit.dao.model.User;
+import com.mitrais.scrummit.model.User;
 
 @Controller
 public class HomeController {
@@ -39,7 +39,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/views/navigation", method = RequestMethod.GET)
 	public String navigation(Map<String, Object> model) {
-		User user = userDao.findByUsername("user1");
+		User user = userDao.findByUserName("user1");
 		
 		model.put("user", user);
 		

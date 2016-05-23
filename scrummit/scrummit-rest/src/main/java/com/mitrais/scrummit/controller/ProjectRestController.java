@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mitrais.scrummit.bo.project.ProjectBO;
-import com.mitrais.scrummit.model.project.Project;
+import com.mitrais.scrummit.bo.ProjectBO;
+import com.mitrais.scrummit.model.Project;
+
 
 @RestController
 @RequestMapping("/project")

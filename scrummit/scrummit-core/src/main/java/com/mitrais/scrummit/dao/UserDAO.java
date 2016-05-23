@@ -2,8 +2,9 @@ package com.mitrais.scrummit.dao;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.mitrais.scrummit.dao.model.User;
+import com.mitrais.scrummit.model.User;
+
 
 public interface UserDAO extends MongoRepository<User, String> {
-	public User findByUsername(String username);
+    public User findByUserName(String username);
 }

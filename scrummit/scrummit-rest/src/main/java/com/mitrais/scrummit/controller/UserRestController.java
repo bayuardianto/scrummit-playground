@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mitrais.scrummit.dao.UserDAO;
-import com.mitrais.scrummit.dao.model.User;
+import com.mitrais.scrummit.model.User;
 
 @RestController
 public class UserRestController {
@@ -21,7 +21,7 @@ public class UserRestController {
 	@RequestMapping(value = "/user/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUser(@PathVariable("username") String username) {
 		System.out.println("Fetching User with username " + username);
-        User user = userDao.findByUsername(username);
+        User user = userDao.findByUserName(username);
         if (user == null) {
             System.out.println("User with username " + username + " not found");
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);

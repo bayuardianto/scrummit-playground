@@ -1,4 +1,4 @@
-package com.mitrais.scrummit.bo.project;
+package com.mitrais.scrummit.bo.impl;
 
 import java.util.List;
 
@@ -8,9 +8,10 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mitrais.scrummit.dao.project.ProjectDAO;
-import com.mitrais.scrummit.dao.project.ProjectDAOCustom;
-import com.mitrais.scrummit.model.project.Project;
+import com.mitrais.scrummit.bo.ProjectBO;
+import com.mitrais.scrummit.dao.ProjectCustomDAO;
+import com.mitrais.scrummit.dao.ProjectDAO;
+import com.mitrais.scrummit.model.Project;
 
 @Service
 public class ProjectBOImpl implements ProjectBO {
@@ -19,7 +20,7 @@ public class ProjectBOImpl implements ProjectBO {
     ProjectDAO projectDAO;
 
     @Autowired
-    ProjectDAOCustom         projectDAOCustom;
+    ProjectCustomDAO         projectDAOCustom;
 
     @Override
     public List<Project> listAllProject() {
