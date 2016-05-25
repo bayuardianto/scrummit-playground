@@ -59,6 +59,7 @@
 
 <!-- Main Angular scripts-->
 <script src="${contextPath}/resources/js/angular/angular.min.js"></script>
+<script src="${contextPath}/resources/js/angular/angular-cookies.min.js"></script>
 <script src="${contextPath}/resources/js/plugins/oclazyload/dist/ocLazyLoad.min.js"></script>
 <script src="${contextPath}/resources/js/ui-router/angular-ui-router.min.js"></script>
 <script src="${contextPath}/resources/js/bootstrap/ui-bootstrap-tpls-1.1.2.min.js"></script>
@@ -69,6 +70,7 @@
 <script src="${contextPath}/resources/js/config.js"></script>
 <script src="${contextPath}/resources/js/directives.js"></script>
 <script src="${contextPath}/resources/js/controllers.js"></script>
+<script src="${contextPath}/resources/js/services.js"></script>
 
 </body>
 </html>

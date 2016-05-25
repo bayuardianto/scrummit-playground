@@ -11,7 +11,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc //<mvc:annotation-driven />
 @Configuration
-@ComponentScan({ "com.mitrais.scrummit.controller" })
+@ComponentScan(basePackages = "com.mitrais.scrummit")
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
  
 	@Override
@@ -29,5 +29,4 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
 		viewResolver.setSuffix(".jsp");
 		return viewResolver;
 	}
- 
 }

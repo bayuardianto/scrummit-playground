@@ -39,7 +39,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/views/navigation", method = RequestMethod.GET)
 	public String navigation(Map<String, Object> model) {
-		User user = userDao.findByUserName("user1");
+		User user = userDao.findByUsername("user1");
 		
 		model.put("user", user);
 		
