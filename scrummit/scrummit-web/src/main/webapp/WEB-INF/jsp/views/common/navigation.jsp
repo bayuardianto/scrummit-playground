@@ -10,7 +10,7 @@
                     <a uib-dropdown-toggle href>
                             <span class="clear">
                                 <span class="block m-t-xs">
-                                    <strong class="font-bold">${user.fullname }</strong>
+                                    <strong class="font-bold">${user.firstname} ${user.lastname }</strong>
                              </span>
                                 <span class="text-muted text-xs block">Senior Developer <b class="caret"></b></span>
                             </span>
