@@ -18,10 +18,10 @@ public class UserRestController {
 	@Autowired
 	UserDAO userDao;
 	
-	@RequestMapping(value = "/user/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/rest/user/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUser(@PathVariable("username") String username) {
 		System.out.println("Fetching User with username " + username);
-        User user = userDao.findByUserName(username);
+        User user = userDao.findByUsername(username);
         if (user == null) {
             System.out.println("User with username " + username + " not found");
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);

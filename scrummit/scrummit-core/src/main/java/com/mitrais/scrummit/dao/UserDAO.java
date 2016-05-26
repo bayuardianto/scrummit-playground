@@ -6,5 +6,5 @@ import com.mitrais.scrummit.model.User;
 
 
 public interface UserDAO extends MongoRepository<User, String> {
-    public User findByUserName(String username);
+    public User findByUsername(String username);
 }

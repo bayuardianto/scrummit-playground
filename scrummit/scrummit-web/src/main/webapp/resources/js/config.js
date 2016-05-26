@@ -32,8 +32,10 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
             data: { pageTitle: 'Projects' }
         })
         .state('login', {
+        	controller: "LoginController",
         	url: "/login",
         	templateUrl: "views/login",
+        	controllerAs: "vm",
         	data: { pageTitle: 'Login', specialClass: 'gray-bg'}
         })
         .state('register', {
@@ -45,6 +47,20 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
 angular
     .module('inspinia')
     .config(config)
-    .run(function($rootScope, $state) {
+    .run(function($rootScope, $state, $location, $cookies, $http) {
         $rootScope.$state = $state;
+        
+        $rootScope.globals = $cookies.getObject('globals') || {};
+        if ($rootScope.globals.currentUser) {
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
+        }
+ 
+        $rootScope.$on('$locationChangeStart', function (event, next, current) {
+            // redirect to login page if not logged in and trying to access a restricted page
+            var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
+            var loggedIn = $rootScope.globals.currentUser;
+            if (restrictedPage && !loggedIn) {
+                $location.path('login');
+            }
+        });
     });
