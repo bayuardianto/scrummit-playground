@@ -3,6 +3,8 @@ package com.mitrais.scrummit.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +34,7 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/login/authenticate/", method = {RequestMethod.POST, RequestMethod.GET})
-	public @ResponseBody Map<String, String> authenticate(@RequestBody User rqUser) {
+	public @ResponseBody Map<String, String> authenticate(@RequestBody User rqUser, HttpServletRequest req) {
 		
 		//TODO: Define UserService and use instead of UserDAO
 		User user = userDAO.findByUsername(rqUser.getUsername());
@@ -41,6 +43,7 @@ public class LoginController {
 		
 		//TODO: replace the logic with BCryptPasswordEncoder match() function for validating passwords
 		if (user != null && user.getPassword().equals(rqUser.getPassword())) {
+			req.getSession().setAttribute("CURRENT_USER", user);
 			rs.put("success", "1");
 		} else {
 			rs.put("success", "0");
@@ -48,5 +51,12 @@ public class LoginController {
 		}
 		
 		return rs;
+	}
+	
+	@RequestMapping(value = "/logout/", method = RequestMethod.POST)
+	public @ResponseBody Boolean logout(HttpServletRequest req) {
+		req.getSession().removeAttribute("CURRENT_USER");
+		
+		return true;
 	}
 }
