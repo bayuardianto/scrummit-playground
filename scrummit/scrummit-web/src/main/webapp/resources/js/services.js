@@ -2,6 +2,7 @@ function AuthenticationService($http, $cookies, $rootScope, $timeout, UserServic
 	var service = {};
 	 
     service.Login = Login;
+    service.Logout = Logout;
     service.SetCredentials = SetCredentials;
     service.ClearCredentials = ClearCredentials;
 
@@ -9,6 +10,12 @@ function AuthenticationService($http, $cookies, $rootScope, $timeout, UserServic
 
     function Login(username, password, callback) {
     	$http.post('login/authenticate/', { username: username, password: password }).success(function (response) {
+                callback(response);
+        });
+    }
+    
+    function Logout(callback) {
+    	$http.post('logout/').success(function (response) {
                 callback(response);
         });
     }

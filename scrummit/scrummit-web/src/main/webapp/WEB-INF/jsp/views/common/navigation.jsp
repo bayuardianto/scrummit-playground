@@ -4,22 +4,23 @@
     <div class="sidebar-collapse">
         <ul side-navigation class="nav metismenu" id="side-menu">
             <li class="nav-header">
-            
-            	<div class="profile-element" uib-dropdown>
-                    <img alt="image" class="img-circle" src="${contextPath}/resources/img/profile_small.jpg"/>
-                    <a uib-dropdown-toggle href>
-                            <span class="clear">
-                                <span class="block m-t-xs">
-                                    <strong class="font-bold">${user.firstname} ${user.lastname }</strong>
-                             </span>
-                                <span class="text-muted text-xs block">Senior Developer <b class="caret"></b></span>
-                            </span>
-                    </a>
-                    <ul uib-dropdown-menu class="animated fadeInRight m-t-xs">
-                        <li><a href="">Profile</a></li>
-                        <li class="divider"></li>
-                        <li><a ui-sref="login">Logout</a></li>
-                    </ul>
+            	<div ng-controller="LoginController as lgCtrl">
+	            	<div class="profile-element" uib-dropdown>
+	                    <img alt="image" class="img-circle" src="${contextPath}/resources/img/profile_small.jpg"/>
+	                    <a uib-dropdown-toggle href>
+	                            <span class="clear">
+	                                <span class="block m-t-xs">
+	                                    <strong class="font-bold">${user.firstname} ${user.lastname }</strong>
+	                             </span>
+	                                <span class="text-muted text-xs block">Senior Developer <b class="caret"></b></span>
+	                            </span>
+	                    </a>
+	                    <ul uib-dropdown-menu class="animated fadeInRight m-t-xs">
+	                        <li><a href="">Profile</a></li>
+	                        <li class="divider"></li>
+	                        <li><a ng-click="lgCtrl.logout()">Logout</a></li>
+	                    </ul>
+	                </div>
                 </div>
             </li>
 

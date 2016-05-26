@@ -18,12 +18,8 @@ function LoginController($location, AuthenticationService, FlashService) {
         var vm = this;
  
         vm.login = login;
- 
-        (function initController() {
-            // reset login status
-            AuthenticationService.ClearCredentials();
-        })();
- 
+		vm.logout = logout;
+
         function login() {
             vm.dataLoading = true;
             AuthenticationService.Login(vm.username, vm.password, function (response) {
@@ -36,6 +32,15 @@ function LoginController($location, AuthenticationService, FlashService) {
                 }
             });
         };
+
+		function logout() {
+			AuthenticationService.Logout(function (response){
+				if (response) {
+					AuthenticationService.ClearCredentials();
+					$location.path('/');
+				}
+			});
+		};
 };
 
 angular
