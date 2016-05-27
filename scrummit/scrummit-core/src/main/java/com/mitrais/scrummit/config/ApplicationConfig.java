@@ -9,6 +9,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.mitrais.scrummit.multitenancy.MultiTenantMongoDbFactory;
 import com.mongodb.MongoClient;
@@ -65,5 +66,8 @@ public class ApplicationConfig extends AbstractMongoConfiguration {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
-
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

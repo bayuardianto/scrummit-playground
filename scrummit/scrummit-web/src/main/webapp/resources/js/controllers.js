@@ -43,7 +43,7 @@ function LoginController($location, AuthenticationService, FlashService) {
 		};
 };
 
-function UserController($location, $cookies, UserService) {
+function UserController($location, $cookies, UserService, FlashService) {
 	var uc = this;
 	this.update = update;
 	var ck = $cookies.getObject('globals') || {};
@@ -53,8 +53,8 @@ function UserController($location, $cookies, UserService) {
 			UserService.GetByUsername(ck.currentUser.username, function (response){
 				if (response) {
 					uc.email = response.email;
-					uc.firstname = response.firstname;
-					uc.lastname = response.lastname;
+					uc.firstname = response.firstName;
+					uc.lastname = response.lastName;
 				}
 			});
 		}
@@ -64,13 +64,21 @@ function UserController($location, $cookies, UserService) {
 		
 		if (ck.currentUser) {
 			var username = ck.currentUser.username;
-			UserService.UpdateUser(username, uc.password, uc.email, uc.firstname, uc.lastname);
+			UserService.UpdateUser(username, uc.password, uc.email, uc.firstname, uc.lastname, function(response){
+				uc.dataLoading = true;
+				if (response && response.success == true) {
+					FlashService.Success("Account information was updated successfully!");
+				} else {
+					uc.dataLoading = false;
+					FlashService.Error(response.message);
+				}
+			});
 		}
-	}
+	};
 }
 
 function RegistrationController($location, $scope, $http, FlashService){
-	dataLoading = false
+	$scope.isNotsubmitted = true;
 	$scope.sendPost = function() {
 		$scope.dataLoading = true;
 		var data = $scope.user;
@@ -78,6 +86,7 @@ function RegistrationController($location, $scope, $http, FlashService){
 			debugger;
 			FlashService.Success("Account was created. You can login now. An email with verification link have been sent to your email, please activate your account.");
 			$scope.dataLoading = false;
+			$scope.isNotsubmitted = false;
 		}).error(function(data, status) {
 			FlashService.Error("There was an error in creating your account, please try again");
 			$scope.dataLoading = false;
@@ -92,5 +101,5 @@ angular
 	.module('inspinia')
 	.controller('MainCtrl', MainCtrl)
 	.controller('LoginController', LoginController)
-    .controller('UserController', UserController);
+    .controller('UserController', UserController)
 	.controller('RegCtrl', RegistrationController);

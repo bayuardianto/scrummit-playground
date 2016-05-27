@@ -124,10 +124,11 @@ var Base64 = {
     }
 };
 
-function UserService($http, $q) {
+function UserService($http) {
 	var service = {};
 	 
     service.GetByUsername = GetByUsername;
+    service.UpdateUser = UpdateUser;
 
     return service;
 
@@ -137,12 +138,16 @@ function UserService($http, $q) {
         });
     }
     
-    function UpdateUser(username, password, email, firstname, lastname) {
-    	var user = GetByUsername(username);
+    function UpdateUser(username, password, email, firstname, lastname, callback) {
+    	$http.post('rest/user/update', {username: username, password: password, email: email, firstName: firstname, lastName: lastname}).success(function(response){
+    		response.success = true;
+    		callback(response);
+    	}).error(function(response){
+    		response.success = false;
+    		response.message = "There was an error while updating your account, please try again";
+    		callback(response);
+    	});
     	
-    	if (user) {
-    		return $http.post('rest/user/update', {username: username, password: password, email: email, firstname: firstname, lastname: lastname});
-    	}
     }
 
     // private functions

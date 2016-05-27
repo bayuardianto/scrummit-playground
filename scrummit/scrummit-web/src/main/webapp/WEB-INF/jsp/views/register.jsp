@@ -83,7 +83,7 @@
 				<br> <a ng-if="flash.type === 'success'" ng-click="goToLogin()">Login Now</a>
 			</div>
 
-			<div class="row text-center">
+			<div class="row text-center" ng-if="isNotsubmitted">
 				<div class="col-sm-4 col-sm-offset-4">
 					<input type="submit" class="btn btn-primary block full-width m-b"
 						value="Create account" />
