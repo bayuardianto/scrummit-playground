@@ -128,11 +128,26 @@ function UserService($http) {
 	var service = {};
 	 
     service.GetByUsername = GetByUsername;
+    service.UpdateUser = UpdateUser;
 
     return service;
 
-    function GetByUsername(username) {
-        return $http.get('/rest/user/' + username).then(handleSuccess, handleError('Error getting user by username'));
+    function GetByUsername(username, callback) {
+        $http.get('rest/user/' + username).success(function (data){
+        	callback(data);
+        });
+    }
+    
+    function UpdateUser(username, password, email, firstname, lastname, callback) {
+    	$http.post('rest/user/update', {username: username, password: password, email: email, firstName: firstname, lastName: lastname}).success(function(response){
+    		response.success = true;
+    		callback(response);
+    	}).error(function(response){
+    		response.success = false;
+    		response.message = "There was an error while updating your account, please try again";
+    		callback(response);
+    	});
+    	
     }
 
     // private functions

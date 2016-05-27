@@ -43,6 +43,40 @@ function LoginController($location, AuthenticationService, FlashService) {
 		};
 };
 
+function UserController($location, $cookies, UserService, FlashService) {
+	var uc = this;
+	this.update = update;
+	var ck = $cookies.getObject('globals') || {};
+	
+	(function initController() {
+        if (ck.currentUser) {
+			UserService.GetByUsername(ck.currentUser.username, function (response){
+				if (response) {
+					uc.email = response.email;
+					uc.firstname = response.firstName;
+					uc.lastname = response.lastName;
+				}
+			});
+		}
+     })();
+			
+	function update() {
+		
+		if (ck.currentUser) {
+			var username = ck.currentUser.username;
+			UserService.UpdateUser(username, uc.password, uc.email, uc.firstname, uc.lastname, function(response){
+				uc.dataLoading = true;
+				if (response && response.success == true) {
+					FlashService.Success("Account information was updated successfully!");
+				} else {
+					uc.dataLoading = false;
+					FlashService.Error(response.message);
+				}
+			});
+		}
+	};
+}
+
 function RegistrationController($location, $scope, $http, FlashService){
 	$scope.isNotsubmitted = true;
 	$scope.sendPost = function() {
@@ -64,7 +98,8 @@ function RegistrationController($location, $scope, $http, FlashService){
 };
 
 angular
-    .module('inspinia')
-    .controller('MainCtrl', MainCtrl)
-    .controller('LoginController', LoginController)
-    .controller('RegCtrl', RegistrationController);
+	.module('inspinia')
+	.controller('MainCtrl', MainCtrl)
+	.controller('LoginController', LoginController)
+    .controller('UserController', UserController)
+	.controller('RegCtrl', RegistrationController);
