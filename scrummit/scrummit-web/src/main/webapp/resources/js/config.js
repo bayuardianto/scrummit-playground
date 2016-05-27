@@ -21,6 +21,11 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
             url: "/index",
             templateUrl: "views/content",
         })
+        .state('user', {
+        	abstract: true,
+        	url: "/user",
+        	templateUrl: "views/content"
+        })
         .state('index.dashboard', {
             url: "/dashboard",
             templateUrl: "views/dashboard",
@@ -43,6 +48,10 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
         	templateUrl: "views/register",
         	data: { pageTitle: 'Register', specialClass: 'gray-bg'}
         })
+        .state('user.profile', {
+        	url: "/profile",
+        	templateUrl: "user/profile"
+        });
 }
 angular
     .module('inspinia')

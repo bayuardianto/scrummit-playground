@@ -43,7 +43,34 @@ function LoginController($location, AuthenticationService, FlashService) {
 		};
 };
 
+function UserController($location, $cookies, UserService) {
+	var uc = this;
+	this.update = update;
+	var ck = $cookies.getObject('globals') || {};
+	
+	(function initController() {
+        if (ck.currentUser) {
+			UserService.GetByUsername(ck.currentUser.username, function (response){
+				if (response) {
+					uc.email = response.email;
+					uc.firstname = response.firstname;
+					uc.lastname = response.lastname;
+				}
+			});
+		}
+     })();
+			
+	function update() {
+		
+		if (ck.currentUser) {
+			var username = ck.currentUser.username;
+			UserService.UpdateUser(username, uc.password, uc.email, uc.firstname, uc.lastname);
+		}
+	}
+}
+
 angular
     .module('inspinia')
     .controller('MainCtrl', MainCtrl)
-    .controller('LoginController', LoginController);
+    .controller('LoginController', LoginController)
+    .controller('UserController', UserController);

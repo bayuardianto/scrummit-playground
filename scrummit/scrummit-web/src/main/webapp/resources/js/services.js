@@ -124,15 +124,25 @@ var Base64 = {
     }
 };
 
-function UserService($http) {
+function UserService($http, $q) {
 	var service = {};
 	 
     service.GetByUsername = GetByUsername;
 
     return service;
 
-    function GetByUsername(username) {
-        return $http.get('/rest/user/' + username).then(handleSuccess, handleError('Error getting user by username'));
+    function GetByUsername(username, callback) {
+        $http.get('rest/user/' + username).success(function (data){
+        	callback(data);
+        });
+    }
+    
+    function UpdateUser(username, password, email, firstname, lastname) {
+    	var user = GetByUsername(username);
+    	
+    	if (user) {
+    		return $http.post('rest/user/update', {username: username, password: password, email: email, firstname: firstname, lastname: lastname});
+    	}
     }
 
     // private functions

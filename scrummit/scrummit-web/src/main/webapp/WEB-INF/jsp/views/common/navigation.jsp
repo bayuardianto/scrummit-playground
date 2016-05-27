@@ -16,7 +16,8 @@
 	                            </span>
 	                    </a>
 	                    <ul uib-dropdown-menu class="animated fadeInRight m-t-xs">
-	                        <li><a href="">Profile</a></li>
+	                        <li>
+                        		<a ui-sref="user.profile">Profile</a></li>
 	                        <li class="divider"></li>
 	                        <li><a ng-click="lgCtrl.logout()">Logout</a></li>
 	                    </ul>
