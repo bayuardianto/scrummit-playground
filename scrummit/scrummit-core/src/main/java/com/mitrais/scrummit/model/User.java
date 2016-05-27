@@ -5,12 +5,14 @@ import java.io.Serializable;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 @SuppressWarnings("serial")
+@Document(collection = "user")
 public class User extends Common implements Serializable {
 
     @Id
@@ -23,68 +25,85 @@ public class User extends Common implements Serializable {
     @Field(value = "password")
     private String   password;
 
-    @Field(value = "firstname")
-    private String   firstname;
+    @Field(value = "first_name")
+    private String   firstName;
 
-    @Field(value = "lastname")
-    private String   lastname;
+    @Field(value = "last_name")
+    private String   lastName;
 
     @Field(value = "email")
     private String   email;
 
-    @Field(value = "userType")
+    @Field(value = "user_type")
     private String   userType;
 
-    @JsonSerialize(using = ToStringSerializer.class)
+
     @DBRef
-    @Field(value = "assocOrgId")
+    @Field(value = "assoc_org_id")
     private Organization assocOrgId;
 
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
     public String getUsername() {
-		return username;
-	}
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getFirstname() {
-		return firstname;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getLastname() {
-		return lastname;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getUserType() {
-		return userType;
-	}
+    public String getUserType() {
+        return userType;
+    }
 
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public Organization getAssocOrgId() {
+        return assocOrgId;
+    }
+
+    public void setAssocOrgId(Organization assocOrgId) {
+        this.assocOrgId = assocOrgId;
+    }
+
 }

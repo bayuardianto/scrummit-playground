@@ -43,6 +43,7 @@ function LoginController($location, AuthenticationService, FlashService) {
 		};
 };
 
+<<<<<<< HEAD
 function UserController($location, $cookies, UserService) {
 	var uc = this;
 	this.update = update;
@@ -68,9 +69,28 @@ function UserController($location, $cookies, UserService) {
 		}
 	}
 }
-
+=======
+function RegistrationController($location, $scope, $http, FlashService){
+	dataLoading = false
+	$scope.sendPost = function() {
+		$scope.dataLoading = true;
+		var data = $scope.user;
+		$http.post("register/", data).success(function(data, status) {
+			debugger;
+			FlashService.Success("Account was created. You can login now. An email with verification link have been sent to your email, please activate your account.");
+			$scope.dataLoading = false;
+		}).error(function(data, status) {
+			FlashService.Error("There was an error in creating your account, please try again");
+			$scope.dataLoading = false;
+		});
+	}
+	$scope.goToLogin = function (){
+		$location.path('/login');
+	};
+};
 angular
-    .module('inspinia')
-    .controller('MainCtrl', MainCtrl)
-    .controller('LoginController', LoginController)
+	.module('inspinia')
+	.controller('MainCtrl', MainCtrl)
+	.controller('LoginController', LoginController)
     .controller('UserController', UserController);
+	.controller('RegCtrl', RegistrationController);

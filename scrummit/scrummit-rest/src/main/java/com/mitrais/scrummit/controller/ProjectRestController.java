@@ -17,7 +17,7 @@ import com.mitrais.scrummit.model.Project;
 
 
 @RestController
-@RequestMapping("/project")
+@RequestMapping("/rest/project")
 public class ProjectRestController {
     @Autowired
     private ProjectBO           projectBO;

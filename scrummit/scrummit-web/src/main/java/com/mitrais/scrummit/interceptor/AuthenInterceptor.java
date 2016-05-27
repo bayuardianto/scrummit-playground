@@ -22,6 +22,7 @@ public class AuthenInterceptor extends HandlerInterceptorAdapter {
         		!request.getRequestURI().endsWith("logout/") &&
         		!request.getRequestURI().endsWith("authenticate/") &&
         		!request.getRequestURI().endsWith("register") &&
+        		!request.getRequestURI().endsWith("register/") &&
                 request.getSession().getAttribute("CURRENT_USER") == null) {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
         }

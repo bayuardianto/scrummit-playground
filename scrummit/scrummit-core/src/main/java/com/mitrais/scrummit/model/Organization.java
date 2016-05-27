@@ -5,20 +5,25 @@ import java.io.Serializable;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 
+@SuppressWarnings("serial")
+@Document(collection = "organization")
 public class Organization extends Common implements Serializable {
     @Id
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId organizationId;
 
-    @Field(value = "organizationName")
+    @Field(value = "organization_name")
     private String   organizationName;
     
+    @JsonIgnore
     @DBRef(db = "smcentral")
     @Field(value = "owner")
     private User     owner;
@@ -26,7 +31,7 @@ public class Organization extends Common implements Serializable {
     @Field(value = "contacts")
     private Contact  contacts;
 
-    @Field(value = "dbSettings")
+    @Field(value = "db_settings")
     private DBSeting dbSettings;
 
     public ObjectId getOrganizationId() {
@@ -109,16 +114,16 @@ class Contact {
 }
 
 class DBSeting {
-    @Field(value = "dbName")
+    @Field(value = "db_name")
     private String dbName;
 
-    @Field(value = "dbUserId")
+    @Field(value = "db_user_id")
     private String dbUserId;
 
-    @Field(value = "dbPassword")
+    @Field(value = "db_password")
     private String dbPassword;
 
-    @Field(value = "dbPath")
+    @Field(value = "db_path")
     private String dbPath;
 
     public String getDbName() {
