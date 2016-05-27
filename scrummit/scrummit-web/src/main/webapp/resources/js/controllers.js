@@ -38,7 +38,16 @@ function LoginController($location, AuthenticationService, FlashService) {
         };
 };
 
+function ViewProjectController($scope, $http) {
+
+    $http.get('http://localhost:8080/scrummit/project/list').
+    success(function(data) {
+        $scope.projects = data;
+    });
+};
+
 angular
     .module('inspinia')
     .controller('MainCtrl', MainCtrl)
-    .controller('LoginController', LoginController);
+    .controller('LoginController', LoginController)
+    .controller('ViewProjectController', ViewProjectController);

@@ -12,17 +12,23 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 @SuppressWarnings("serial")
-@Document(collection = "project")
+@Document(collection = "projects")
 public class Project extends Common implements Serializable {
     @Id
     @JsonSerialize(using = ToStringSerializer.class)
-    private ObjectId     id;
+    private ObjectId id;
 
     @Field(value="name")
     private String name;
 
-    @Field(value = "details")
-    private Detail       details;
+    @Field(value="description")
+    private String description;
+
+    @Field(value="status")
+    private int status;
+
+    //@Field(value = "details")
+    //private Detail       details;
 
     @Field(value = "members")
     private List<Member> members;
@@ -44,6 +50,22 @@ public class Project extends Common implements Serializable {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public ObjectId getId() {
         return id;
     }
@@ -51,7 +73,7 @@ public class Project extends Common implements Serializable {
     public void setId(ObjectId objectId) {
         this.id = objectId;
     }
-
+    /*
     public Detail getDetails() {
         return details;
     }
@@ -59,7 +81,7 @@ public class Project extends Common implements Serializable {
     public void setDetails(Detail details) {
         this.details = details;
     }
-
+    */
     public List<Member> getMembers() {
         return members;
     }
@@ -68,18 +90,11 @@ public class Project extends Common implements Serializable {
         this.members = members;
     }
 
-    /*
-     * @Override public String toString() {
-     * 
-     * return "\nProject{_id: '" + this._id + "' , name: '" + this.name +
-     * "'}\n"; }
-     */
-
 }
 
 class Member {
     @JsonSerialize(using = ToStringSerializer.class)
-    @Field(value = "userId")
+    @Field(value = "user_id")
     private ObjectId userId;
 
     @Field(value = "role")
@@ -102,6 +117,7 @@ class Member {
     }
 }
 
+/*
 class Detail {
     public String getName() {
         return name;
@@ -136,3 +152,4 @@ class Detail {
     @Field(value = "status")
     private String status;
 }
+*/
