@@ -43,7 +43,6 @@ function LoginController($location, AuthenticationService, FlashService) {
 		};
 };
 
-<<<<<<< HEAD
 function UserController($location, $cookies, UserService) {
 	var uc = this;
 	this.update = update;
@@ -69,7 +68,7 @@ function UserController($location, $cookies, UserService) {
 		}
 	}
 }
-=======
+
 function RegistrationController($location, $scope, $http, FlashService){
 	dataLoading = false
 	$scope.sendPost = function() {
@@ -88,6 +87,7 @@ function RegistrationController($location, $scope, $http, FlashService){
 		$location.path('/login');
 	};
 };
+
 angular
 	.module('inspinia')
 	.controller('MainCtrl', MainCtrl)
