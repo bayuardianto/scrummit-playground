@@ -43,7 +43,27 @@ function LoginController($location, AuthenticationService, FlashService) {
 		};
 };
 
+function RegistrationController($location, $scope, $http, FlashService){
+	dataLoading = false
+	$scope.sendPost = function() {
+		$scope.dataLoading = true;
+		var data = $scope.user;
+		$http.post("register/", data).success(function(data, status) {
+			debugger;
+			FlashService.Success("Account was created. You can login now. An email with verification link have been sent to your email, please activate your account.");
+			$scope.dataLoading = false;
+		}).error(function(data, status) {
+			FlashService.Error("There was an error in creating your account, please try again");
+			$scope.dataLoading = false;
+		});
+	}
+	$scope.goToLogin = function (){
+		$location.path('/login');
+	};
+};
+
 angular
     .module('inspinia')
     .controller('MainCtrl', MainCtrl)
-    .controller('LoginController', LoginController);
+    .controller('LoginController', LoginController)
+    .controller('RegCtrl', RegistrationController);

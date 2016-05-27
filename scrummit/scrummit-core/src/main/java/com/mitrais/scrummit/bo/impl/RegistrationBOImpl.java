@@ -1,0 +1,47 @@
+package com.mitrais.scrummit.bo.impl;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.mitrais.scrummit.bo.RegistrationBO;
+import com.mitrais.scrummit.dao.OrganizationDAO;
+import com.mitrais.scrummit.dao.UserDAO;
+import com.mitrais.scrummit.model.Organization;
+import com.mitrais.scrummit.model.User;
+@Service
+public class RegistrationBOImpl implements RegistrationBO {
+    private static final Log log = LogFactory.getLog(RegistrationBOImpl.class);
+    @Autowired
+    UserDAO         userDAO;
+
+    @Autowired
+    OrganizationDAO organizationDAO;
+
+    @Override
+    public User RegisterUserComplete(User user) {
+        log.info("registering user complete with username: " + user.getUsername());
+        User savedUser = null;
+        if (null != user.getAssocOrgId()) {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String hashedPassword = encoder.encode(user.getPassword());
+            user.setPassword(hashedPassword);
+
+            // save org, save user, update ref,
+            Organization savedOrg = organizationDAO.insert(user.getAssocOrgId());
+
+            // TODO: remove this line, automatically updated after save,
+            user.setAssocOrgId(savedOrg);
+
+            savedUser = userDAO.insert(user);
+            // set org owner
+            savedOrg.setOwner(user);
+            organizationDAO.save(savedOrg);
+
+        }
+        return savedUser;
+    }
+
+}
