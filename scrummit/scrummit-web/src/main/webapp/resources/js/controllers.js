@@ -44,7 +44,7 @@ function LoginController($location, AuthenticationService, FlashService) {
 };
 
 function RegistrationController($location, $scope, $http, FlashService){
-	dataLoading = false
+	$scope.isNotsubmitted = true;
 	$scope.sendPost = function() {
 		$scope.dataLoading = true;
 		var data = $scope.user;
@@ -52,6 +52,7 @@ function RegistrationController($location, $scope, $http, FlashService){
 			debugger;
 			FlashService.Success("Account was created. You can login now. An email with verification link have been sent to your email, please activate your account.");
 			$scope.dataLoading = false;
+			$scope.isNotsubmitted = false;
 		}).error(function(data, status) {
 			FlashService.Error("There was an error in creating your account, please try again");
 			$scope.dataLoading = false;
