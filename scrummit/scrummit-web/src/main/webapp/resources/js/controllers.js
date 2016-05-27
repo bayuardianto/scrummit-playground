@@ -101,5 +101,5 @@ angular
 	.module('inspinia')
 	.controller('MainCtrl', MainCtrl)
 	.controller('LoginController', LoginController)
-    .controller('UserController', UserController)
+	.controller('UserController', UserController)
 	.controller('RegCtrl', RegistrationController);
