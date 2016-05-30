@@ -19,6 +19,9 @@
 	                        <li>
                         		<a ui-sref="user.profile">Profile</a></li>
 	                        <li class="divider"></li>
+	                        <li>
+                        		<a ui-sref="user.password">Change Password</a></li>
+	                        <li class="divider"></li>
 	                        <li><a ng-click="lgCtrl.logout()">Logout</a></li>
 	                    </ul>
 	                </div>

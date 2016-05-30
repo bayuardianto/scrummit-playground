@@ -129,6 +129,7 @@ function UserService($http) {
 	 
     service.GetByUsername = GetByUsername;
     service.UpdateUser = UpdateUser;
+    service.ChangePassword = ChangePassword;
 
     return service;
 
@@ -148,6 +149,17 @@ function UserService($http) {
     		callback(response);
     	});
     	
+    }
+    
+    function ChangePassword(username, password, newPassword, callback) {
+    	$http.post('rest/user/update', {username: username, password: password, newPassword: newPassword, callback}).success(function(response){
+    		response.success = true;
+    		callback(response);
+    	}).error(function(response){
+    		response.success = false;
+    		response.message = "There was an error while updating your account, please try again";
+    		callback(response);
+    	});
     }
 
     // private functions

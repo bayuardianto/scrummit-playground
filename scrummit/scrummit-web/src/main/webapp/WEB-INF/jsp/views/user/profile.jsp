@@ -9,8 +9,8 @@
         	<div class="row">
         		<div class="col-xs-6">
 		            <div class="form-group">
-		            	<label for="email">Email address</label>
-		                <input type="email" id="email" name="email" ng-model="uc.email" class="form-control" required="">
+		            	<label for="username">Username</label>
+		            	<input type="text" id="username" name="username" ng-model="uc.username" class="form-control" readonly>
 		            </div>
   					<div class="form-group">
   						<label for="firstname">First Name</label>
@@ -19,8 +19,8 @@
         		</div>
   				<div class="col-xs-6">
 		            <div class="form-group">
-		            	<label for="password">Password</label>
-		                <input type="password" id="password" name="password" ng-model="uc.password" class="form-control">
+		            	<label for="email">Email address</label>
+		                <input type="email" id="email" name="email" ng-model="uc.email" class="form-control" required="">
 		            </div>
 		            
 		            <div class="form-group">
