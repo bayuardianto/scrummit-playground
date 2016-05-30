@@ -60,4 +60,18 @@ public class ProjectBOImpl implements ProjectBO {
         return projectDAO.save(project);
     }
 
+    @Override
+    public List<Project> getProjectByStatus(int status) {
+        return projectDAO.findByStatus(status);
+    }
+
+    @Override
+    public Project getProjectByProjectName(String name) {
+        return projectDAO.findByName(name);
+    }
+
+    @Override
+    public List<Project> getProjectByUser(String userId) {
+        return projectDAO.findByUserId(new ObjectId(userId));
+    }
 }

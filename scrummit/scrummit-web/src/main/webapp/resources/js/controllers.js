@@ -115,9 +115,18 @@ function RegistrationController($location, $scope, $http, FlashService){
 	};
 };
 
+function ViewProjectController($scope, $http) {
+
+    $http.get('scrummit/project/list').
+    success(function(data) {
+        $scope.projects = data;
+    });
+};
+
 angular
 	.module('inspinia')
 	.controller('MainCtrl', MainCtrl)
 	.controller('LoginController', LoginController)
 	.controller('UserController', UserController)
+	.controller('ViewProjectController', ViewProjectController)
 	.controller('RegCtrl', RegistrationController);

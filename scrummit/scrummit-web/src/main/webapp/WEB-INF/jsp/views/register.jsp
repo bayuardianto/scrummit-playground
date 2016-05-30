@@ -98,7 +98,7 @@
 			</form>
 
 			<p class="m-t text-center">
-				<small>Mitrais Scrummit &copy; <%=new java.text.SimpleDateFormat("yyyy").format(new java.util.Date())%></small>
+				<small>Mitrais Scrummit &copy; <%=new java.text.SimpleDateFormat("yyyy").format(new Date())%></small>
 			</p>
 		</div>
 	</div>
