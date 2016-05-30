@@ -32,8 +32,10 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
             data: { pageTitle: 'Dashboard' }
         })
         .state('index.projects', {
+            controller: "ViewProjectController",
             url: "/projects",
             templateUrl: "views/projects",
+            controllerAs: "vm",
             data: { pageTitle: 'Projects' }
         })
         .state('login', {
