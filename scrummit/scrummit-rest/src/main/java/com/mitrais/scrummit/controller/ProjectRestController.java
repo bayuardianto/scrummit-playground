@@ -24,7 +24,7 @@ import com.mitrais.scrummit.model.Project;
 
 
 @RestController
-@RequestMapping("/project")
+@RequestMapping("/rest")
 public class ProjectRestController {
     @Autowired
     private ProjectBO           projectBO;
@@ -38,7 +38,7 @@ public class ProjectRestController {
 
     private static final String template = "You get project:  %s!";
 
-    @RequestMapping(path = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/project", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<ProjectView> listAllProject() {
         List<Project> projects = projectBO.listAllProject();
         if(projects != null)
@@ -48,7 +48,7 @@ public class ProjectRestController {
             return null;
     }
 
-    @RequestMapping(path = "/list/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/project/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<Project> listProjectByUser(@PathVariable("id") String id) {
         List<Project> projects = projectBO.getProjectByUser(id);
         return projects;
@@ -84,13 +84,18 @@ public class ProjectRestController {
     }
 
 
-    @RequestMapping(path = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/list/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Project create(@RequestBody Project project) {
         return projectBO.createProject(project);
     }
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/project/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Project delete(@PathVariable("id") String id) {
+        return projectBO.deleteProject(id);
+    }
+
+    @RequestMapping(path = "/project/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Project update(@PathVariable("id") String id) {
         return projectBO.deleteProject(id);
     }
 

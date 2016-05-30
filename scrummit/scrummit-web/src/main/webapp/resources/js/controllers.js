@@ -40,7 +40,7 @@ function LoginController($location, AuthenticationService, FlashService) {
 
 function ViewProjectController($scope, $http) {
 
-    $http.get('http://localhost:8080/scrummit/project/list').
+    $http.get('http://localhost:8080/scrummit/rest/project').
     success(function(data) {
         $scope.projects = data;
     });
@@ -50,4 +50,5 @@ angular
     .module('inspinia')
     .controller('MainCtrl', MainCtrl)
     .controller('LoginController', LoginController)
-    .controller('ViewProjectController', ViewProjectController);
+    .controller('ViewProjectController', ViewProjectController)
+    ;
