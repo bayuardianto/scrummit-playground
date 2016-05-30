@@ -14,4 +14,10 @@ public class UserController {
 		
 		return "views/user/profile";
 	}
+	
+	@RequestMapping(value = "/user/password", method = RequestMethod.GET)
+	public String managePassword(Map<String, Object> model) {
+		
+		return "views/user/password";
+	}
 }

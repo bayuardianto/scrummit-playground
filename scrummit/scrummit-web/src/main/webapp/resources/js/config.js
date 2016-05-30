@@ -54,6 +54,10 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
         	url: "/profile",
         	templateUrl: "user/profile"
         })
+        .state('user.password', {
+        	url: "/password",
+        	templateUrl: "user/password"
+        })
         .state('verified', {
         	url: "/verified",
         	templateUrl: "views/verified",

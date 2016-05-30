@@ -46,6 +46,7 @@ function LoginController($location, AuthenticationService, FlashService) {
 function UserController($location, $cookies, UserService, FlashService) {
 	var uc = this;
 	this.update = update;
+	this.updatePassword = updatePassword;
 	var ck = $cookies.getObject('globals') || {};
 	
 	(function initController() {
@@ -53,6 +54,7 @@ function UserController($location, $cookies, UserService, FlashService) {
 			UserService.GetByUsername(ck.currentUser.username, function (response){
 				if (response) {
 					uc.email = response.email;
+					uc.username = response.username
 					uc.firstname = response.firstName;
 					uc.lastname = response.lastName;
 				}
@@ -66,8 +68,8 @@ function UserController($location, $cookies, UserService, FlashService) {
 			var username = ck.currentUser.username;
 			UserService.UpdateUser(username, uc.password, uc.email, uc.firstname, uc.lastname, function(response){
 				uc.dataLoading = true;
-				if (response && response.success == true) {
-					FlashService.Success("Account information was updated successfully!");
+				if (response && response.error == 0) {
+					FlashService.Success(response.message);
 				} else {
 					uc.dataLoading = false;
 					FlashService.Error(response.message);
@@ -75,6 +77,22 @@ function UserController($location, $cookies, UserService, FlashService) {
 			});
 		}
 	};
+	
+	function updatePassword() {
+		if (ck.currentUser) {
+			var username = ck.currentUser.username;
+			
+			UserService.ChangePassword(username, uc.oldPassword, uc.newPassword, function(response){
+				uc.dataLoading = true;
+				if (response && response.error == 0) {
+					FlashService.Success(response.message);
+				} else {
+					uc.dataLoading = false;
+					FlashService.Error(response.message);
+				}
+			});
+		}
+	}
 }
 
 function RegistrationController($location, $scope, $http, FlashService){

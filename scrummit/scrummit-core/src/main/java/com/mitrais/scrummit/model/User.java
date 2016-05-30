@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -36,6 +37,10 @@ public class User extends Common implements Serializable {
 
     @Field(value = "user_type")
     private String   userType;
+    
+    //non persisted field
+    @Transient
+    private String newPassword;
 
 
     @DBRef
@@ -105,5 +110,13 @@ public class User extends Common implements Serializable {
     public void setAssocOrgId(Organization assocOrgId) {
         this.assocOrgId = assocOrgId;
     }
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
 
 }
