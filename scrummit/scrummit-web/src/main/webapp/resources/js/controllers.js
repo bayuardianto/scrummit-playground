@@ -117,7 +117,7 @@ function RegistrationController($location, $scope, $http, FlashService){
 
 function ViewProjectController($scope, $http) {
 
-    $http.get('scrummit/project/list').
+    $http.get('rest/project/list').
     success(function(data) {
         $scope.projects = data;
     });
