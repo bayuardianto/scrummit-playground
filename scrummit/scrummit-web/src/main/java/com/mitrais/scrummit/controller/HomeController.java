@@ -2,6 +2,8 @@ package com.mitrais.scrummit.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,11 +40,8 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/views/navigation", method = RequestMethod.GET)
-	public String navigation(Map<String, Object> model) {
-		User user = userDao.findByUsername("user1");
-		
-		model.put("user", user);
-		
+	public String navigation(Map<String, Object> model, HttpServletRequest request) {
+				
 		return "views/common/navigation";
 	}
 	
