@@ -26,7 +26,7 @@
 
                     <div ibox-tools></div>
                 </div>--%>
-                <div class="ibox-content">
+                <div class="ibox-content" ng-controller="ViewProjectController as vm">
                     <label>Search: <input ng-model="searchText"></label>
                     <table datatable="ng" dt-options="dtOptions"  class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
@@ -40,7 +40,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="project in projects | filter:searchText ">
-                            <td>{{ project.name }}</td>
+                            <td><a ui-sref="project.board({ name: project.name })">{{ project.name }} </a></td>
                             <td>{{ project.description }}</td>
                             <td>{{ project.status }}</td>
                             <td>{{ project.createdByName }}</td>

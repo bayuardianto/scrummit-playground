@@ -152,7 +152,7 @@ function UserService($http) {
     }
     
     function ChangePassword(username, password, newPassword, callback) {
-    	$http.post('rest/user/update', {username: username, password: password, newPassword: newPassword, callback}).success(function(response){
+    	$http.post('rest/user/update', {username: username, password: password, newPassword: newPassword}).success(function(response){
     		response.success = true;
     		callback(response);
     	}).error(function(response){

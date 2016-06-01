@@ -13,7 +13,7 @@
 		            	<input type="text" id="username" name="username" ng-model="uc.username" class="form-control" readonly>
 		            </div>
   					<div class="form-group">
-  						<label for="firstname">First Name</label>
+  						<label for="firstname">First Name ${url }</label>
 		                <input type="text" id="firstname" name="firstname" ng-model="uc.firstname" class="form-control" required="">
 		            </div>
         		</div>

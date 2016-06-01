@@ -115,13 +115,127 @@ function RegistrationController($location, $scope, $http, FlashService){
 	};
 };
 
-function ViewProjectController($scope, $http) {
-
+function ViewProjectController($scope, $state, $http, $stateParams) {
+	
     $http.get('rest/project/list').
     success(function(data) {
         $scope.projects = data;
     });
+    
 };
+
+function ProjectDetailController($scope, $http, $location, $stateParams) {
+	var pc = this;
+	$scope.name = $stateParams.name;
+			
+	(function init() {
+		$http.get('rest/project/name/' + $scope.name).success(function (data){
+			console.log($scope.name);
+			$scope.todoList = [
+			                   {
+			                       content: 'Simply dummy text of the printing and typesetting industry.',
+			                       date: '12.10.2015',
+			                       statusClass: 'warning',
+			                       tagName: 'Mark'
+			                   },
+			                   {
+			                       content: 'Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.',
+			                       date: '05.04.2015',
+			                       statusClass: 'success',
+			                       tagName: 'Tag'
+			                   },
+			                   {
+			                       content: 'Sometimes by accident, sometimes on purpose (injected humour and the like).',
+			                       date: '16.11.2015',
+			                       statusClass: 'info',
+			                       tagName: 'Mark'
+			                   },
+			                   {
+			                       content: 'All the Lorem Ipsum generators',
+			                       date: '06.10.2015',
+			                       statusClass: 'danger',
+			                       tagName: 'Tag'
+			                   }
+			               ];
+			               $scope.inProgressList = [
+			                   {
+			                       content: 'Quisque venenatis ante in porta suscipit.',
+			                       date: '12.10.2015',
+			                       statusClass: 'success',
+			                       tagName: 'Mark'
+			                   },
+			                   {
+			                       content: ' Phasellus sit amet tortor sed enim mollis accumsan in consequat orci.',
+			                       date: '05.04.2015',
+			                       statusClass: 'success',
+			                       tagName: 'Tag'
+			                   },
+			                   {
+			                       content: 'Nunc sed arcu at ligula faucibus tempus ac id felis. Vestibulum et nulla quis turpis sagittis fringilla.',
+			                       date: '16.11.2015',
+			                       statusClass: 'warning',
+			                       tagName: 'Mark'
+			                   },
+			                   {
+			                       content: 'Ut porttitor augue non sapien mollis accumsan. Nulla non elit eget lacus elementum viverra.',
+			                       date: '09.12.2015',
+			                       statusClass: 'warning',
+			                       tagName: 'Tag'
+			                   }
+			               ];
+			               $scope.completedList = [
+			                   {
+			                       content: 'Sometimes by accident, sometimes on purpose (injected humour and the like).',
+			                       date: '16.11.2015',
+			                       statusClass: 'info',
+			                       tagName: 'Mark'
+			                   },
+			                   {
+			                       content: 'Ut porttitor augue non sapien mollis accumsan. Nulla non elit eget lacus elementum viverra.',
+			                       date: '09.12.2015',
+			                       statusClass: 'warning',
+			                       tagName: 'Tag'
+			                   },
+			                   {
+			                       content: 'Which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
+			                       date: '09.12.2015',
+			                       statusClass: 'warning',
+			                       tagName: 'Tag'
+			                   },
+			                   {
+			                       content: 'Packages and web page editors now use Lorem Ipsum as',
+			                       date: '08.04.2015',
+			                       statusClass: 'warning',
+			                       tagName: 'Tag'
+			                   }
+			               ];
+
+			               $scope.sortableOptions = {
+			                   connectWith: ".connectList"
+			               };
+		});
+	})();
+}
+
+function CardController($scope, $uibModal) {
+	$scope.openCreateCardModal = function(size) {
+		var modalInstance = $uibModal.open({
+            templateUrl: 'views/card_modal',
+            controller: CardModalController,
+            size: size
+        });
+	}
+}
+
+function CardModalController($scope, $uibModalInstance) {
+	$scope.ok = function () {
+        $uibModalInstance.close();
+    };
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+}
 
 angular
 	.module('inspinia')
@@ -129,4 +243,7 @@ angular
 	.controller('LoginController', LoginController)
 	.controller('UserController', UserController)
 	.controller('ViewProjectController', ViewProjectController)
-	.controller('RegCtrl', RegistrationController);
+	.controller('RegCtrl', RegistrationController)
+	.controller('ProjectDetailController', ProjectDetailController)
+	.controller('CardController', CardController)
+	.controller('CardModalController', CardModalController);
