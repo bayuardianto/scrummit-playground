@@ -33,7 +33,9 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
     @Value("${mail.smtp.auth}")
     private boolean auth;
     @Value("${mail.smtp.starttls.enable}")
-    private boolean starttls;
+    private boolean starttls_enable;
+    @Value("${mail.smtp.starttls.required}")
+    private boolean starttls_required;
     @Value("${mail.from}")
     private String from;
     @Value("${mail.username}")
@@ -74,7 +76,8 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         Properties mailProperties = new Properties();
         mailProperties.put("mail.smtp.auth", auth);
-        mailProperties.put("mail.smtp.starttls.enable", starttls);
+        mailProperties.put("mail.smtp.starttls.enable", starttls_enable);
+        mailProperties.put("mail.smtp.starttls.required", starttls_required);
         mailSender.setJavaMailProperties(mailProperties);
         mailSender.setHost(host);
         mailSender.setPort(port);

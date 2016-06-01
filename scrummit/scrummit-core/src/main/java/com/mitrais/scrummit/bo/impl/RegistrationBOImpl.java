@@ -28,6 +28,8 @@ public class RegistrationBOImpl implements RegistrationBO {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             String hashedPassword = encoder.encode(user.getPassword());
             user.setPassword(hashedPassword);
+            user.setIsActivated(false);
+            user.setActivationKey(encoder.encode(user.getUsername() + user.getEmail()));
 
             // save org, save user, update ref,
             Organization savedOrg = organizationDAO.insert(user.getAssocOrgId());

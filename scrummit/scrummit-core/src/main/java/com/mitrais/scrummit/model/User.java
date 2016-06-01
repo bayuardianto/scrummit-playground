@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
@@ -37,11 +38,17 @@ public class User extends Common implements Serializable {
 
     @Field(value = "user_type")
     private String   userType;
-    
+
+    @Field(value = "is_actived")
+    private Boolean      isActivated;
+
+    @JsonIgnore
+    @Field(value = "activation_key")
+    private String       activationKey;
+
     //non persisted field
     @Transient
     private String newPassword;
-
 
     @DBRef
     @Field(value = "assoc_org_id")
@@ -111,6 +118,22 @@ public class User extends Common implements Serializable {
         this.assocOrgId = assocOrgId;
     }
 
+    public Boolean getIsActivated() {
+        return isActivated;
+    }
+
+    public void setIsActivated(Boolean isActivated) {
+        this.isActivated = isActivated != null ? isActivated : false;
+    }
+
+    public String getActivationKey() {
+        return activationKey;
+    }
+
+    public void setActivationKey(String activationKey) {
+        this.activationKey = activationKey;
+    }
+
 	public String getNewPassword() {
 		return newPassword;
 	}
@@ -118,5 +141,4 @@ public class User extends Common implements Serializable {
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
 	}
-
 }

@@ -19,6 +19,21 @@ public class UserBOImpl implements UserBO {
         return userDao.findByUsername(username);
     }
 
+    @Override
+    public User findByActivationKey(String activationKey) {
+        return userDao.findByActivationKey(activationKey);
+    }
+
+    @Override
+    public User activateUser(String username) {
+        User updateUser = userDao.findByUsername(username);
+        if (updateUser != null) {
+            updateUser.setActivationKey(null);
+            updateUser.setIsActivated(true);
+        }
+        return userDao.save(updateUser);
+    }
+
 	@Override
 	public User updateUserInfo(User user) {
 		User updateUser = userDao.findByUsername(user.getUsername());
