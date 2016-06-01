@@ -10,22 +10,25 @@ import com.mitrais.scrummit.dao.UserDAO;
 import com.mitrais.scrummit.model.User;
 
 @Service
-public class UserBOImpl implements UserBO {
+public class UserBOImpl extends BaseBOImpl implements UserBO {
     @Autowired
     UserDAO userDao;
 
     @Override
     public User findByUsername(String username) {
+        resolveCentral();
         return userDao.findByUsername(username);
     }
 
     @Override
     public User findByActivationKey(String activationKey) {
+        resolveCentral();
         return userDao.findByActivationKey(activationKey);
     }
 
     @Override
     public User activateUser(String username) {
+        resolveCentral();
         User updateUser = userDao.findByUsername(username);
         if (updateUser != null) {
             updateUser.setActivationKey(null);
@@ -36,6 +39,7 @@ public class UserBOImpl implements UserBO {
 
 	@Override
 	public User updateUserInfo(User user) {
+        resolveCentral();
 		User updateUser = userDao.findByUsername(user.getUsername());
 		if (updateUser != null) {
 			updateUser.setEmail(user.getEmail());

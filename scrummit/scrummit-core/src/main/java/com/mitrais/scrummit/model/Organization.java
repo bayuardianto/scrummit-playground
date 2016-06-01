@@ -32,7 +32,7 @@ public class Organization extends Common implements Serializable {
     private Contact  contacts;
 
     @Field(value = "db_settings")
-    private DBSeting dbSettings;
+    private DBSetting dbSettings;
 
     public ObjectId getOrganizationId() {
         return organizationId;
@@ -66,15 +66,21 @@ public class Organization extends Common implements Serializable {
         this.contacts = contacts;
     }
 
-    public DBSeting getDbSettings() {
+    public DBSetting getDbSettings() {
         return dbSettings;
     }
 
-    public void setDbSettings(DBSeting dbSettings) {
+    public void setDbSettings(DBSetting dbSettings) {
         this.dbSettings = dbSettings;
     }
 
-    
+    public void initializeDbSettings(String dbName, String dbUserId, String dbPassword, String dbPath){
+        this.dbSettings = new DBSetting();
+        this.dbSettings.setDbName(dbName);
+        this.dbSettings.setDbUserId(dbUserId);
+        this.dbSettings.setDbPassword(dbPassword);
+        this.dbSettings.setDbPath(dbPath);
+    }
 }
 
 class Contact {
@@ -109,53 +115,6 @@ class Contact {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-}
-
-class DBSeting {
-    @Field(value = "db_name")
-    private String dbName;
-
-    @Field(value = "db_user_id")
-    private String dbUserId;
-
-    @Field(value = "db_password")
-    private String dbPassword;
-
-    @Field(value = "db_path")
-    private String dbPath;
-
-    public String getDbName() {
-        return dbName;
-    }
-
-    public void setDbName(String dbName) {
-        this.dbName = dbName;
-    }
-
-    public String getDbUserId() {
-        return dbUserId;
-    }
-
-    public void setDbUserId(String dbUserId) {
-        this.dbUserId = dbUserId;
-    }
-
-    public String getDbPassword() {
-        return dbPassword;
-    }
-
-    public void setDbPassword(String dbPassword) {
-        this.dbPassword = dbPassword;
-    }
-
-    public String getDbPath() {
-        return dbPath;
-    }
-
-    public void setDbPath(String dbPath) {
-        this.dbPath = dbPath;
     }
 
 }
