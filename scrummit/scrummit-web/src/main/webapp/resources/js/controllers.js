@@ -97,11 +97,11 @@ function UserController($location, $cookies, UserService, FlashService) {
 
 function RegistrationController($location, $scope, $http, FlashService){
 	$scope.isNotsubmitted = true;
+	$scope.activationKey = "";
 	$scope.sendPost = function() {
 		$scope.dataLoading = true;
 		var data = $scope.user;
 		$http.post("register/", data).success(function(data, status) {
-			debugger;
 			FlashService.Success("Account was created. You can login now. An email with verification link have been sent to your email, please activate your account.");
 			$scope.dataLoading = false;
 			$scope.isNotsubmitted = false;
@@ -113,6 +113,34 @@ function RegistrationController($location, $scope, $http, FlashService){
 	$scope.goToLogin = function (){
 		$location.path('/login');
 	};
+	
+	angular.element(document).ready(function () {
+		var param = $location.search();
+
+		
+		var verifyAccount = function() {
+			$scope.dataLoading = true;
+			$http.get("register/verify?key="+$scope.activationKey, null).success(function(status) {
+				var defaultSuccessMessage = "Your account successfully activated. Enjoy using all available feature\n You can go back to main page:";
+				if(status.error == 1 && status.message){
+					defaultSuccessMessage = status.message;
+				}
+				FlashService.Success(defaultSuccessMessage);
+				$scope.dataLoading = false;
+			}).error(function(status) {
+				FlashService.Error("There was an error in verifying your account, please try again");
+				$scope.dataLoading = false;
+			});
+		};
+		
+		if(param.key){
+			$scope.activationKey = param.key;
+			verifyAccount();
+		}
+	});
+	
+
+	
 };
 
 function ViewProjectController($scope, $http) {

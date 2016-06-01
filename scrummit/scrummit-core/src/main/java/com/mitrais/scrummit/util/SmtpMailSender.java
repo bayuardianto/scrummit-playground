@@ -1,9 +1,12 @@
 package com.mitrais.scrummit.util;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 
@@ -11,16 +14,17 @@ import org.springframework.stereotype.Component;
 public class SmtpMailSender {
 
     @Autowired
-    private MailSender mailSender;
+    private JavaMailSender mailSender;
 
-    public void send(String to, String subject, String body) throws MailException {
+    public void send(String to, String subject, String plainTextbody, String htmlBody) throws MailException,
+            MessagingException {
+        MimeMessage mail = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mail, true);
+        helper.setSubject(subject);
+        helper.setTo(to);
+        helper.setText(htmlBody, true);
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setSubject(subject);
-        message.setTo(to);
-        message.setText(body);
-
-        mailSender.send(message);
+        mailSender.send(mail);
 
     }
 }
