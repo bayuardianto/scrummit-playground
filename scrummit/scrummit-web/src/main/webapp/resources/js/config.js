@@ -26,6 +26,11 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
         	url: "/user",
         	templateUrl: "views/content"
         })
+        .state('project', {
+        	abstract: true,
+        	url: "/project",
+        	templateUrl: "views/content"
+        })
         .state('index.dashboard', {
             url: "/dashboard",
             templateUrl: "views/dashboard",
@@ -57,6 +62,22 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
         .state('user.password', {
         	url: "/password",
         	templateUrl: "user/password"
+        })
+        .state('project.board', {
+        	controller: "ProjectDetailController",
+        	url: "/:name/board",
+        	templateUrl: "views/project/board",
+        	controllerAs: "pc",
+        	resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            name: 'ui.sortable',
+                            files: ['resources/js/plugins/ui-sortable/sortable.js']
+                        }
+                    ]);
+                }
+            }
         })
         .state('verified', {
         	url: "/verified",
