@@ -17,7 +17,7 @@ public class OrganizationMemberController {
     @RequestMapping(path = "/orgmembers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     List<OrganizationMember> getOrganizationMembers() {
-        List<OrganizationMember> projects = organizationMemberBO.getAll();
-        return projects;
+        List<OrganizationMember> orgMembers = organizationMemberBO.getAll();
+        return orgMembers;
     }
 }
