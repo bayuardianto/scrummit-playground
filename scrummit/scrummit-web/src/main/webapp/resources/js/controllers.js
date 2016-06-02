@@ -183,7 +183,7 @@ function RegistrationController($location, $scope, $http, FlashService){
 
 function ViewProjectController($scope, $state, $http, $stateParams) {
 	
-    $http.get('rest/project/list').
+    $http.get('rest/project/').
     success(function(data) {
         $scope.projects = data;
     });
@@ -311,6 +311,82 @@ function ProjectController($scope, $location ,ProjectService, OrganizationMember
 
 	//get organization members data for combo box
 
+	$scope.orgmembers = OrganizationMemberService.query();
+
+	//initialize roles for drop down
+	$scope.roles = [{id: 1, text: "Role 1"}, {id: 2, text: "Role 2"}];
+
+	$scope.member = {};
+	$scope.members = [];
+	
+	$scope.storeTemp = function() {
+		/* do validation here or in html before ... */
+
+		if($scope.selectedUser != null && $scope.selectedRole != null) {
+			var memberId = $scope.selectedUser;
+			var memberName = $.grep($scope.orgmembers, function (member) {
+				return member.id == memberId;
+			})[0].fullName;
+
+			var roleId = $scope.selectedRole;
+			var roleName = $.grep($scope.roles, function (role) {
+				return role.id == roleId;
+			})[0].text;
+
+			var memberCheck = $.grep($scope.members, function (member) {
+				return member.userId == memberId;
+			})[0];
+
+			if (memberCheck == null) {
+				$scope.member.userId = memberId;
+				$scope.member.role = roleId;
+				$scope.member.roleName = roleName;
+				$scope.member.userName = memberName;
+				$scope.members.push($scope.member);
+			}
+			else {
+				// notify({
+				// 	message:'This person is already on the member list.',
+				// 	classes: 'alert-info'
+				// });
+			}
+			$scope.member = {};
+		}
+		else {
+			// notify({
+			// 	message:'Please select a person or a role.',
+			// 	classes: 'alert-info'
+			// });
+		}
+	};
+	
+	$scope.saveProject = function() {
+		if($scope.members != null) {
+			$scope.project.members = $scope.members;
+		}
+		
+		ProjectService.save($scope.project, function (data) {
+			// notify({
+			// 	message:'New project data has been successfully saved.',
+			// 	classes: 'alert-info'
+			// });
+		}, function (err) {
+			// notify({
+			// 	message:'Save project failed.',
+			// 	classes: 'alert-info'
+			// });
+		});
+	};
+};
+
+function ProjectController($scope, $location ,ProjectService, OrganizationMemberService) {
+
+	//get projects data
+	$scope.projects = ProjectService.query();
+
+	//$scope.newProject = $scope.newProject;
+
+	//get organization members data for combo box
 	$scope.orgmembers = OrganizationMemberService.query();
 
 	//initialize roles for drop down
