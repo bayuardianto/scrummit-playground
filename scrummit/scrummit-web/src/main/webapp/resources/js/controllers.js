@@ -76,9 +76,47 @@ function UserController($location, $cookies, UserService, FlashService) {
 				}
 			});
 		}
+     })();
+			
+	function update() {
+		
+		if (ck.currentUser) {
+			var username = ck.currentUser.username;
+			UserService.UpdateUser(username, uc.password, uc.email, uc.firstname, uc.lastname, function(response){
+				uc.dataLoading = true;
+				if (response && response.success == true) {
+					FlashService.Success("Account information was updated successfully!");
+				} else {
+					uc.dataLoading = false;
+					FlashService.Error(response.message);
+				}
+			});
+		}
+	};
+}
+
+function RegistrationController($location, $scope, $http, FlashService){
+	$scope.isNotsubmitted = true;
+	$scope.sendPost = function() {
+		$scope.dataLoading = true;
+		var data = $scope.user;
+		$http.post("register/", data).success(function(data, status) {
+			debugger;
+			FlashService.Success("Account was created. You can login now. An email with verification link have been sent to your email, please activate your account.");
+			$scope.dataLoading = false;
+			$scope.isNotsubmitted = false;
+		}).error(function(data, status) {
+			FlashService.Error("There was an error in creating your account, please try again");
+			$scope.dataLoading = false;
+		});
+	}
+	$scope.goToLogin = function (){
+		$location.path('/login');
+	};
 	};
 	
 	function updatePassword() {
+
 		if (ck.currentUser) {
 			var username = ck.currentUser.username;
 			
@@ -264,6 +302,82 @@ function CardModalController($scope, $uibModalInstance) {
         $uibModalInstance.dismiss('cancel');
     };
 }
+function ProjectController($scope, $location ,ProjectService, OrganizationMemberService) {
+
+	//get projects data
+	$scope.projects = ProjectService.query();
+
+	//$scope.newProject = $scope.newProject;
+
+	//get organization members data for combo box
+
+	$scope.orgmembers = OrganizationMemberService.query();
+
+	//initialize roles for drop down
+	$scope.roles = [{id: 1, text: "Role 1"}, {id: 2, text: "Role 2"}];
+
+	$scope.member = {};
+	$scope.members = [];
+	
+	$scope.storeTemp = function() {
+		/* do validation here or in html before ... */
+
+		if($scope.selectedUser != null && $scope.selectedRole != null) {
+			var memberId = $scope.selectedUser;
+			var memberName = $.grep($scope.orgmembers, function (member) {
+				return member.id == memberId;
+			})[0].fullName;
+
+			var roleId = $scope.selectedRole;
+			var roleName = $.grep($scope.roles, function (role) {
+				return role.id == roleId;
+			})[0].text;
+
+			var memberCheck = $.grep($scope.members, function (member) {
+				return member.userId == memberId;
+			})[0];
+
+			if (memberCheck == null) {
+				$scope.member.userId = memberId;
+				$scope.member.role = roleId;
+				$scope.member.roleName = roleName;
+				$scope.member.userName = memberName;
+				$scope.members.push($scope.member);
+			}
+			else {
+				// notify({
+				// 	message:'This person is already on the member list.',
+				// 	classes: 'alert-info'
+				// });
+			}
+			$scope.member = {};
+		}
+		else {
+			// notify({
+			// 	message:'Please select a person or a role.',
+			// 	classes: 'alert-info'
+			// });
+		}
+	};
+	
+	$scope.saveProject = function() {
+		if($scope.members != null) {
+			$scope.project.members = $scope.members;
+		}
+		
+		ProjectService.save($scope.project, function (data) {
+			// notify({
+			// 	message:'New project data has been successfully saved.',
+			// 	classes: 'alert-info'
+			// });
+		}, function (err) {
+			// notify({
+			// 	message:'Save project failed.',
+			// 	classes: 'alert-info'
+			// });
+		});
+	};
+};
 
 angular
 	.module('inspinia')
@@ -273,5 +387,6 @@ angular
 	.controller('ViewProjectController', ViewProjectController)
 	.controller('RegCtrl', RegistrationController)
 	.controller('ProjectDetailController', ProjectDetailController)
+	.controller('ProjectController', ProjectController);
 	.controller('CardController', CardController)
 	.controller('CardModalController', CardModalController);

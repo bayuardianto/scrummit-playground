@@ -219,8 +219,18 @@ function FlashService($rootScope) {
     }
 }
 
+function ProjectService($resource) {
+    return $resource('rest/project/:project',{project: "@project"});
+}
+
+function OrganizationMemberService($resource) {
+    return $resource('rest/orgmembers/:orgmember',{orgmember: "@orgmember"});
+}
+
 angular
     .module('inspinia')
     .factory('AuthenticationService', AuthenticationService)
     .factory('UserService', UserService)
-    .factory('FlashService', FlashService);
+    .factory('FlashService', FlashService)
+    .factory('ProjectService', ProjectService)
+    .factory('OrganizationMemberService', OrganizationMemberService);

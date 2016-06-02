@@ -2,6 +2,7 @@ package com.mitrais.scrummit.bo.impl;
 
 import java.util.List;
 
+import com.mitrais.scrummit.model.CommonEnum;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.bson.types.ObjectId;
@@ -54,6 +55,11 @@ public class ProjectBOImpl extends BaseBOImpl implements ProjectBO {
     public Project createProject(Project project) {
         log.info(String.format("save a project with project name: %s", project.getName()));
         resolveTenant();
+        /*todo*/
+        //set createdBy to the current user
+        project.setStatus(CommonEnum.ProjectStatus.IN_PROGRESS.ordinal());
+        project.setModifiedBy(null);
+        project.setModifiedBy(null);
         return projectDAO.save(project);
     }
 

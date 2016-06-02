@@ -1,9 +1,11 @@
 package com.mitrais.scrummit.bo.impl;
 
+import com.mitrais.scrummit.dao.OrganizationMemberCustomDAO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.mitrais.scrummit.bo.OrganizationMemberBO;
@@ -18,6 +20,9 @@ public class OrganizationMemberBOImpl extends BaseBOImpl implements Organization
     @Autowired
     OrganizationMemberDAO organizationMemberDAO;
 
+    @Autowired
+    OrganizationMemberCustomDAO organizationMemberCustomDAO;
+
     @Override
     public OrganizationMember getByUserId(String userId) {
         resolveCentral();
@@ -27,5 +32,10 @@ public class OrganizationMemberBOImpl extends BaseBOImpl implements Organization
     @Override
     public String testString() {
         return "testetas";
+    }
+
+    @Override
+    public List<OrganizationMember> getAll() {
+        return organizationMemberCustomDAO.getOrgMembers();
     }
 }

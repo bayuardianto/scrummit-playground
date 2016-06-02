@@ -37,7 +37,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
             data: { pageTitle: 'Dashboard' }
         })
         .state('index.projects', {
-            controller: "ViewProjectController",
+            controller: "ProjectController",
             url: "/projects",
             templateUrl: "views/projects",
             controllerAs: "vm",
@@ -83,6 +83,12 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
         	url: "/verified",
         	templateUrl: "views/verified",
         	data: { pageTitle: 'Verified', specialClass: 'gray-bg'}
+        })
+        .state('index.createproject', {
+            url: "/createproject",
+            templateUrl: "views/addproject",
+            controller: "ProjectController",
+            data: { pageTitle: 'Add New Project' }
         });
 }
 angular

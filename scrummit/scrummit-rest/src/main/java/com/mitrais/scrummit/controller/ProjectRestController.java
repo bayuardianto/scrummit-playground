@@ -24,7 +24,7 @@ import com.mitrais.scrummit.model.Project;
 
 
 @RestController
-@RequestMapping("/rest/project")
+@RequestMapping("/rest")
 public class ProjectRestController {
     @Autowired
     private ProjectBO           projectBO;
@@ -38,7 +38,7 @@ public class ProjectRestController {
 
     private static final String template = "You get project:  %s!";
 
-    @RequestMapping(path = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/project", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<ProjectView> listAllProject() {
         List<Project> projects = projectBO.listAllProject();
         if(projects != null)
@@ -48,19 +48,34 @@ public class ProjectRestController {
             return null;
     }
 
-    @RequestMapping(path = "/list/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/project", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Project create(@RequestBody Project project) {
+        return projectBO.createProject(project);
+    }
+
+    @RequestMapping(path = "/project/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Project delete(@PathVariable("id") String id) {
+        return projectBO.deleteProject(id);
+    }
+
+    @RequestMapping(path = "/project/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Project update(@PathVariable("id") String id) {
+        return projectBO.deleteProject(id);
+    }
+
+    @RequestMapping(path = "/projectdetail/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<Project> listProjectByUser(@PathVariable("id") String id) {
         List<Project> projects = projectBO.getProjectByUser(id);
         return projects;
     }
 
-    @RequestMapping(path = "/name/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Project getProjectByName(@PathVariable("name") String name) {
+    @RequestMapping(path = "/proj/{param}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Project getProjectByName(@PathVariable("param") String name) {
         Project projects = projectBO.getProjectByProjectName(name);
         return projects;
     }
 
-    @RequestMapping(path = "/status/{status}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/project/{status}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<Project> listProjectByUser(@PathVariable("status") int status) {
         List<Project> projects = projectBO.getProjectByStatus(status);
         return projects;
@@ -84,15 +99,7 @@ public class ProjectRestController {
     }
 
 
-    @RequestMapping(path = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Project create(@RequestBody Project project) {
-        return projectBO.createProject(project);
-    }
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Project delete(@PathVariable("id") String id) {
-        return projectBO.deleteProject(id);
-    }
 
     private String GetProjectStatus(int status) {
         if(status == CommonEnum.ProjectStatus.CREATED.ordinal()) {

@@ -140,5 +140,14 @@ public class User extends Common implements Serializable {
 
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
-	}
+    }
+
+    public Organization getAssocOrgId() {
+        return assocOrgId;
+    }
+
+    public void setAssocOrgId(Organization assocOrgId) {
+        this.assocOrgId = assocOrgId;
+    }
+
 }
