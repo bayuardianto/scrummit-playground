@@ -21,13 +21,18 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
             url: "/index",
             templateUrl: "views/content",
         })
+        .state('user', {
+        	abstract: true,
+        	url: "/user",
+        	templateUrl: "views/content"
+        })
         .state('index.dashboard', {
             url: "/dashboard",
             templateUrl: "views/dashboard",
             data: { pageTitle: 'Dashboard' }
         })
         .state('index.projects', {
-            controller: "ViewProjectController",
+            controller: "ProjectController",
             url: "/projects",
             templateUrl: "views/projects",
             controllerAs: "vm",
@@ -45,6 +50,21 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
         	templateUrl: "views/register",
         	data: { pageTitle: 'Register', specialClass: 'gray-bg'}
         })
+        .state('user.profile', {
+        	url: "/profile",
+        	templateUrl: "user/profile"
+        })
+        .state('verified', {
+        	url: "/verified",
+        	templateUrl: "views/verified",
+        	data: { pageTitle: 'Verified', specialClass: 'gray-bg'}
+        })
+        .state('index.createproject', {
+            url: "/createproject",
+            templateUrl: "views/addproject",
+            controller: "ProjectController",
+            data: { pageTitle: 'Add New Project' }
+        });
 }
 angular
     .module('inspinia')
@@ -59,7 +79,7 @@ angular
  
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in and trying to access a restricted page
-            var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
+            var restrictedPage = $.inArray($location.path(), ['/login', '/register','/verified']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if (restrictedPage && !loggedIn) {
                 $location.path('login');

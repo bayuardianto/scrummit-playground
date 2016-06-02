@@ -67,6 +67,6 @@ public class Common {
     }
 
     public void setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
+        this.isDeleted = isDeleted != null ? isDeleted : false;
     }
 }

@@ -57,4 +57,10 @@ public class HomeController {
 		
 		return "views/common/footer";
 	}
+
+    @RequestMapping(value = "/views/verified", method = RequestMethod.GET)
+    public String verified(Map<String, Object> model) {
+
+        return "views/verified";
+    }
 }

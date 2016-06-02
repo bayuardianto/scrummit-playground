@@ -119,6 +119,16 @@ class Member {
 
 /*
 class Detail {
+
+    @Field(value = "name")
+    private String name;
+
+    @Field(value = "description")
+    private String description;
+
+    @Field(value = "status")
+    private String status;
+
     public String getName() {
         return name;
     }
@@ -143,13 +153,5 @@ class Detail {
         this.status = status;
     }
 
-    @Field(value = "name")
-    private String name;
-
-    @Field(value = "description")
-    private String description;
-
-    @Field(value = "status")
-    private String status;
 }
 */

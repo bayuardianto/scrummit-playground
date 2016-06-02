@@ -3,21 +3,27 @@ package com.mitrais.scrummit.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mitrais.scrummit.dao.UserDAO;
+import com.mitrais.scrummit.bo.UserBO;
 import com.mitrais.scrummit.model.User;
 
 @Controller
 public class LoginController {
 	
 	@Autowired
-	UserDAO userDAO;
+    UserBO                userBO;
+
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
 
 	@RequestMapping(value = "/views/login", method = RequestMethod.GET)
 	public String login(Map<String, Object> model) {
@@ -32,15 +38,14 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/login/authenticate/", method = {RequestMethod.POST, RequestMethod.GET})
-	public @ResponseBody Map<String, String> authenticate(@RequestBody User rqUser) {
+	public @ResponseBody Map<String, String> authenticate(@RequestBody User rqUser, HttpServletRequest req) {
 		
-		//TODO: Define UserService and use instead of UserDAO
-		User user = userDAO.findByUsername(rqUser.getUsername());
+        User user = userBO.findByUsername(rqUser.getUsername());
 		
 		Map<String, String> rs = new HashMap<>();
 		
-		//TODO: replace the logic with BCryptPasswordEncoder match() function for validating passwords
-		if (user != null && user.getPassword().equals(rqUser.getPassword())) {
+        if (user != null && passwordEncoder.matches(rqUser.getPassword(), user.getPassword())) {
+			req.getSession().setAttribute("CURRENT_USER", user);
 			rs.put("success", "1");
 		} else {
 			rs.put("success", "0");
@@ -48,5 +53,12 @@ public class LoginController {
 		}
 		
 		return rs;
+	}
+	
+	@RequestMapping(value = "/logout/", method = RequestMethod.POST)
+	public @ResponseBody Boolean logout(HttpServletRequest req) {
+		req.getSession().removeAttribute("CURRENT_USER");
+		
+		return true;
 	}
 }

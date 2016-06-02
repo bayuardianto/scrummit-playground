@@ -63,6 +63,7 @@
 <script src="${contextPath}/resources/js/plugins/oclazyload/dist/ocLazyLoad.min.js"></script>
 <script src="${contextPath}/resources/js/ui-router/angular-ui-router.min.js"></script>
 <script src="${contextPath}/resources/js/bootstrap/ui-bootstrap-tpls-1.1.2.min.js"></script>
+<script src="${contextPath}/resources/js/angular/angular-resource.min.js"></script>
 
 
 <!-- Anglar App Script -->

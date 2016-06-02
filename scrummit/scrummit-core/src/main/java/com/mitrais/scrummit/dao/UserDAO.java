@@ -1,10 +1,10 @@
 package com.mitrais.scrummit.dao;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
 import com.mitrais.scrummit.model.User;
 
-
-public interface UserDAO extends MongoRepository<User, String> {
+@Repository
+public interface UserDAO extends CommonDAO<User, String> {
     public User findByUsername(String username);
 }

@@ -14,4 +14,10 @@ public class ProjectsController {
 		
 		return "views/projects";
 	}
+
+	@RequestMapping(value = "/views/addproject", method = RequestMethod.GET)
+	public String addProject(Map<String, Object> model) {
+
+		return "views/addproject";
+	}
 }

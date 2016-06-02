@@ -2,6 +2,7 @@ function AuthenticationService($http, $cookies, $rootScope, $timeout, UserServic
 	var service = {};
 	 
     service.Login = Login;
+    service.Logout = Logout;
     service.SetCredentials = SetCredentials;
     service.ClearCredentials = ClearCredentials;
 
@@ -9,6 +10,12 @@ function AuthenticationService($http, $cookies, $rootScope, $timeout, UserServic
 
     function Login(username, password, callback) {
     	$http.post('login/authenticate/', { username: username, password: password }).success(function (response) {
+                callback(response);
+        });
+    }
+    
+    function Logout(callback) {
+    	$http.post('logout/').success(function (response) {
                 callback(response);
         });
     }
@@ -121,11 +128,26 @@ function UserService($http) {
 	var service = {};
 	 
     service.GetByUsername = GetByUsername;
+    service.UpdateUser = UpdateUser;
 
     return service;
 
-    function GetByUsername(username) {
-        return $http.get('/rest/user/' + username).then(handleSuccess, handleError('Error getting user by username'));
+    function GetByUsername(username, callback) {
+        $http.get('rest/user/' + username).success(function (data){
+        	callback(data);
+        });
+    }
+    
+    function UpdateUser(username, password, email, firstname, lastname, callback) {
+    	$http.post('rest/user/update', {username: username, password: password, email: email, firstName: firstname, lastName: lastname}).success(function(response){
+    		response.success = true;
+    		callback(response);
+    	}).error(function(response){
+    		response.success = false;
+    		response.message = "There was an error while updating your account, please try again";
+    		callback(response);
+    	});
+    	
     }
 
     // private functions
@@ -185,8 +207,18 @@ function FlashService($rootScope) {
     }
 }
 
+function ProjectService($resource) {
+    return $resource('rest/project/:project',{project: "@project"});
+}
+
+function OrganizationMemberService($resource) {
+    return $resource('rest/orgmembers/:orgmember',{orgmember: "@orgmember"});
+}
+
 angular
     .module('inspinia')
     .factory('AuthenticationService', AuthenticationService)
     .factory('UserService', UserService)
-    .factory('FlashService', FlashService);
+    .factory('FlashService', FlashService)
+    .factory('ProjectService', ProjectService)
+    .factory('OrganizationMemberService', OrganizationMemberService);
