@@ -71,18 +71,6 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
 		return new AuthenInterceptor();
 	}
 	
-	@Bean
-	public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-	   RequestMappingHandlerMapping mapping = new RequestMappingHandlerMapping();
-	   mapping.setInterceptors(new Object[] {getAuthenInterceptor()});
-	   return mapping;
-	}
-	
-	@Bean
-	public AuthenInterceptor getAuthenInterceptor() {
-		return new AuthenInterceptor();
-	}
-	
     @Bean
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

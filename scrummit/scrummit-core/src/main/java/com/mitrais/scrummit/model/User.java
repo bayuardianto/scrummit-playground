@@ -110,14 +110,6 @@ public class User extends Common implements Serializable {
         this.userType = userType;
     }
 
-    public Organization getAssocOrgId() {
-        return assocOrgId;
-    }
-
-    public void setAssocOrgId(Organization assocOrgId) {
-        this.assocOrgId = assocOrgId;
-    }
-
     public Boolean getIsActivated() {
         return isActivated;
     }
