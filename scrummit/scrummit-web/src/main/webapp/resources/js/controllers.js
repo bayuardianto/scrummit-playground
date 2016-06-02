@@ -350,6 +350,6 @@ angular
 	.controller('ViewProjectController', ViewProjectController)
 	.controller('RegCtrl', RegistrationController)
 	.controller('ProjectDetailController', ProjectDetailController)
-	.controller('ProjectController', ProjectController);
+	.controller('ProjectController', ProjectController)
 	.controller('CardController', CardController)
 	.controller('CardModalController', CardModalController);
