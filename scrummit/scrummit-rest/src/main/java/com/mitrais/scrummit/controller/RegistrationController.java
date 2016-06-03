@@ -17,16 +17,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mitrais.scrummit.bo.RegistrationBO;
+import com.mitrais.scrummit.bo.OrganizationBO;
+import com.mitrais.scrummit.bo.OrganizationMemberBO;
 import com.mitrais.scrummit.bo.UserBO;
+import com.mitrais.scrummit.config.SMConstant;
+import com.mitrais.scrummit.model.Organization;
+import com.mitrais.scrummit.model.OrganizationMember;
 import com.mitrais.scrummit.model.User;
+import com.mitrais.scrummit.util.ScrummitUtil;
 import com.mitrais.scrummit.util.SmtpMailSender;
 
 @RestController
 @RequestMapping("/register")
 public class RegistrationController {
+    
     @Autowired
-    private RegistrationBO registrationBO;
+    private OrganizationBO organizationBO;
+
+    @Autowired
+    private OrganizationMemberBO organizationMemberBO;
 
     @Autowired
     private UserBO         userBO;
@@ -41,7 +50,7 @@ public class RegistrationController {
 
     @RequestMapping(path = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public User create(@RequestBody User user, HttpServletRequest request) throws MailException, MessagingException {
-        User savedUser = registrationBO.RegisterUserComplete(user);
+        User savedUser = RegisterUserComplete(user);
         
         String path = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
                 + request.getContextPath();
@@ -74,6 +83,45 @@ public class RegistrationController {
             }
             return response;
         }
+
+    }
+
+    private User RegisterUserComplete(User user) {
+
+        User savedUser = null;
+        if (null != user.getAssocOrgId()) {
+            String tenantName = ScrummitUtil.generateTenantName(user);
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String hashedPassword = encoder.encode(user.getPassword());
+            user.setPassword(hashedPassword);
+            user.setIsActivated(false);
+            user.setActivationKey(encoder.encode(user.getUsername() + user.getEmail()));
+            // save org, save user, update ref,
+            user.getAssocOrgId().initializeDbSettings(tenantName, "",
+                    "",
+                    "");
+            Organization savedOrg = organizationBO.insert(user.getAssocOrgId());
+
+            // TODO: remove this line, automatically updated after save,
+            user.setAssocOrgId(savedOrg);
+
+            savedUser = userBO.insert(user);
+            // set org owner
+            savedOrg.setOwner(user);
+            organizationBO.save(savedOrg);
+
+            // To help tenantResolver find the correct tenantDB, where no user
+            // login here, usually on registration only
+            organizationMemberBO.setTenantName(tenantName);
+
+            OrganizationMember member = new OrganizationMember();
+            member.setAccessRights(SMConstant.ORGANIZATION_MEMMBER_ACCESS_RIGHT_OWNER);
+            member.setFullName(user.getFirstName()+" "+user.getLastName());
+            member.setIsActive(true);
+            member.setUserId(user.getId());
+            organizationMemberBO.insert(member);
+        }
+        return savedUser;
 
     }
 }

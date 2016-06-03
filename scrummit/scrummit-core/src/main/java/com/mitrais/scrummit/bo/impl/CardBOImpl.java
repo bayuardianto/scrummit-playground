@@ -1,44 +1,40 @@
 package com.mitrais.scrummit.bo.impl;
 
-import com.mitrais.scrummit.bo.CardBO;
-import com.mitrais.scrummit.dao.CardDAO;
-import com.mitrais.scrummit.model.Card;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.mitrais.scrummit.bo.CardBO;
+import com.mitrais.scrummit.dao.CardDAO;
+import com.mitrais.scrummit.model.Card;
 
 /**
  * Created by Fathoni on 16/05/31.
  */
 @Service
-public class CardBOImpl implements CardBO {
+public class CardBOImpl extends BaseBOImpl<Card, CardDAO> implements CardBO {
     private static final Log log = LogFactory.getLog(CardBOImpl.class);
-
-    @Autowired
-    CardDAO cardDAO;
 
     @Override
     public List<Card> listAll() {
         log.info("find all cards");
-        return cardDAO.findAll();
+        return currentDAO.findAll();
     }
 
     @Override
     public Card create(Card card) {
         log.info(String.format("save a card with card name: %s", card.getTitle()));
-        return cardDAO.save(card);
+        return insert(card);
     }
 
     @Override
     public Card update(Card card) {
         log.info(String.format("update a card with card name: %s", card.getTitle()));
 
-        Card updateCard = cardDAO.findOne(String.valueOf(card.getId()));
+        Card updateCard = currentDAO.findOne(String.valueOf(card.getId()));
         if (updateCard != null){
             updateCard.setTitle(card.getTitle());
             updateCard.setDescription(card.getDescription());
@@ -53,34 +49,31 @@ public class CardBOImpl implements CardBO {
             updateCard.setModifiedDate(card.getModifiedDate());
 
         }
-        return cardDAO.save(updateCard);
+        return save(updateCard);
     }
 
     @Override
     public Card delete(String id) {
         log.info("delete a card");
-        Card deleteCard = cardDAO.findOne(id);
-        if (deleteCard != null){
-            deleteCard.setIsDeleted(true);
-        }
-        return cardDAO.save(deleteCard);
+        Card deleteCard = currentDAO.findOne(id);
+        return deleteCard != null ? delete(deleteCard) : null;
     }
 
     @Override
     public List<Card> getByIterationId(String iterationId) {
         log.info("getByIterationId");
-        return cardDAO.findByIterationId(new ObjectId(iterationId));
+        return currentDAO.findByIterationId(new ObjectId(iterationId));
     }
 
     @Override
     public List<Card> getByStatus(int status) {
-        return cardDAO.findByStatus(status);
+        return currentDAO.findByStatus(status);
     }
 
     @Override
     public Card getById(String id) {
         log.info("getById");
-        return cardDAO.findOne(id);
+        return currentDAO.findOne(id);
     }
 
 
