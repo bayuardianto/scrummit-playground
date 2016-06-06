@@ -1,14 +1,13 @@
 package com.mitrais.scrummit.bo;
 
-import com.mitrais.scrummit.model.Card;
-import org.bson.types.ObjectId;
-
 import java.util.List;
+
+import com.mitrais.scrummit.model.Card;
 
 /**
  * Created by Fathoni on 16/05/31.
  */
-public interface CardBO {
+public interface CardBO extends BaseBO<Card> {
     public List<Card> listAll();
     public Card getById(String id);
     public List<Card> getByIterationId(String iterationId);

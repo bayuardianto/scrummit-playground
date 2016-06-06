@@ -7,7 +7,7 @@ import com.mitrais.scrummit.model.Project;
 
 
 
-public interface ProjectBO {
+public interface ProjectBO extends BaseBO<Project> {
     public List<Project> listAllProject();
 
     public Project getProject(String id);
