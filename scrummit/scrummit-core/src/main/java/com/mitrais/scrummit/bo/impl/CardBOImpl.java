@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import com.mitrais.scrummit.bo.CardBO;
 import com.mitrais.scrummit.dao.CardDAO;
 import com.mitrais.scrummit.model.Card;
+import com.mitrais.scrummit.model.Iteration;
 
 /**
  * Created by Fathoni on 16/05/31.
@@ -41,7 +41,7 @@ public class CardBOImpl extends BaseBOImpl<Card, CardDAO> implements CardBO {
             updateCard.setPoints(card.getPoints());
             updateCard.setAssignees(card.getAssignees());
             updateCard.setEpicId(card.getEpicId());
-            updateCard.setIterationId(card.getIterationId());
+            updateCard.setIteration(card.getIteration());
             updateCard.setTaskId(card.getTaskId());
             updateCard.setEstimate(card.getEstimate());
             updateCard.setCreatedBy(card.getCreatedBy());
@@ -60,12 +60,6 @@ public class CardBOImpl extends BaseBOImpl<Card, CardDAO> implements CardBO {
     }
 
     @Override
-    public List<Card> getByIterationId(String iterationId) {
-        log.info("getByIterationId");
-        return currentDAO.findByIterationId(new ObjectId(iterationId));
-    }
-
-    @Override
     public List<Card> getByStatus(int status) {
         return currentDAO.findByStatus(status);
     }
@@ -75,6 +69,12 @@ public class CardBOImpl extends BaseBOImpl<Card, CardDAO> implements CardBO {
         log.info("getById");
         return currentDAO.findOne(id);
     }
+
+	@Override
+	public List<Card> findByIteration(Iteration iteration) {
+		log.info("findByIteration");
+		return currentDAO.findByIteration(iteration);
+	}
 
 
 }
