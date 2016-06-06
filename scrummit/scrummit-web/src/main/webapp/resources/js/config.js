@@ -6,7 +6,7 @@
  * Initial there are written state for all view in theme.
  *
  */
-function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
+function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider) {
     $urlRouterProvider.otherwise("/index/dashboard");
 
     $ocLazyLoadProvider.config({
@@ -89,7 +89,28 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
             templateUrl: "views/addproject",
             controller: "ProjectController",
             data: { pageTitle: 'Add New Project' }
+        })
+        .state('401', {
+        	url: "/401",
+        	templateUrl: "401",
+        	data: { pageTitle: 'Unauthorized', specialClass: 'gray-bg' }
         });
+    
+    $httpProvider.interceptors.push(function($q, $location) {
+    	  return {
+    		  'responseError': function(rejection) {
+    			  var defer = $q.defer();
+    			  
+                  if(rejection.status == 401){
+                      //console.dir(rejection);
+                	  
+                      $location.path('/401');
+                  }
+                  defer.reject(rejection);
+                  return defer.promise;
+    		    }
+    	  };
+	});
 }
 angular
     .module('inspinia')
