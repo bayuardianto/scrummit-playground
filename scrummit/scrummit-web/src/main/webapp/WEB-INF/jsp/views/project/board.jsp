@@ -38,11 +38,14 @@
                     <span class="divider">&nbsp;</span>
 					<hr/>
                     <ul ui-sortable="sortableOptions" class="sortable-list connectList agile-list" ng-model="todoList">
-                        <li class="{{task.statusClass}}-element" ng-repeat="task in todoList">
-                            {{task.content}}
+                        <li class="warning-element" ng-repeat="task in todoList">
+                            {{task.title}}<br/>
+                            
                             <div class="agile-detail">
-                                <a href="#" class="pull-right btn btn-xs btn-white">{{task.tagName}}</a>
-                                <i class="fa fa-clock-o"></i> {{task.date}}
+                            	{{task.description}}
+                            	<span class="clear"></span>
+                                <a href="#" class="pull-right btn btn-xs btn-white">Tag Name</a>
+                                <i class="fa fa-clock-o"></i> {{task.createdDate | date:'yyyy-MM-dd'}}
                             </div>
                         </li>
                     </ul>
@@ -67,11 +70,13 @@
 
                     <hr/>
                     <ul ui-sortable="sortableOptions" class="sortable-list connectList agile-list" ng-model="inProgressList">
-                        <li class="{{task.statusClass}}-element" ng-repeat="task in inProgressList">
-                            {{task.content}}
+                        <li class="danger-element" ng-repeat="task in inProgressList">
+                            {{task.title}}
                             <div class="agile-detail">
-                                <a href="#" class="pull-right btn btn-xs btn-white">{{task.tagName}}</a>
-                                <i class="fa fa-clock-o"></i> {{task.date}}
+                            	{{task.description}}
+                            	<span class="clear"></span>
+                                <a href="#" class="pull-right btn btn-xs btn-white">Tag Name</a>
+                                <i class="fa fa-clock-o"></i> {{task.createdDate | date:'yyyy-MM-dd'}}
                             </div>
                         </li>
                     </ul>
@@ -96,11 +101,13 @@
 
                     <hr/>
                     <ul ui-sortable="sortableOptions" class="sortable-list connectList agile-list" ng-model="completedList">
-                        <li class="{{task.statusClass}}-element" ng-repeat="task in completedList">
-                            {{task.content}}
+                        <li class="success-element" ng-repeat="task in completedList">
+                            {{task.title}}
                             <div class="agile-detail">
-                                <a href="#" class="pull-right btn btn-xs btn-white">{{task.tagName}}</a>
-                                <i class="fa fa-clock-o"></i> {{task.date}}
+                            	{{task.description}}
+                            	<span class="clear"></span>
+                                <a href="#" class="pull-right btn btn-xs btn-white">Tag Name</a>
+                                <i class="fa fa-clock-o"></i> {{task.createdDate | date:'yyyy-MM-dd'}}
                             </div>
                         </li>
                     </ul>

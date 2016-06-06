@@ -4,8 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 public class AuthenInterceptor extends HandlerInterceptorAdapter {
@@ -25,8 +23,11 @@ public class AuthenInterceptor extends HandlerInterceptorAdapter {
         		!request.getRequestURI().endsWith("register/") &&
         		!request.getRequestURI().endsWith("verify") &&
         		!request.getRequestURI().endsWith("verified") &&
+        		!request.getRequestURI().endsWith("401") &&
                 request.getSession().getAttribute("CURRENT_USER") == null) {
-            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        	
+        	response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        	return false;
         }
         
         return true;
