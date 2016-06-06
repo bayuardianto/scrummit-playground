@@ -1,11 +1,12 @@
 package com.mitrais.scrummit.dao;
 
-import com.mitrais.scrummit.model.Card;
-import org.bson.types.ObjectId;
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.mitrais.scrummit.model.Card;
+import com.mitrais.scrummit.model.Iteration;
 
 
 /**
@@ -16,8 +17,7 @@ public interface CardDAO extends CommonDAO<Card, String> {
     @Query("{ 'status' : ?0 }")
     public List<Card> findByStatus(int status);
 
-    @Query("{ 'iteration_id' : ?0 }")
-    public List<Card> findByIterationId(ObjectId iterationId);
-
     public List<Card> findByTitle(String title);
+    
+    public List<Card> findByIteration(Iteration iteration);
 }
