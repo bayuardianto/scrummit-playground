@@ -232,7 +232,6 @@ public class ProjectRestController {
 
     private Project toProjectModel(Project project,ProjectView projectView) {
         //Project project = new Project();
-        project.setId(projectView.getId());
         project.setName(projectView.getName());
         project.setDescription(projectView.getDescription());
 
