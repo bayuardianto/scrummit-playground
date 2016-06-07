@@ -1,20 +1,23 @@
 package com.mitrais.scrummit.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import java.io.Serializable;
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.io.Serializable;
-import java.util.List;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 /**
  * Created by Fathoni on 16/05/30.
  */
 @Document(collection = "cards")
 public class Card extends Common implements Serializable {
+	
     @Id
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId id;
@@ -34,14 +37,14 @@ public class Card extends Common implements Serializable {
     @Field(value = "epic_id")
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId epicId;
-
+    
     @Field(value = "task_id")
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId taskId;
-
-    @Field(value = "iteration_id")
-    @JsonSerialize(using = ToStringSerializer.class)
-    private ObjectId iterationId;
+    
+    @DBRef
+    @Field(value = "iteration")
+    private Iteration iteration;
 
     @Field(value = "status")
     private int status;
@@ -122,14 +125,6 @@ public class Card extends Common implements Serializable {
         this.taskId = taskId;
     }
 
-    public ObjectId getIterationId() {
-        return iterationId;
-    }
-
-    public void setIterationId(ObjectId iterationId) {
-        this.iterationId = iterationId;
-    }
-
     public int getStatus() {
         return status;
     }
@@ -137,6 +132,14 @@ public class Card extends Common implements Serializable {
     public void setStatus(int status) {
         this.status = status;
     }
+
+	public Iteration getIteration() {
+		return iteration;
+	}
+
+	public void setIteration(Iteration iteration) {
+		this.iteration = iteration;
+	}
 }
 
 class Assignee {

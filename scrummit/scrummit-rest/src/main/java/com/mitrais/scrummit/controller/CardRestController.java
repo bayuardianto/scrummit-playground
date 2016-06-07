@@ -1,19 +1,36 @@
 package com.mitrais.scrummit.controller;
 
-import com.mitrais.scrummit.bo.CardBO;
-import com.mitrais.scrummit.model.Card;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.mitrais.scrummit.bo.CardBO;
+import com.mitrais.scrummit.bo.IterationBO;
+import com.mitrais.scrummit.model.Card;
+import com.mitrais.scrummit.model.Iteration;
 
 @RestController
 @RequestMapping("/rest/card/")
 public class CardRestController {
 
+	private static final Log log = LogFactory.getLog(CardRestController.class);
+		
     @Autowired
     private CardBO cardBO;
+    
+    @Autowired
+    private IterationBO iterationBO;
 
     @RequestMapping(path = "/cards", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<Card> listAllCard() {
@@ -40,14 +57,21 @@ public class CardRestController {
         return cardBO.delete(id);
     }
 
-    @RequestMapping(path = "/byiterationid/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Card> getCardByIterationId(@PathVariable("id") String id){
-        return cardBO.getByIterationId(id);
-    }
-
     @RequestMapping(path = "/bystatus/{status}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Card> getCardByStatus(@PathVariable("status") int status){
         return cardBO.getByStatus(status);
+    }
+    
+    @RequestMapping(path = "/byiteration/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Map<String, Object> byIteration(@PathVariable("id") String id) {
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		Iteration it = iterationBO.findById(id);
+		
+		List<Card> cards = cardBO.findByIteration(it);
+		
+		response.put("cardList", cards);
+		return response;
     }
 
 }

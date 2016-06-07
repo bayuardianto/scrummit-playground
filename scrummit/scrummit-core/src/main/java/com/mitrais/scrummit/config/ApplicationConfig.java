@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
@@ -12,12 +13,14 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.mitrais.scrummit.multitenancy.MultiTenantMongoDbFactory;
+import com.mitrais.scrummit.util.BOAspect;
 import com.mongodb.MongoClient;
 
 @Configuration
 @EnableMongoRepositories(basePackages = "com.mitrais.scrummit.dao")
 @EnableAutoConfiguration
 @PropertySource(value = "classpath:mongo-config.properties")
+@EnableAspectJAutoProxy()
 public class ApplicationConfig extends AbstractMongoConfiguration {
 
     @Value("${mongodb.host}")
@@ -69,5 +72,10 @@ public class ApplicationConfig extends AbstractMongoConfiguration {
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public BOAspect boAspect() {
+        return new BOAspect();
     }
 }

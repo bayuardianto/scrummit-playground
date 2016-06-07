@@ -15,19 +15,18 @@ import org.springframework.stereotype.Service;
 
 
 
+
 @Service
-public class OrganizationMemberBOImpl extends BaseBOImpl implements OrganizationMemberBO {
+public class OrganizationMemberBOImpl extends BaseBOImpl<OrganizationMember, OrganizationMemberDAO> implements
+        OrganizationMemberBO {
     private static final Log log = LogFactory.getLog(ProjectBOImpl.class);
-    @Autowired
-    OrganizationMemberDAO organizationMemberDAO;
 
     @Autowired
     OrganizationMemberCustomDAO organizationMemberCustomDAO;
 
     @Override
     public OrganizationMember getByUserId(String userId) {
-        resolveCentral();
-        return organizationMemberDAO.findByUserId(new ObjectId(userId));
+        return currentDAO.findByUserId(new ObjectId(userId));
     }
 
     @Override
