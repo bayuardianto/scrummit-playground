@@ -220,7 +220,12 @@ function FlashService($rootScope) {
 }
 
 function ProjectService($resource) {
-    return $resource('rest/project/:project',{project: "@project"});
+    return $resource('rest/project/:project',{project: "@project"},
+        {
+            update: {
+                method: 'PUT'
+            }
+        });
 }
 
 function OrganizationMemberService($resource) {

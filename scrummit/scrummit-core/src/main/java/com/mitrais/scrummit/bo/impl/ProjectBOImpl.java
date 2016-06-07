@@ -64,6 +64,13 @@ public class ProjectBOImpl extends BaseBOImpl implements ProjectBO {
     }
 
     @Override
+    public Project updateProject(Project project) {
+        log.info(String.format("update a project with project id: %s", project.getId().toString()));
+        resolveTenant();
+        return projectDAO.save(project);
+    }
+
+    @Override
     public Project deleteProject(String id) {
         log.info(String.format("delete a project with project id: %s", id));
         resolveTenant();

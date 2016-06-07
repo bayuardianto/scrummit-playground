@@ -89,6 +89,13 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
             templateUrl: "views/addproject",
             controller: "ProjectController",
             data: { pageTitle: 'Add New Project' }
+        })
+        .state('index.updateproject', {
+            url: "/updateproject/:id",
+            controllerAs: 'pc',
+            templateUrl: "views/addproject",
+            controller: "ProjectController",
+            data: { pageTitle: 'Update Project' }
         });
 }
 angular
