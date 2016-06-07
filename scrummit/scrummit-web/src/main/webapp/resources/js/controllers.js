@@ -210,23 +210,45 @@ function CardModalController($scope, $uibModalInstance) {
     };
 }
 
-function ProjectController($scope, $location ,ProjectService, OrganizationMemberService) {
-
-	//get projects data
-	$scope.projects = ProjectService.query();
-
-	//$scope.newProject = $scope.newProject;
+function ProjectController($scope, $location ,ProjectService, OrganizationMemberService, FlashService, $stateParams) {
+	var pc = this;
+	pc.id = $stateParams.id;
 
 	//get organization members data for combo box
 
 	$scope.orgmembers = OrganizationMemberService.query();
 
 	//initialize roles for drop down
-	$scope.roles = [{id: 1, text: "Role 1"}, {id: 2, text: "Role 2"}];
+	$scope.roles = [{id: 0, text: "PROJECT OWNER"}, {id: 1, text: "SCRUM MASTER"}, {id: 2, text: "MEMBER"}];
+
+	$scope.project = {};
+	//$scope.project.members.member = [];
+	$scope.project.members = [];
 
 	$scope.member = {};
 	$scope.members = [];
-	
+
+	//get projects data
+	$scope.projects = ProjectService.query();
+
+	//get specific project by id
+	if(pc.id != null)
+	{
+		ProjectService.get({project: pc.id}).$promise.then(function(value){
+			$scope.project = value;
+			$scope.title = "Update " + value.name + " Project";
+		});
+		$scope.topmenu = "Update Project";
+	}
+	else 
+	{
+		$scope.title = "Add New Project";
+		$scope.topmenu = "Add Project";
+	}
+
+
+
+
 	$scope.storeTemp = function() {
 		/* do validation here or in html before ... */
 
@@ -241,7 +263,7 @@ function ProjectController($scope, $location ,ProjectService, OrganizationMember
 				return role.id == roleId;
 			})[0].text;
 
-			var memberCheck = $.grep($scope.members, function (member) {
+			var memberCheck = $.grep($scope.project.members, function (member) {
 				return member.userId == memberId;
 			})[0];
 
@@ -250,40 +272,53 @@ function ProjectController($scope, $location ,ProjectService, OrganizationMember
 				$scope.member.role = roleId;
 				$scope.member.roleName = roleName;
 				$scope.member.userName = memberName;
-				$scope.members.push($scope.member);
+				$scope.project.members.push($scope.member);
 			}
 			else {
-				// notify({
-				// 	message:'This person is already on the member list.',
-				// 	classes: 'alert-info'
-				// });
+				FlashService.Error("This person is already on member list.");
 			}
 			$scope.member = {};
 		}
 		else {
-			// notify({
-			// 	message:'Please select a person or a role.',
-			// 	classes: 'alert-info'
-			// });
+			FlashService.Error("Please select person or role.");
 		}
 	};
 	
-	$scope.saveProject = function() {
-		if($scope.members != null) {
-			$scope.project.members = $scope.members;
+	$scope.saveProject = function () {
+		if($scope.project.id != null) {
+			updateProject();
 		}
-		
-		ProjectService.save($scope.project, function (data) {
-			// notify({
-			// 	message:'New project data has been successfully saved.',
-			// 	classes: 'alert-info'
-			// });
+		else {
+			createProject();
+		}
+	};
+	
+	function createProject() {
+		ProjectService.save($scope.project, function (response) {
+			FlashService.Success("Create project success.");
 		}, function (err) {
-			// notify({
-			// 	message:'Save project failed.',
-			// 	classes: 'alert-info'
-			// });
+			FlashService.Error(err.message);
 		});
+	};
+	
+	function updateProject() {
+		var project = ProjectService.get({project: $scope.project.id});
+		
+		project.name = $scope.project.name;
+		project.description = $scope.project.description;
+		project.members = $scope.project.members;
+		
+		//console.log(project);
+		
+		ProjectService.update({project: $scope.project.id}, project, function (response) {
+			FlashService.Success("Update project success.");
+		}, function (err) {
+			FlashService.Error(err.message);
+		});
+	};
+
+	$scope.goToAdd = function() {
+		$location.url('/addproject.jsp');
 	};
 };
 

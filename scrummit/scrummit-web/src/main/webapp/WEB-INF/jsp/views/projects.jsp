@@ -28,6 +28,7 @@
                 </div>--%>
                 <div class="ibox-content" ng-controller="ViewProjectController as vm">
                     <label>Search: <input ng-model="searchText"></label>
+                    <button class="btn btn-primary" ui-sref="index.createproject">Add New Project</button>
                     <table datatable="ng" dt-options="dtOptions"  class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
                         <tr>
@@ -36,6 +37,7 @@
                             <th>Status</th>
                             <th>Created By</th>
                             <th>Created Date</th>
+                            <th>Command</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -45,6 +47,7 @@
                             <td>{{ project.status }}</td>
                             <td>{{ project.createdByName }}</td>
                             <td>{{ project.createdDate }}</td>
+                            <td><a ui-sref="index.updateproject({ id: project.id })">Update</a></td>
                         </tr>
                         </tbody>
                     </table>

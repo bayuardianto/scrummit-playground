@@ -20,6 +20,8 @@ public interface ProjectBO extends BaseBO<Project> {
 
     public Project createProject(Project project);
 
+    public Project updateProject(Project project);
+
     public Project deleteProject(String id);
 
     public List<Project> getProjectCreatedBy(String id);

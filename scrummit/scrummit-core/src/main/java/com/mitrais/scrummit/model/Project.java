@@ -92,13 +92,13 @@ public class Project extends Common implements Serializable {
 
 }
 
-class Member {
+/*class Member {
     @JsonSerialize(using = ToStringSerializer.class)
     @Field(value = "user_id")
     private ObjectId userId;
 
     @Field(value = "role")
-    private String   role;
+    private int   role;
 
     public ObjectId getUserId() {
         return userId;
@@ -108,14 +108,14 @@ class Member {
         this.userId = userId;
     }
 
-    public String getRole() {
+    public int getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(int role) {
         this.role = role;
     }
-}
+}*/
 
 /*
 class Detail {

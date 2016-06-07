@@ -10,4 +10,10 @@ public class CommonEnum {
         IN_PROGRESS,
         FINISHED
     }
+
+    public enum ProjectRole {
+        PRODUCT_OWNER,
+        SCRUM_MASTER,
+        MEMBER
+    }
 }

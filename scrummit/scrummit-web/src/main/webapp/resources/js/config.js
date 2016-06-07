@@ -90,6 +90,12 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpPr
             controller: "ProjectController",
             data: { pageTitle: 'Add New Project' }
         })
+        .state('index.updateproject', {
+            url: "/updateproject/:id",
+            controllerAs: 'pc',
+            templateUrl: "views/addproject",
+            controller: "ProjectController",
+            data: { pageTitle: 'Update Project' }})
         .state('401', {
         	url: "/401",
         	templateUrl: "401",

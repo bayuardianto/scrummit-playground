@@ -18,6 +18,8 @@ import com.mitrais.scrummit.model.Project;
 public class ProjectBOImpl extends BaseBOImpl<Project, ProjectDAO> implements ProjectBO {
     private static final Log log = LogFactory.getLog(ProjectBOImpl.class);
 
+
+
     @Autowired
     ProjectCustomDAO         projectDAOCustom;
 
@@ -52,6 +54,12 @@ public class ProjectBOImpl extends BaseBOImpl<Project, ProjectDAO> implements Pr
         //set createdBy to the current user
         project.setStatus(CommonEnum.ProjectStatus.IN_PROGRESS.ordinal());
         return insert(project);
+    }
+
+    @Override
+    public Project updateProject(Project project) {
+        log.info(String.format("update a project with project id: %s", project.getId().toString()));
+        return save(project);
     }
 
     @Override

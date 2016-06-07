@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.bson.types.ObjectId;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Andreanus_P on 5/27/2016.
@@ -22,6 +23,8 @@ public class ProjectView implements Serializable {
     private String createdDate;
 
     private String status;
+
+    private List<MemberView> members;
 
     public ProjectView() {
         super();
@@ -74,4 +77,13 @@ public class ProjectView implements Serializable {
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
+
+    public List<MemberView> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<MemberView> members) {
+        this.members = members;
+    }
 }
+

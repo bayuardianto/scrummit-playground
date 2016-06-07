@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
-        <h2>Add New Project</h2>
+        <h2>{{title}}</h2>
         <ol class="breadcrumb">
             <li>
                 <a href="index.html">Home</a>
@@ -9,7 +9,7 @@
                 <a>View Project</a>
             </li>
             <li class="active">
-                <strong>Add Project</strong>
+                <strong>{{topmenu}}</strong>
             </li>
         </ol>
     </div>
@@ -19,6 +19,7 @@
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <%--<ng-form name="fProject">--%>
+    <%--<input type="hidden" name="value" ng-model="id" value="{{id}}">--%>
     <form class="m-t" role="form">
         <div class="form-group">
             <label for="projectName">Project Name</label>
@@ -71,7 +72,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="x in members">
+                <tr ng-repeat="x in project.members">
                     <td>{{ x.userName }}</td>
                     <td>{{ x.roleName }}</td>
                 </tr>
@@ -89,6 +90,11 @@
                     <button class="btn btn-primary" ng-click="saveProject()" ng-required="required">Save</button>
                 </div>
             </div>
+        </div>
+        <div
+                ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }"
+                ng-if="flash">
+            <p ng-bind="flash.message"></p>
         </div>
 
     <%--</ng-form>--%>
