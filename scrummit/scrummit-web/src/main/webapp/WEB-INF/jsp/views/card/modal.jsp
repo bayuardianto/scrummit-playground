@@ -1,4 +1,4 @@
-<div class="inmodal" ng-controller = "CardModalController as cc">
+<div class="inmodal" ng-controller = "CardModalController">
     <div class="modal-header">
         <h5 class="modal-title">Create Card</h5>
     </div>
@@ -7,16 +7,16 @@
             <div class="row">
                 <div class="form-group">
                     <label for="title">Title</label>
-                    <input type="text" id="title" name="title" class="form-control" ng-model="cc.title" placeholder="Card title" required>
+                    <input type="text" id="title" name="title" class="form-control" ng-model="card.title" placeholder="Card title" required>
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <input type="text" id="description" name="description" class="form-control" ng-model="cc.description" placeholder="Card description" required>
+                    <input type="text" id="description" name="description" class="form-control" ng-model="card.description" placeholder="Card description" required>
                 </div>
         		<div class="col-xs-6">
 		            <div class="form-group">
                         <label for="points">Points</label>
-                        <select class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty" ng-model="cc.points" name="points">
+                        <select class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty" ng-model="card.points" name="points">
                             <option value="0">0 points</option>
                             <option value="1">1 points</option>
                             <option value="2">2 points</option>
@@ -31,7 +31,7 @@
 		            </div>
   					<div class="form-group">
                         <label for="iteration">Iteration</label>
-                        <select class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty" name="iteration" ng-model="cc.iteration">
+                        <select class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty" name="iteration" ng-model="card.iteration">
                             <option value="57550b64e98498f242f4a6ef">Iteration 1</option>
                             <option value="57566b925e061750d20c861f">Iteration 2</option>
                         </select>
@@ -40,25 +40,25 @@
   				<div class="col-xs-6">
 		            <div class="form-group">
 		            	<label for="epic">Epic</label>
-                        <select class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty" name="epic" ng-model="cc.epic">
+                        <select class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty" name="epic" ng-model="card.epic">
                             <option value="574fbf39e96aa23add1f059e">Epic 1</option>
                         </select>
 		            </div>
 		            <div class="form-group">
   						<label for="estimate">Estimate</label>
-		                <input type="text" id="estimate" class="form-control ng-pristine ng-untouched ng-valid ng-empty"  ng-model="cc.estimate" name="estimate" placeholder="Estimate (hours)">
+		                <input type="text" id="estimate" class="form-control ng-pristine ng-untouched ng-valid ng-empty"  ng-model="card.estimate" name="estimate" placeholder="Estimate (hours)">
 		            </div>
   				</div>
                 <div class="form-group">
                     <label for="assignee">Assignee</label>
-                    <select class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty" name="assignee" ng-model="cc.assignee"
+                    <select class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty" name="assignee" ng-model="card.assignee"
                         ng-options="orgmember.userId as orgmember.fullName for orgmember in orgmembers">
                     </select>
                 </div>
                 <div class="col-xs-6">
                     <div class="form-group">
                         <label for="status">Status</label>
-                        <select class="form-control m-b" name="status" ng-model="cc.status">
+                        <select class="form-control m-b" name="status" ng-model="card.status">
                             <option value='0'>Todo</option>
                             <option value='1'>In Progress</option>
                             <option value='2'>Completed</option>
@@ -68,8 +68,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-white" ng-click="cancel()">Close</button>
-            <button type="button" class="btn btn-primary" ng-click="cc.saveCard()">Save changes</button>
+            <button type="button" class="btn btn-primary" ng-click="saveCard()">Save</button>
+            <button type="button" class="btn btn-white" ng-click="close()">Save and Close</button>
         </div>
     </form>
 </div>

@@ -204,48 +204,27 @@ function CardController($scope, $uibModal) {
 	}
 }
 
-function CardModalController($scope, $uibModalInstance, CardService, FlashService, OrganizationMemberService) {
-    var cc = this;
-    cc.title = "";
-    cc.description = "";
-    cc.points = "";
-    cc.epic = "";
-    cc.iteration = "";
-    cc.estimate = "";
-    cc.assignee = "";
-    cc.status = "";
-    cc.iteration = {};
+function CardModalController($scope, CardService, FlashService, OrganizationMemberService) {
 
 	$scope.orgmembers = OrganizationMemberService.query();
 
-    cc.saveCard = function (){
-        cc.iteration = {"ref": "iteration", "id" : cc.iteration};
-        CardService.saveCard(cc.title, cc.description, cc.points, cc.epic, cc.iteration, cc.estimate, cc.assignee, cc.status, function(response){
-            cc.dataLoading = true;
+    $scope.saveCard = function (){
+        var newCard = $scope.card;
+
+        var iteration = {"ref": "iteration", "id" : newCard.iteration};
+        newCard.iteration = iteration;
+        CardService.saveCard(newCard, function(response){
+            $scope.dataLoading = true;
             if (response && response.error == 0){
                 FlashService.Success(response.message);
             }else{
-		    	cc.dataLoading = false;
+		    	$scope.dataLoading = false;
             }
         });
-        cc.title = "";
-        cc.description = "";
-        cc.points = "";
-        cc.epic = "";
-        cc.iteration = "";
-        cc.estimate = "";
-        cc.assignee = "";
-        cc.status = "";
-        cc.iteration = {};
+        $scope.card = null;
     };
 
-	$scope.ok = function () {
-        $uibModalInstance.close();
-    };
 
-    $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-    };
 }
 
 function ProjectController($scope, $location ,ProjectService, OrganizationMemberService, FlashService, $stateParams) {

@@ -237,9 +237,9 @@ function CardService($http){
     service.saveCard = saveCard;
     return service;
 
-    function saveCard(title, description, points, epic, iteration, estimate, assignee, status, callback){
+    function saveCard(objCard, callback){
         $http
-            .put('rest/card/create', {title: title, description: description, points: points, epic: epic, iteration: iteration, estimate: estimate, assignee: assignee, status: status})
+            .put('rest/card/create', objCard)
             .success(function(response){
                 response.success = true;
                 response.message = "Card created!";
