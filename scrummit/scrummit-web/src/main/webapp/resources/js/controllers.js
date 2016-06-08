@@ -204,14 +204,27 @@ function CardController($scope, $uibModal) {
 	}
 }
 
-function CardModalController($scope, $uibModalInstance) {
-	$scope.ok = function () {
-        $uibModalInstance.close();
+function CardModalController($scope, CardService, FlashService, OrganizationMemberService) {
+
+	$scope.orgmembers = OrganizationMemberService.query();
+
+    $scope.saveCard = function (){
+        var newCard = $scope.card;
+
+        var iteration = {"ref": "iteration", "id" : newCard.iteration};
+        newCard.iteration = iteration;
+        CardService.saveCard(newCard, function(response){
+            $scope.dataLoading = true;
+            if (response && response.error == 0){
+                FlashService.Success(response.message);
+            }else{
+		    	$scope.dataLoading = false;
+            }
+        });
+        $scope.card = null;
     };
 
-    $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-    };
+
 }
 
 function ProjectController($scope, $location ,ProjectService, OrganizationMemberService, FlashService, $stateParams) {

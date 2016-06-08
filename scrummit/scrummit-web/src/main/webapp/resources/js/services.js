@@ -232,10 +232,32 @@ function OrganizationMemberService($resource) {
     return $resource('rest/orgmembers/:orgmember',{orgmember: "@orgmember"});
 }
 
+function CardService($http){
+    var service = {};
+    service.saveCard = saveCard;
+    return service;
+
+    function saveCard(objCard, callback){
+        $http
+            .put('rest/card/create', objCard)
+            .success(function(response){
+                response.success = true;
+                response.message = "Card created!";
+                callback(response);
+            })
+            .error(function(response){
+                response.success = false;
+                response.message = 'There was an error when saving Card, please try again!';
+                callback(response);
+            })
+    }
+}
+
 angular
     .module('inspinia')
     .factory('AuthenticationService', AuthenticationService)
     .factory('UserService', UserService)
     .factory('FlashService', FlashService)
     .factory('ProjectService', ProjectService)
-    .factory('OrganizationMemberService', OrganizationMemberService);
+    .factory('OrganizationMemberService', OrganizationMemberService)
+    .factory('CardService', CardService);
