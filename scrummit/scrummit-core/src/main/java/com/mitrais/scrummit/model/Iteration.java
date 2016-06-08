@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class Iteration extends Common implements Serializable {
 
 	@Id
+	@JsonSerialize(using = ToStringSerializer.class)
     private ObjectId id;
 	
 	@Field(value = "name")

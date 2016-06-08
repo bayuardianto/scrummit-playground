@@ -204,7 +204,41 @@ function CardController($scope, $uibModal) {
 	}
 }
 
-function CardModalController($scope, $uibModalInstance) {
+function CardModalController($scope, $uibModalInstance, CardService, FlashService, OrganizationMemberService) {
+    var cc = this;
+    cc.title = "";
+    cc.description = "";
+    cc.points = "";
+    cc.epic = "";
+    cc.iteration = "";
+    cc.estimate = "";
+    cc.assignee = "";
+    cc.status = "";
+    cc.iteration = {};
+
+	$scope.orgmembers = OrganizationMemberService.query();
+
+    cc.saveCard = function (){
+        cc.iteration = {"ref": "iteration", "id" : cc.iteration};
+        CardService.saveCard(cc.title, cc.description, cc.points, cc.epic, cc.iteration, cc.estimate, cc.assignee, cc.status, function(response){
+            cc.dataLoading = true;
+            if (response && response.error == 0){
+                FlashService.Success(response.message);
+            }else{
+		    	cc.dataLoading = false;
+            }
+        });
+        cc.title = "";
+        cc.description = "";
+        cc.points = "";
+        cc.epic = "";
+        cc.iteration = "";
+        cc.estimate = "";
+        cc.assignee = "";
+        cc.status = "";
+        cc.iteration = {};
+    };
+
 	$scope.ok = function () {
         $uibModalInstance.close();
     };
