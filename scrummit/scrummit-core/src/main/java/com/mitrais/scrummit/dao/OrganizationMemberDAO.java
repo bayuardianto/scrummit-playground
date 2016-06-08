@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrganizationMemberDAO extends CommonDAO<OrganizationMember, String> {
-    @Query("{ '_id' : ?0 }")
+    @Query("{ 'user_id' : ?0 }")
     OrganizationMember findByUserId(ObjectId objectId);
 }

@@ -43,7 +43,7 @@
                             <label for="userSelector">Member's Name</label>
                             <div></div>
                             <select chosen id="userSelector" class="chosen-select" style="width:350px;" tabindex="4"
-                                    ng-model="selectedUser" ng-options="orgmember.id as orgmember.fullName for orgmember in orgmembers">
+                                    ng-model="selectedUser" ng-options="orgmember.userId as orgmember.fullName for orgmember in orgmembers">
                             </select>
                         </div>
                     </div>
