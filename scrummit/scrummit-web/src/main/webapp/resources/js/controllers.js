@@ -154,6 +154,10 @@ function ViewProjectController($scope, $state, $http, $stateParams) {
 
 function ProjectDetailController($scope, $http, $location, $stateParams) {
 	var pc = this;
+
+	$scope.currPage = 0;
+	$scope.pageSize = 5;
+
 	$scope.name = $stateParams.name;
 	
 	$scope.todoList = [];
@@ -255,7 +259,7 @@ function ProjectController($scope, $location ,ProjectService, OrganizationMember
 		if($scope.selectedUser != null && $scope.selectedRole != null) {
 			var memberId = $scope.selectedUser;
 			var memberName = $.grep($scope.orgmembers, function (member) {
-				return member.id == memberId;
+				return member.userId == memberId;
 			})[0].fullName;
 
 			var roleId = $scope.selectedRole;
@@ -308,7 +312,6 @@ function ProjectController($scope, $location ,ProjectService, OrganizationMember
 		project.description = $scope.project.description;
 		project.members = $scope.project.members;
 		
-		//console.log(project);
 		
 		ProjectService.update({project: $scope.project.id}, project, function (response) {
 			FlashService.Success("Update project success.");

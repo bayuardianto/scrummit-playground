@@ -41,7 +41,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="project in projects | filter:searchText ">
+                        <tr ng-repeat="project in projects | filter:searchText">
                             <td><a ui-sref="project.board({ name: project.name })">{{ project.name }} </a></td>
                             <td>{{ project.description }}</td>
                             <td>{{ project.status }}</td>
