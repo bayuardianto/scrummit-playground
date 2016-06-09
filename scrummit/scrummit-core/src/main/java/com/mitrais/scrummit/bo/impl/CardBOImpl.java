@@ -47,7 +47,7 @@ public class CardBOImpl extends BaseBOImpl<Card, CardDAO> implements CardBO {
             updateCard.setCreatedBy(card.getCreatedBy());
             updateCard.setModifiedBy(card.getModifiedBy());
             updateCard.setModifiedDate(card.getModifiedDate());
-
+            updateCard.setStatus(card.getStatus());
         }
         return save(updateCard);
     }
