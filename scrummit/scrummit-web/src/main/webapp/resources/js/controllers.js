@@ -57,6 +57,7 @@ function UserController($location, $cookies, UserService, FlashService) {
 					uc.username = response.username
 					uc.firstname = response.firstName;
 					uc.lastname = response.lastName;
+					uc.fullname = response.fullname;
 				}
 			});
 		}
@@ -152,7 +153,7 @@ function ViewProjectController($scope, $state, $http, $stateParams) {
     
 };
 
-function ProjectDetailController($scope, $http, $location, $stateParams) {
+function ProjectDetailController($scope, $http, $location, $stateParams, UserService) {
 	var pc = this;
 
 	$scope.currPage = 0;
@@ -167,25 +168,96 @@ function ProjectDetailController($scope, $http, $location, $stateParams) {
 	(function init() {
 		getProjectByName($scope.name, function(response){
 			console.log(response.id);
-			$http.get('rest/card/byiteration/' + '5754cf1f09e2370228ed9ddd').success(function(data){
-				
-				angular.forEach(data.cardList, function(value, key) {
-				  if (value.status == 0) {
-					  $scope.todoList.push(value);
-				  } else if(value.status == 1) {
-					  $scope.inProgressList.push(value);
-				  } else if (value.status == 2) {
-					  $scope.completedList.push(value);
-				  }
-				});
-				
-			});
 			
+			//temporary hardcode iterationId:
+			var iterationId = "5754cf1f09e2370228ed9ddd";
+			
+			$http.get('rest/iteration/board/' + iterationId).success(function(data){//get board information by iterationid
+				$scope.todoList = data.todoList;
+				$scope.inProgressList = data.inprogressList;
+				$scope.completedList = data.completedList;
+			});
+			 
+			 var start = -1;
+			 var receive = -1;
+			 
 			 $scope.sortableOptions = {
-	                   connectWith: ".connectList"
-	               };
+                 connectWith: ".connectList",
+                 start: function(e, ui) {
+                	 element = ui.item.parent().attr('class');
+                	 if (element.indexOf("todo-list")>=0) {
+            	   		 start = 0;
+            	   	 } else if (element.indexOf("in-progress-list")>=0) {
+            	   		 start = 1;
+            	   	 } else if (element.indexOf("completed-list")>=0) {
+            	   		 start = 2;
+            	   	 }
+                 },
+                 receive: function(e, ui) {
+        	   		 var className = e.target.className;
+        	   		 
+            	   	 if (className.indexOf("todo-list")>=0) {
+            	   		 receive = 0;
+            	   	 } else if (className.indexOf("in-progress-list")>=0) {
+            	   		 receive = 1;
+            	   	 } else if (className.indexOf("completed-list")>=0) {
+            	   		 receive = 2;
+            	   	 }
+                 },
+                 stop: function(e, ui) {
+               	 	 var startCards = [];
+               	 	 var receiveCards = [];
+               	 	 startCards = getCards(start);
+              	 	 receiveCards = getCards(receive);
+               	 	 if (start != receive && receive != -1) { // update both start and receive columns
+	               	 	 //update card status
+	               	 	 $http.put('rest/card/' + ui.item.attr("id") + "/status/" + receive);
+	               	 	 //update card orders in board
+	               	 	 $http.put('rest/iteration/board/' + iterationId + '/' + start + '/' + receive, {"start": startCards, "receive": receiveCards});
+	               	 	 
+               	 	 } else if (receive == -1) { // update start column (update card order)
+	               	 	$http.put('rest/iteration/board/' + iterationId + '/'+start+'/' + receive, {"start": startCards});
+               	 	 }
+               	 	 //reset status
+               	 	 start = -1;
+               	 	 receive = -1;
+                 }
+             };
 		});
 	})();
+	
+	getCards = function(status) {
+		var cards = [];
+		switch (status) {
+	 		 case 0:
+	 			var arr = $('.todo-list').sortable('toArray');
+	 			$(arr).each(function(i, v){
+	 				card = {};
+	 				card["id"] = v;
+	 				cards.push(card);
+	 			});
+	 			break;
+	 		 case 1:
+	 			var arr = $('.in-progress-list').sortable('toArray');
+	 			$(arr).each(function(i, v){
+	 				card = {};
+	 				card["id"] = v;
+	 				cards.push(card);
+	 			});
+	 			 break;
+	 		 case 2:
+	 			var arr = $('.completed-list').sortable('toArray');
+	 			$(arr).each(function(i, v){
+	 				card = {};
+	 				card["id"] = v;
+	 				cards.push(card);
+	 			});
+	 			 break;
+			 default:
+				 break; 
+ 		 }
+		return cards;
+	}
 	
 	function getProjectByName(name, callback) {
 		$http.get('rest/proj/' + name).success(function(data){

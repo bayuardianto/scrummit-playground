@@ -40,6 +40,18 @@ public class UserRestController {
         return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/rest/user/id/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> getUserById(@PathVariable("id") String id) {
+		User user = userBo.findById(id);
+        if (user == null) {
+            
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+        user.setPassword("");
+        
+		return new ResponseEntity<User>(user, HttpStatus.OK);
+	}
+	
 	@RequestMapping(path = "/rest/user/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Map<String, Object> updateUser(@RequestBody User user) {
 		User oldUser = userBo.findByUsername(user.getUsername());

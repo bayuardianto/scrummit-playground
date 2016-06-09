@@ -3,14 +3,11 @@
         <h2>Project View</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="index.html">Home</a>
+                <a ui-sref="index.dashboard">Home</a>
             </li>
-<%--            <li>
-                <a>Tables</a>
+			<li class="active">
+                <strong>Projects</strong>
             </li>
-            <li class="active">
-                <strong>Data Tables</strong>
-            </li>--%>
         </ol>
     </div>
     <div class="col-lg-2">

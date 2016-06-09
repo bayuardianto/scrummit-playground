@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.websocket.server.PathParam;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +52,18 @@ public class CardRestController {
     @RequestMapping(path = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Card update(@RequestBody Card card){
         return cardBO.update(card);
+    }
+    
+    @RequestMapping(path = "/{id}/status/{status}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public int updateStatus(@PathVariable("id") String id, @PathVariable("status") int status){
+    	try {
+    		Card card = cardBO.getById(id);
+    		card.setStatus(status);
+    		cardBO.update(card);
+    	} catch (Exception e) {
+    		return 0;
+    	}
+    	return 1;
     }
 
     @RequestMapping(path = "/delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)

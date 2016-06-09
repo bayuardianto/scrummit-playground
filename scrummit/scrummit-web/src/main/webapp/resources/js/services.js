@@ -130,6 +130,7 @@ function UserService($http) {
     service.GetByUsername = GetByUsername;
     service.UpdateUser = UpdateUser;
     service.ChangePassword = ChangePassword;
+    service.GetById = GetById;
 
     return service;
 
@@ -137,6 +138,12 @@ function UserService($http) {
         $http.get('rest/user/' + username).success(function (data){
         	callback(data);
         });
+    }
+    
+    function GetById(id, callback) {
+    	$http.get('rest/user/id/'+ id).success(function (data){
+    		callback(data);
+    	});
     }
     
     function UpdateUser(username, password, email, firstname, lastname, callback) {
