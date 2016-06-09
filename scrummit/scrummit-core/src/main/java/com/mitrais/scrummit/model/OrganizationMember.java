@@ -16,6 +16,7 @@ public class OrganizationMember extends Common implements Serializable {
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId id;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @Field(value = "user_id")
     private ObjectId userId;
 

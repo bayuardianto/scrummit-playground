@@ -46,7 +46,7 @@ public class CardRestController {
 
     @RequestMapping(path = "/create", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public Card create(@RequestBody Card card){
-        return cardBO.create(card);
+        return cardBO.insert(card);
     }
 
     @RequestMapping(path = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

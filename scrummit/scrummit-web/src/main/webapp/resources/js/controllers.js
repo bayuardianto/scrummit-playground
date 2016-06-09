@@ -155,6 +155,10 @@ function ViewProjectController($scope, $state, $http, $stateParams) {
 
 function ProjectDetailController($scope, $http, $location, $stateParams, UserService) {
 	var pc = this;
+
+	$scope.currPage = 0;
+	$scope.pageSize = 5;
+
 	$scope.name = $stateParams.name;
 	
 	$scope.todoList = [];
@@ -272,14 +276,27 @@ function CardController($scope, $uibModal) {
 	}
 }
 
-function CardModalController($scope, $uibModalInstance) {
-	$scope.ok = function () {
-        $uibModalInstance.close();
+function CardModalController($scope, CardService, FlashService, OrganizationMemberService) {
+
+	$scope.orgmembers = OrganizationMemberService.query();
+
+    $scope.saveCard = function (){
+        var newCard = $scope.card;
+
+        var iteration = {"ref": "iteration", "id" : newCard.iteration};
+        newCard.iteration = iteration;
+        CardService.saveCard(newCard, function(response){
+            $scope.dataLoading = true;
+            if (response && response.error == 0){
+                FlashService.Success(response.message);
+            }else{
+		    	$scope.dataLoading = false;
+            }
+        });
+        $scope.card = null;
     };
 
-    $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-    };
+
 }
 
 function ProjectController($scope, $location ,ProjectService, OrganizationMemberService, FlashService, $stateParams) {
@@ -327,7 +344,7 @@ function ProjectController($scope, $location ,ProjectService, OrganizationMember
 		if($scope.selectedUser != null && $scope.selectedRole != null) {
 			var memberId = $scope.selectedUser;
 			var memberName = $.grep($scope.orgmembers, function (member) {
-				return member.id == memberId;
+				return member.userId == memberId;
 			})[0].fullName;
 
 			var roleId = $scope.selectedRole;
@@ -380,7 +397,6 @@ function ProjectController($scope, $location ,ProjectService, OrganizationMember
 		project.description = $scope.project.description;
 		project.members = $scope.project.members;
 		
-		//console.log(project);
 		
 		ProjectService.update({project: $scope.project.id}, project, function (response) {
 			FlashService.Success("Update project success.");
