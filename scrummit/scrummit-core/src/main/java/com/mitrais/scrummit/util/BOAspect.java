@@ -8,6 +8,7 @@ import com.mitrais.scrummit.bo.impl.BaseBOImpl;
 
 @Aspect
 public class BOAspect {
+    @SuppressWarnings("rawtypes")
     @Before("execution(* com.mitrais.scrummit.bo..*BO.*(..))")
     public void logBefore(JoinPoint joinPoint) {
         BaseBOImpl currentBO = (BaseBOImpl) joinPoint.getTarget();
@@ -23,14 +24,4 @@ public class BOAspect {
         }
         System.out.println("******");
     }
-
-    //
-    // @Before("execution(* com.mitrais.scrummit.bo..*BO.*(..))")
-    // public void logBefore(JoinPoint joinPoint) {
-    //
-    // System.out.println("logBefore() is running!");
-    // System.out.println("bo called method : " +
-    // joinPoint.getSignature().getName());
-    // System.out.println("******");
-    // }
 }
