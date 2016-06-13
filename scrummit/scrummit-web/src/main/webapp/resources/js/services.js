@@ -235,6 +235,56 @@ function ProjectService($resource) {
         });
 }
 
+function ProjectDetailService($http) {
+	var service = {};
+	service.getProjectByName = getProjectByName;
+	
+	return service;
+	
+	function getProjectByName(name, callback) {
+		$http.get('rest/proj/' + name).success(function(data){
+			callback(data);
+		});
+	};
+}
+
+function IterationService($http) {
+	var service = {
+			project: '',
+			iterations: []
+	};
+    service.create = create;
+    service.getIterationsByProject = getIterationsByProject;
+    service.getLastIteration = getLastIteration;
+    service.getIterationById = getIterationById;
+    return service;
+    
+    function create(iteration, callback) {
+    	$http.post('rest/iteration/', iteration).success(function(response){
+    		console.log("Successfully created Iteration");
+    		callback(response);
+    	});
+    }
+    
+    function getIterationsByProject(project, callback) {
+    	$http.get('rest/iteration/project/'+project).success(function(response){
+    		callback(response);
+    	});
+    }
+    
+    function getLastIteration(project, callback) {
+    	$http.get('rest/iteration/last/'+project).success(function(response){
+    		callback(response);
+    	});
+    }
+    
+    function getIterationById(id, callback) {
+    	$http.get('rest/iteration/'+id).success(function(response){
+    		callback(response);
+    	});
+    }
+}
+
 function OrganizationMemberService($resource) {
     return $resource('rest/orgmembers/:orgmember',{orgmember: "@orgmember"});
 }
@@ -267,4 +317,6 @@ angular
     .factory('FlashService', FlashService)
     .factory('ProjectService', ProjectService)
     .factory('OrganizationMemberService', OrganizationMemberService)
-    .factory('CardService', CardService);
+    .factory('CardService', CardService)
+    .factory('IterationService', IterationService)
+    .factory('ProjectDetailService', ProjectDetailService);

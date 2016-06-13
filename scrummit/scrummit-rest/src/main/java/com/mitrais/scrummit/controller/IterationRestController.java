@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.websocket.server.PathParam;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mitrais.scrummit.bo.BoardBO;
 import com.mitrais.scrummit.bo.IterationBO;
+import com.mitrais.scrummit.bo.ProjectBO;
 import com.mitrais.scrummit.model.Board;
 import com.mitrais.scrummit.model.Card;
 import com.mitrais.scrummit.model.Iteration;
@@ -35,9 +34,29 @@ public class IterationRestController {
 	@Autowired
 	BoardBO boardBO;
 	
+	@Autowired
+	ProjectBO projectBO;
+	
 	@RequestMapping(path = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iteration create(@RequestBody Iteration iteration) {
         return iteBO.createIteration(iteration);
+    }
+	
+	@RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Iteration getIteration(@PathVariable("id") String id) {
+        return iteBO.findById(id);
+    }
+	
+	@RequestMapping(path = "/project/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List<Iteration> getIterations(@PathVariable("id") String id) {
+        
+		return iteBO.findByProject(projectBO.getProject(id));
+    }
+	
+	@RequestMapping(path = "/last/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Iteration getLastIteration(@PathVariable("name") String name) {
+        
+		return iteBO.findLastIterationByProject(projectBO.getProjectByProjectName(name));
     }
 	
 	@RequestMapping(path = "/board/{iteration}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

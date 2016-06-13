@@ -153,78 +153,91 @@ function ViewProjectController($scope, $state, $http, $stateParams) {
     
 };
 
-function ProjectDetailController($scope, $http, $location, $stateParams, UserService) {
+function ProjectDetailController($scope, $http, $location, $stateParams, UserService, IterationService) {
 	var pc = this;
 
 	$scope.currPage = 0;
 	$scope.pageSize = 5;
-
+	$scope.loadBoard = loadBoard;
 	$scope.name = $stateParams.name;
+	$scope.daterange = {startDate: null, endDate: null};
+	$scope.iteration = "";
 	
 	$scope.todoList = [];
 	$scope.inProgressList = [];
 	$scope.completedList = [];
+	$scope.iterationName = "Iteration";
 	
 	(function init() {
-		getProjectByName($scope.name, function(response){
-			console.log(response.id);
+		
+		IterationService.getLastIteration($scope.name, function(data){
+			if (data.id != null) {
+				$scope.iterationName = data.name
+				$scope.loadBoard(data.id);
+			}
 			
-			//temporary hardcode iterationId:
-			var iterationId = "5754cf1f09e2370228ed9ddd";
-			
-			$http.get('rest/iteration/board/' + iterationId).success(function(data){//get board information by iterationid
-				$scope.todoList = data.todoList;
-				$scope.inProgressList = data.inprogressList;
-				$scope.completedList = data.completedList;
-			});
-			 
-			 var start = -1;
-			 var receive = -1;
-			 
-			 $scope.sortableOptions = {
-                 connectWith: ".connectList",
-                 start: function(e, ui) {
-                	 element = ui.item.parent().attr('class');
-                	 if (element.indexOf("todo-list")>=0) {
-            	   		 start = 0;
-            	   	 } else if (element.indexOf("in-progress-list")>=0) {
-            	   		 start = 1;
-            	   	 } else if (element.indexOf("completed-list")>=0) {
-            	   		 start = 2;
-            	   	 }
-                 },
-                 receive: function(e, ui) {
-        	   		 var className = e.target.className;
-        	   		 
-            	   	 if (className.indexOf("todo-list")>=0) {
-            	   		 receive = 0;
-            	   	 } else if (className.indexOf("in-progress-list")>=0) {
-            	   		 receive = 1;
-            	   	 } else if (className.indexOf("completed-list")>=0) {
-            	   		 receive = 2;
-            	   	 }
-                 },
-                 stop: function(e, ui) {
-               	 	 var startCards = [];
-               	 	 var receiveCards = [];
-               	 	 startCards = getCards(start);
-              	 	 receiveCards = getCards(receive);
-               	 	 if (start != receive && receive != -1) { // update both start and receive columns
-	               	 	 //update card status
-	               	 	 $http.put('rest/card/' + ui.item.attr("id") + "/status/" + receive);
-	               	 	 //update card orders in board
-	               	 	 $http.put('rest/iteration/board/' + iterationId + '/' + start + '/' + receive, {"start": startCards, "receive": receiveCards});
-	               	 	 
-               	 	 } else if (receive == -1) { // update start column (update card order)
-	               	 	$http.put('rest/iteration/board/' + iterationId + '/'+start+'/' + receive, {"start": startCards});
-               	 	 }
-               	 	 //reset status
-               	 	 start = -1;
-               	 	 receive = -1;
-                 }
-             };
 		});
+		
 	})();
+	
+	function loadBoard(iteration) {
+		$scope.iteration = iteration;
+		IterationService.getIterationById($scope.iteration, function(data){
+			$scope.iterationName = data.name;
+		});
+		
+		$http.get('rest/iteration/board/' + $scope.iteration).success(function(data){//get board information by iterationid
+			$scope.todoList = data.todoList;
+			$scope.inProgressList = data.inprogressList;
+			$scope.completedList = data.completedList;
+		});
+		 
+		 var start = -1;
+		 var receive = -1;
+		 
+		 $scope.sortableOptions = {
+             connectWith: ".connectList",
+             start: function(e, ui) {
+            	 element = ui.item.parent().attr('class');
+            	 if (element.indexOf("todo-list")>=0) {
+        	   		 start = 0;
+        	   	 } else if (element.indexOf("in-progress-list")>=0) {
+        	   		 start = 1;
+        	   	 } else if (element.indexOf("completed-list")>=0) {
+        	   		 start = 2;
+        	   	 }
+             },
+             receive: function(e, ui) {
+    	   		 var className = e.target.className;
+    	   		 
+        	   	 if (className.indexOf("todo-list")>=0) {
+        	   		 receive = 0;
+        	   	 } else if (className.indexOf("in-progress-list")>=0) {
+        	   		 receive = 1;
+        	   	 } else if (className.indexOf("completed-list")>=0) {
+        	   		 receive = 2;
+        	   	 }
+             },
+             stop: function(e, ui) {
+           	 	 var startCards = [];
+           	 	 var receiveCards = [];
+           	 	 startCards = getCards(start);
+          	 	 receiveCards = getCards(receive);
+           	 	 if (start != receive && receive != -1) { // update both start and receive columns
+               	 	 //update card status
+               	 	 $http.put('rest/card/' + ui.item.attr("id") + "/status/" + receive);
+               	 	 //update card orders in board
+               	 	 $http.put('rest/iteration/board/' + $scope.iteration + '/' + start + '/' + receive, {"start": startCards, "receive": receiveCards});
+               	 	 
+           	 	 } else if (receive == -1) { // update start column (update card order)
+               	 	$http.put('rest/iteration/board/' + $scope.iteration + '/'+start+'/' + receive, {"start": startCards});
+           	 	 }
+           	 	 //reset status
+           	 	 start = -1;
+           	 	 receive = -1;
+             }
+         };
+	}
 	
 	getCards = function(status) {
 		var cards = [];
@@ -258,12 +271,6 @@ function ProjectDetailController($scope, $http, $location, $stateParams, UserSer
  		 }
 		return cards;
 	}
-	
-	function getProjectByName(name, callback) {
-		$http.get('rest/proj/' + name).success(function(data){
-			callback(data);
-		});
-	};
 }
 
 function CardController($scope, $uibModal) {
@@ -277,7 +284,7 @@ function CardController($scope, $uibModal) {
 }
 
 function CardModalController($scope, CardService, FlashService, OrganizationMemberService) {
-
+	
 	$scope.orgmembers = OrganizationMemberService.query();
 
     $scope.saveCard = function (){
@@ -297,6 +304,79 @@ function CardModalController($scope, CardService, FlashService, OrganizationMemb
     };
 
 
+}
+
+function IterationController($scope, $uibModal, $stateParams, ProjectDetailService, IterationService) {
+	var ic = this;
+	$scope.projectName = $stateParams.name;
+	$scope.projectId = "";
+	
+	this.refreshIterations = refreshIterations;
+	
+	(function init() {
+		refreshIterations();
+	})();
+	
+	function refreshIterations() {
+		console.log("Iteration Controller - Project:"+ $scope.projectName);
+		ProjectDetailService.getProjectByName($scope.projectName, function(data){
+			$scope.projectId = data.id;
+			IterationService.getIterationsByProject(data.id, function(iterationData){
+				if (data == null) {
+					$scope.iterations = [];
+				} else {
+					$scope.iterations = iterationData;
+				}
+			});
+		});
+	}
+	
+	$scope.openCreateIterationModal = function(size) {
+		var modalInstance = $uibModal.open({
+            templateUrl: 'views/iteration/modal',
+            controller: IterationModalController,
+            size: size,
+            resolve: {
+            	projectId: function(){
+            		return $scope.projectId;
+            	},
+            	parentCtrl: function(){
+            		return ic;
+            	}
+            }
+        });
+	}
+}
+
+function IterationModalController($scope, FlashService, $uibModalInstance, IterationService, projectId, parentCtrl) {
+	
+	$scope.iterationName = "";
+	$scope.description = "";
+	$scope.daterange = {startDate: null, endDate: null};
+	
+	$scope.ok = function () {
+		console.log("Name: " + iteration.iterationName);
+        $uibModalInstance.close();
+    };
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+    
+    $scope.submit = function () {
+    	
+    	IterationService.create({
+			"name": $scope.iterationName, 
+			"description": $scope.description, 
+			"project": {"id": projectId}, 
+			"startDate": $scope.daterange.startDate, 
+			"endDate": $scope.daterange.endDate
+		}, function(data){
+			console.log(data.name);
+			parentCtrl.refreshIterations();
+		});
+    	$uibModalInstance.close();
+    }
 }
 
 function ProjectController($scope, $location ,ProjectService, OrganizationMemberService, FlashService, $stateParams) {
@@ -420,4 +500,6 @@ angular
 	.controller('ProjectDetailController', ProjectDetailController)
 	.controller('ProjectController', ProjectController)
 	.controller('CardController', CardController)
-	.controller('CardModalController', CardModalController);
+	.controller('CardModalController', CardModalController)
+	.controller('IterationController', IterationController)
+	.controller('IterationModalController', IterationModalController);
