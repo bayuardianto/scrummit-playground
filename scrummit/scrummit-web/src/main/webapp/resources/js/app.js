@@ -8,6 +8,7 @@
         'oc.lazyLoad',                  // ocLazyLoad
         'ui.bootstrap',                 // Ui Bootstrap
         'ngCookies',
-        'ngResource'
+        'ngResource',
+        'daterangepicker'
     ])
 })();

@@ -1,5 +1,5 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-10">
+    <div class="col-lg-12">
         <h2>Project Board</h2>
         <ol class="breadcrumb">
             <li>
@@ -13,15 +13,25 @@
                 <strong>Board</strong>
             </li>
         </ol>
+        
     </div>
-    <div class="col-lg-2">
-
-    </div>
+    
 </div>
-<div class="wrapper wrapper-content  animated fadeInRight" ng-controller="CardController">
+<span class="clear"></span>
 
+<div class="wrapper wrapper-content  animated fadeInRight" ng-controller="CardController">
+	<div class="row">
+		<div>
+			<div class="col-md-2">
+	            	<button type="button" style="height:30px" ng-click="$root.rightSidebar = !$root.rightSidebar" class="btn-primary block full-width m-b"><i class="fa fa-calendar">
+	            	</i> {{iterationName}}</button>
+			</div>
+		</div>
+	</div>
+	<span class="clear"></span>
     <div class="row">
-        <div class="col-lg-4">
+	   
+	    	<div class="col-lg-4">
             <div class="ibox">
                 <div class="ibox-content">
                 	<div uib-dropdown>
@@ -112,9 +122,9 @@
                     </ul>
                 </div>
             </div>
+            
         </div>
-
     </div>
     
-
 </div>
+<div ng-include="'views/project/iteration/bar'"></div>
