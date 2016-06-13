@@ -41,7 +41,20 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpPr
             url: "/projects",
             templateUrl: "views/projects",
             controllerAs: "vm",
-            data: { pageTitle: 'Projects' }
+            data: { pageTitle: 'Projects' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            files: ['resources/js/plugins/footable/footable.all.min.js', 'resources/css/plugins/footable/footable.core.css']
+                        },
+                        {
+                            name: 'ui.footable',
+                            files: ['resources/js/plugins/footable/angular-footable.js']
+                        }
+                    ]);
+                }
+            }
         })
         .state('login', {
         	controller: "LoginController",

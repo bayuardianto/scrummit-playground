@@ -214,33 +214,47 @@ function CardModalController($scope, $uibModalInstance) {
     };
 }
 
-function ProjectController($scope, $location ,ProjectService, OrganizationMemberService, FlashService, $stateParams) {
+function ProjectController($scope, $location ,ProjectService, 
+						   OrganizationMemberService, FlashService, $stateParams, 
+						   $uibModal, $timeout) {
 	var pc = this;
 	pc.id = $stateParams.id;
 
-	//get organization members data for combo box
+	pc.projectMembers = [];
 
+	//get organization members data for combo box
 	$scope.orgmembers = OrganizationMemberService.query();
 
 	//initialize roles for drop down
 	$scope.roles = [{id: 0, text: "PROJECT OWNER"}, {id: 1, text: "SCRUM MASTER"}, {id: 2, text: "MEMBER"}];
 
 	$scope.project = {};
-	//$scope.project.members.member = [];
 	$scope.project.members = [];
 
 	$scope.member = {};
 	$scope.members = [];
 
 	//get projects data
-	$scope.projects = ProjectService.query();
+	var getProjects = function () {
+		ProjectService.query(function (value) {
+			$scope.projects = value;
+			$timeout(function(){
+				$('.table').trigger('footable_redraw');
+			}, 100);
+		});
+	};
+	getProjects();
 
 	//get specific project by id
 	if(pc.id != null)
 	{
 		ProjectService.get({project: pc.id}).$promise.then(function(value){
 			$scope.project = value;
+			if(value.members.length == 1 && value.members[0].userId == null)
+				$scope.project.members = angular.copy([]);
 			$scope.title = "Update " + value.name + " Project";
+		}, function (response) {
+
 		});
 		$scope.topmenu = "Update Project";
 	}
@@ -249,9 +263,6 @@ function ProjectController($scope, $location ,ProjectService, OrganizationMember
 		$scope.title = "Add New Project";
 		$scope.topmenu = "Add Project";
 	}
-
-
-
 
 	$scope.storeTemp = function() {
 		/* do validation here or in html before ... */
@@ -277,15 +288,24 @@ function ProjectController($scope, $location ,ProjectService, OrganizationMember
 				$scope.member.roleName = roleName;
 				$scope.member.userName = memberName;
 				$scope.project.members.push($scope.member);
+
 			}
 			else {
-				FlashService.Error("This person is already on member list.");
+				//FlashService.Error("This person is already on member list.");
+				openNotif("sm", "The person selected is already on member list.");
 			}
 			$scope.member = {};
 		}
 		else {
-			FlashService.Error("Please select person or role.");
+			//FlashService.Error("Please select person or role.");
+			openNotif("sm", "Please select person or role.");
 		}
+	};
+
+	$scope.removeMember = function (member, projectMembers) {
+		$scope.project.members = angular.copy(projectMembers);
+		var index = $scope.project.members.indexOf(member);
+		$scope.project.members.splice(index, 1);
 	};
 	
 	$scope.saveProject = function () {
@@ -299,9 +319,10 @@ function ProjectController($scope, $location ,ProjectService, OrganizationMember
 	
 	function createProject() {
 		ProjectService.save($scope.project, function (response) {
-			FlashService.Success("Create project success.");
+			//FlashService.Success("Create project success.");
+			openNotif("sm", "Save project success.")
 		}, function (err) {
-			FlashService.Error(err.message);
+			openNotif("sm", "Save project failed. " + err.message())
 		});
 	};
 	
@@ -310,20 +331,79 @@ function ProjectController($scope, $location ,ProjectService, OrganizationMember
 		
 		project.name = $scope.project.name;
 		project.description = $scope.project.description;
-		project.members = $scope.project.members;
-		
-		
+		project.members = angular.copy($scope.project.members);
+
 		ProjectService.update({project: $scope.project.id}, project, function (response) {
-			FlashService.Success("Update project success.");
+			//FlashService.Success("Update project success.");
+			openNotif("sm", "Update project success.");
 		}, function (err) {
-			FlashService.Error(err.message);
+			//FlashService.Error(err.message);
+			openNotif("sm", "Update project failed. " + err.message())
+		});
+	};
+
+	$scope.openArchiveModal = function(size, id) {
+		var modalInstance = $uibModal.open({
+			templateUrl: 'views/archive_modal',
+			controller: ProjectModalController,
+			size: size,
+			resolve: {
+				id: function () {return id;}
+			}
+		});
+
+		modalInstance.result.then(function () {
+			getProjects();
+		});
+	};
+
+	var openNotif = function (size, message) {
+		var modalInstance = $uibModal.open({
+			templateUrl: 'views/notif_modal',
+			controller: NotifModalController,
+			size: size,
+			resolve: {
+				message: function () {return message;}
+			}
+		});
+
+		modalInstance.result.then(function () {
+
 		});
 	};
 
 	$scope.goToAdd = function() {
 		$location.url('/addproject.jsp');
 	};
+
+	$scope.cancel = function() {
+		$location.url('/views/projects.jsp');
+	};
 };
+
+function ProjectModalController($scope, $uibModalInstance, ProjectService, id) {
+	$scope.id = id;
+	
+
+	$scope.ok = function () {
+		ProjectService.delete({project: id.id}, function (response) {
+			$uibModalInstance.close();
+		});
+	};
+
+	$scope.cancel = function () {
+		$uibModalInstance.dismiss('cancel');
+	};
+}
+
+function NotifModalController($scope, $uibModalInstance, message) {
+	$scope.message = message;
+
+	$scope.ok = function () {
+		$uibModalInstance.close();
+	};
+}
+
 
 angular
 	.module('inspinia')
@@ -335,4 +415,6 @@ angular
 	.controller('ProjectDetailController', ProjectDetailController)
 	.controller('ProjectController', ProjectController)
 	.controller('CardController', CardController)
-	.controller('CardModalController', CardModalController);
+	.controller('CardModalController', CardModalController)
+	.controller('ProjectModalController', ProjectModalController)
+	.controller('NotifModalController', NotifModalController);

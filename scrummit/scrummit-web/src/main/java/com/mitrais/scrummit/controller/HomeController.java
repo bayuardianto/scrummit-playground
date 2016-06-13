@@ -62,4 +62,9 @@ public class HomeController {
 
         return "views/verified";
     }
+
+	@RequestMapping(value = "views/notif_modal", method = RequestMethod.GET)
+	public String notifModal(Map<String, Object> model) {
+		return "views/common/notif_modal";
+	}
 }

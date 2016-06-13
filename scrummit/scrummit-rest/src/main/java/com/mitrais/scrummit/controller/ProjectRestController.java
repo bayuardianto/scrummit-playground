@@ -7,15 +7,13 @@ import java.util.List;
 
 import com.mitrais.scrummit.bo.OrganizationMemberBO;
 import com.mitrais.scrummit.model.*;
+import com.mitrais.scrummit.util.GlobalException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import com.mitrais.scrummit.bo.ProjectBO;
 
@@ -36,41 +34,52 @@ public class ProjectRestController {
     private static final String template = "You get project:  %s!";
 
     @RequestMapping(path = "/project/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ProjectView getProject(@PathVariable("id") String id) {
+    public ResponseEntity<ProjectView> getProject(@PathVariable("id") String id) throws GlobalException {
+
+        if(!StringUtils.hasText(id))
+            throw new GlobalException("Invalid Project Id request.");
+
         Project project = projectBO.getProject(id);
+
         if(project!=null)
-            return toViewModel(project);
+            return new ResponseEntity<ProjectView>(toViewModel(project), HttpStatus.OK);
         else
-            return null;
+            throw new GlobalException("Project data not found.");
     }
 
     @RequestMapping(path = "/project", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody List<ProjectView> listAllProject() {
+    public ResponseEntity<?> listAllProject() {
         List<Project> projects = projectBO.listAllProject();
-        if(projects != null)
-            return ToViewModel(projects);
-            //return projects;
-        else
-            return null;
+        return new ResponseEntity<>(toViewModel(projects), HttpStatus.OK);
     }
 
     @RequestMapping(path = "/project", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Project create(@RequestBody Project project) {
-        return projectBO.createProject(project);
+    public @ResponseBody ResponseEntity<Project> create(@RequestBody Project project) throws GlobalException {
+        if(project == null)
+            throw new GlobalException("Invalid input parameters.");
+
+        project = projectBO.createProject(project);
+        return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
     @RequestMapping(path = "/project/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Project delete(@PathVariable("id") String id) {
-        return projectBO.deleteProject(id);
+    public @ResponseBody ResponseEntity<Project> delete(@PathVariable("id") String id) throws GlobalException {
+        if(!StringUtils.hasText(id))
+            throw new GlobalException("Invalid Project Id request.");
+
+        Project project = projectBO.deleteProject(id);
+        return new ResponseEntity<Project>(project, HttpStatus.OK);
     }
 
     @RequestMapping(path = "/project/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Project update(@PathVariable("id") String id, @RequestBody ProjectView updatedProject) {
+    public @ResponseBody ResponseEntity<Project> update(@PathVariable("id") String id, @RequestBody ProjectView updatedProject)
+    throws GlobalException {
+        if(!StringUtils.hasText(id) || updatedProject == null)
+            throw new GlobalException("Invalid update parameters.");
+
         Project currentProject = projectBO.getProject(id);
-        if(currentProject != null)
-            return projectBO.updateProject(toProjectModel(currentProject, updatedProject));
-        else
-            return null;
+        Project project = projectBO.updateProject(toProjectModel(currentProject, updatedProject));
+        return new ResponseEntity<Project>(project, HttpStatus.OK);
     }
 
     @RequestMapping(path = "/projectdetail/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -85,11 +94,6 @@ public class ProjectRestController {
         return projects;
     }
 
-//    @RequestMapping(path = "/project/{status}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public @ResponseBody List<Project> listProjectByUser(@PathVariable("status") int status) {
-//        List<Project> projects = projectBO.getProjectByStatus(status);
-//        return projects;
-//    }
 
     @RequestMapping(path = "/createdby/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<Project> getByProjectCreatedBy(@PathVariable("id") String id) {
@@ -99,6 +103,14 @@ public class ProjectRestController {
     }
 
 
+
+    @ExceptionHandler(GlobalException.class)
+    private ResponseEntity<ErrorResponse> exceptionHandler(Exception ex) {
+        ErrorResponse error = new ErrorResponse();
+        error.setErrorCode(HttpStatus.PRECONDITION_FAILED.value());
+        error.setMessage(ex.getMessage());
+        return new ResponseEntity<ErrorResponse>(error, HttpStatus.OK);
+    }
 
 
     private String GetProjectStatus(int status) {
@@ -168,7 +180,7 @@ public class ProjectRestController {
         return projectView;
     }
 
-    private List<ProjectView> ToViewModel(List<Project> projects) {
+    private List<ProjectView> toViewModel(List<Project> projects) {
         if(projects.isEmpty()) {
             return null;
         }
@@ -219,14 +231,16 @@ public class ProjectRestController {
 
     private List<Member> toListMemberModel(List<MemberView> memberViews) {
         List<Member> members = new ArrayList<Member>();
-        Member member = new Member();
+
         for(MemberView memberView : memberViews)
         {
+            Member member = new Member();
             member.setUserId(memberView.getUserId());
 
             member.setRole(memberView.getRole());
+            members.add(member);
         }
-        members.add(member);
+
         return members;
     }
 

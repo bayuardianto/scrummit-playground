@@ -43,6 +43,7 @@
 <!-- jQuery and Bootstrap -->
 <script src="${contextPath}/resources/js/jquery/jquery-2.1.1.min.js"></script>
 <script src="${contextPath}/resources/js/plugins/jquery-ui/jquery-ui.js"></script>
+
 <script src="${contextPath}/resources/js/bootstrap/bootstrap.min.js"></script>
 
 <!-- MetsiMenu -->

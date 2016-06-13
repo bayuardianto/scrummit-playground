@@ -1,5 +1,6 @@
 package com.mitrais.scrummit.bo.impl;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.mitrais.scrummit.model.CommonEnum;
@@ -26,7 +27,17 @@ public class ProjectBOImpl extends BaseBOImpl<Project, ProjectDAO> implements Pr
     @Override
     public List<Project> listAllProject() {
         log.info("find all project");
-        return currentDAO.findAll();
+        List<Project> projects = currentDAO.findAll();
+
+        Iterator<Project> projectIterator = projects.iterator();
+        while (projectIterator.hasNext()) {
+            Project project = projectIterator.next(); // must be called before you can call i.remove()
+            if(project.getIsDeleted()) {
+                projectIterator.remove();
+            }
+        }
+
+        return projects;
     }
 
     @Override
@@ -66,6 +77,7 @@ public class ProjectBOImpl extends BaseBOImpl<Project, ProjectDAO> implements Pr
     public Project deleteProject(String id) {
         log.info(String.format("delete a project with project id: %s", id));
         Project project = currentDAO.findOne(id);
+        project.setIsDeleted(true);
         return delete(project);
     }
 

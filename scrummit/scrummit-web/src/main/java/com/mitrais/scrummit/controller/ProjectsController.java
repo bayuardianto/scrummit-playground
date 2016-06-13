@@ -32,4 +32,10 @@ public class ProjectsController {
 
 		return "views/addproject";
 	}
+
+	@RequestMapping(value = "/views/archive_modal", method = RequestMethod.GET)
+	public String archiveModalView(Map<String, Object> model) {
+
+		return "views/project/archive-modal";
+	}
 }
