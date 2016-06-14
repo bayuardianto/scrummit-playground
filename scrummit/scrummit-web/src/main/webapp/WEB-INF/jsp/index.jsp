@@ -31,6 +31,8 @@
     <link id="loadBefore" href="${contextPath}/resources/css/style.css" rel="stylesheet">
 	<link id="loadBefore" href="${contextPath}/resources/css/scrummit.css" rel="stylesheet">
 
+	<link href="${contextPath}/resources/css/plugins/datapicker/angular-datapicker.css" rel="stylesheet">
+	<link href="${contextPath}/resources/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
 </head>
 
 <!-- ControllerAs syntax -->
@@ -43,7 +45,6 @@
 <!-- jQuery and Bootstrap -->
 <script src="${contextPath}/resources/js/jquery/jquery-2.1.1.min.js"></script>
 <script src="${contextPath}/resources/js/plugins/jquery-ui/jquery-ui.js"></script>
-
 <script src="${contextPath}/resources/js/bootstrap/bootstrap.min.js"></script>
 
 <!-- MetsiMenu -->
@@ -65,6 +66,8 @@
 <script src="${contextPath}/resources/js/ui-router/angular-ui-router.min.js"></script>
 <script src="${contextPath}/resources/js/bootstrap/ui-bootstrap-tpls-1.1.2.min.js"></script>
 <script src="${contextPath}/resources/js/angular/angular-resource.min.js"></script>
+<script src="${contextPath}/resources/js/plugins/daterangepicker/angular-daterangepicker.js"></script>
+<script src="${contextPath}/resources/js/plugins/moment/moment.min.js"></script>
 
 
 <!-- Anglar App Script -->

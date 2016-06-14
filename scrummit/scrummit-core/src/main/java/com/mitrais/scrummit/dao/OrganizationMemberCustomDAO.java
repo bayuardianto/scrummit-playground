@@ -2,6 +2,7 @@ package com.mitrais.scrummit.dao;
 
 import com.mitrais.scrummit.model.OrganizationMember;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 

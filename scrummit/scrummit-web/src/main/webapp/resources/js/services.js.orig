@@ -130,7 +130,6 @@ function UserService($http) {
     service.GetByUsername = GetByUsername;
     service.UpdateUser = UpdateUser;
     service.ChangePassword = ChangePassword;
-    service.GetById = GetById;
 
     return service;
 
@@ -138,12 +137,6 @@ function UserService($http) {
         $http.get('rest/user/' + username).success(function (data){
         	callback(data);
         });
-    }
-    
-    function GetById(id, callback) {
-    	$http.get('rest/user/id/'+ id).success(function (data){
-    		callback(data);
-    	});
     }
     
     function UpdateUser(username, password, email, firstname, lastname, callback) {
@@ -235,79 +228,8 @@ function ProjectService($resource) {
         });
 }
 
-function ProjectDetailService($http) {
-	var service = {};
-	service.getProjectByName = getProjectByName;
-	
-	return service;
-	
-	function getProjectByName(name, callback) {
-		$http.get('rest/proj/' + name).success(function(data){
-			callback(data);
-		});
-	};
-}
-
-function IterationService($http) {
-	var service = {
-			project: '',
-			iterations: []
-	};
-    service.create = create;
-    service.getIterationsByProject = getIterationsByProject;
-    service.getLastIteration = getLastIteration;
-    service.getIterationById = getIterationById;
-    return service;
-    
-    function create(iteration, callback) {
-    	$http.post('rest/iteration/', iteration).success(function(response){
-    		console.log("Successfully created Iteration");
-    		callback(response);
-    	});
-    }
-    
-    function getIterationsByProject(project, callback) {
-    	$http.get('rest/iteration/project/'+project).success(function(response){
-    		callback(response);
-    	});
-    }
-    
-    function getLastIteration(project, callback) {
-    	$http.get('rest/iteration/last/'+project).success(function(response){
-    		callback(response);
-    	});
-    }
-    
-    function getIterationById(id, callback) {
-    	$http.get('rest/iteration/'+id).success(function(response){
-    		callback(response);
-    	});
-    }
-}
-
 function OrganizationMemberService($resource) {
     return $resource('rest/orgmembers/:orgmember',{orgmember: "@orgmember"});
-}
-
-function CardService($http){
-    var service = {};
-    service.saveCard = saveCard;
-    return service;
-
-    function saveCard(objCard, callback){
-        $http
-            .put('rest/card/create', objCard)
-            .success(function(response){
-                response.success = true;
-                response.message = "Card created!";
-                callback(response);
-            })
-            .error(function(response){
-                response.success = false;
-                response.message = 'There was an error when saving Card, please try again!';
-                callback(response);
-            })
-    }
 }
 
 angular
@@ -316,7 +238,4 @@ angular
     .factory('UserService', UserService)
     .factory('FlashService', FlashService)
     .factory('ProjectService', ProjectService)
-    .factory('OrganizationMemberService', OrganizationMemberService)
-    .factory('CardService', CardService)
-    .factory('IterationService', IterationService)
-    .factory('ProjectDetailService', ProjectDetailService);
+    .factory('OrganizationMemberService', OrganizationMemberService);

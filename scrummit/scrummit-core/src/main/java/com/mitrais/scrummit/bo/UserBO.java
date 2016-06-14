@@ -4,6 +4,7 @@ import com.mitrais.scrummit.model.User;
 
 public interface UserBO extends BaseBO<User> {
     public User findByUsername(String name);
+    public User findById(String id);
     public User updateUserInfo(User user);
 
     public User findByActivationKey(String activationKey);

@@ -49,6 +49,9 @@ public class User extends Common implements Serializable {
     //non persisted field
     @Transient
     private String newPassword;
+    
+    @Transient
+    private String fullname;
 
     @DBRef
     @Field(value = "assoc_org_id")
@@ -142,4 +145,7 @@ public class User extends Common implements Serializable {
         this.assocOrgId = assocOrgId;
     }
 
+    public String getFullname() {
+    	return firstName + " " + lastName;
+    }
 }

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -15,6 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class Iteration extends Common implements Serializable {
 
 	@Id
+	@JsonSerialize(using = ToStringSerializer.class)
     private ObjectId id;
 	
 	@Field(value = "name")

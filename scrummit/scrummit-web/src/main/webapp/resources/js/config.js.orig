@@ -84,24 +84,9 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpPr
         	resolve: {
                 loadPlugin: function ($ocLazyLoad) {
                     return $ocLazyLoad.load([
-	                    {
-	                        files: ['resources/js/plugins/moment/moment.min.js']
-	                    },
                         {
                             name: 'ui.sortable',
                             files: ['resources/js/plugins/ui-sortable/sortable.js']
-                        },
-                        {
-                            serie: true,
-                            files: ['resources/js/plugins/daterangepicker/daterangepicker.js', 'resources/css/plugins/daterangepicker/daterangepicker-bs3.css']
-                        },
-                        {
-                            name: 'datePicker',
-                            files: ['resources/css/plugins/datapicker/angular-datapicker.css','resources/js/plugins/datapicker/angular-datepicker.js']
-                        },
-                        {
-                            name: 'daterangepicker',
-                            files: ['resources/js/plugins/daterangepicker/angular-daterangepicker.js']
                         }
                     ]);
                 }

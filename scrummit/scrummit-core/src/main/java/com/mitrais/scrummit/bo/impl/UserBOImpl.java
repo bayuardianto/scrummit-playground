@@ -52,4 +52,10 @@ public class UserBOImpl extends BaseBOImpl<User, UserDAO> implements UserBO {
         return save(updateUser);
 	}
 
+	@Override
+	public User findById(String id) {
+		
+		return currentDAO.findOne(id);
+	}
+
 }

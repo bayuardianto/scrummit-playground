@@ -38,4 +38,10 @@ public class ProjectsController {
 
 		return "views/project/archive-modal";
 	}
+
+	@RequestMapping(value = "views/project/iteration/bar", method = RequestMethod.GET)
+	public String iterationBarViews(Map<String, Object> model) {
+
+		return "views/project/iteration_bar";
+	}
 }

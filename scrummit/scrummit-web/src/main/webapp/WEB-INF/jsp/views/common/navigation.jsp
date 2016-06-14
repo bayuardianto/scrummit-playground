@@ -10,7 +10,7 @@
 	                    <a uib-dropdown-toggle href>
 	                            <span class="clear">
 	                                <span class="block m-t-xs">
-	                                    <strong class="font-bold" ng-controller="UserController as uc">{{uc.firstname}} {{uc.lastname}}</strong>
+	                                    <strong class="font-bold" ng-controller="UserController as uc">{{uc.fullname}}</strong>
 	                             </span>
 	                                <span class="text-muted text-xs block">Senior Developer <b class="caret"></b></span>
 	                            </span>

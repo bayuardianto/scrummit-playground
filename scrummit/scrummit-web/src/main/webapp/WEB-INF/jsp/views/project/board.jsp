@@ -1,5 +1,5 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-10">
+    <div class="col-lg-12">
         <h2>Project Board</h2>
         <ol class="breadcrumb">
             <li>
@@ -7,21 +7,31 @@
 
             </li>
             <li>
-                <a ui-sref="index.projects">Project</a>
+                <a ui-sref="index.projects">Projects</a>
             </li>
             <li class="active">
                 <strong>Board</strong>
             </li>
         </ol>
+        
     </div>
-    <div class="col-lg-2">
-
-    </div>
+    
 </div>
-<div class="wrapper wrapper-content  animated fadeInRight" ng-controller="CardController">
+<span class="clear"></span>
 
+<div class="wrapper wrapper-content  animated fadeInRight" ng-controller="CardController">
+	<div class="row">
+		<div>
+			<div class="col-md-2">
+	            	<button type="button" style="height:30px" ng-click="$root.rightSidebar = !$root.rightSidebar" class="btn-primary block full-width m-b"><i class="fa fa-calendar">
+	            	</i> {{iterationName}}</button>
+			</div>
+		</div>
+	</div>
+	<span class="clear"></span>
     <div class="row">
-        <div class="col-lg-4">
+	   
+	    	<div class="col-lg-4">
             <div class="ibox">
                 <div class="ibox-content">
                 	<div uib-dropdown>
@@ -37,14 +47,13 @@
                     </div>
                     <span class="divider">&nbsp;</span>
 					<hr/>
-                    <ul ui-sortable="sortableOptions" class="sortable-list connectList agile-list" ng-model="todoList">
-                        <li class="warning-element" ng-repeat="task in todoList">
+                    <ul ui-sortable="sortableOptions" class="sortable-list connectList agile-list todo-list" ng-model="todoList">
+                        <li class="warning-element" ng-repeat="task in todoList" id="{{task.id}}">
                             {{task.title}}<br/>
-                            
                             <div class="agile-detail">
                             	{{task.description}}
                             	<span class="clear"></span>
-                                <a href="#" class="pull-right btn btn-xs btn-white">Tag Name</a>
+                                <a href="#" class="pull-right btn btn-xs btn-white">{{task.fullname}}</a>
                                 <i class="fa fa-clock-o"></i> {{task.createdDate | date:'yyyy-MM-dd'}}
                             </div>
                         </li>
@@ -69,13 +78,13 @@
                     <span class="clear">&nbsp;</span>
 
                     <hr/>
-                    <ul ui-sortable="sortableOptions" class="sortable-list connectList agile-list" ng-model="inProgressList">
-                        <li class="danger-element" ng-repeat="task in inProgressList">
+                    <ul ui-sortable="sortableOptions" class="sortable-list connectList agile-list in-progress-list" ng-model="inProgressList">
+                        <li class="danger-element" ng-repeat="task in inProgressList" id="{{task.id}}">
                             {{task.title}}
                             <div class="agile-detail">
                             	{{task.description}}
                             	<span class="clear"></span>
-                                <a href="#" class="pull-right btn btn-xs btn-white">Tag Name</a>
+                                <a href="#" class="pull-right btn btn-xs btn-white">{{task.fullname}}</a>
                                 <i class="fa fa-clock-o"></i> {{task.createdDate | date:'yyyy-MM-dd'}}
                             </div>
                         </li>
@@ -100,22 +109,22 @@
                     <span class="clear">&nbsp;</span>
 
                     <hr/>
-                    <ul ui-sortable="sortableOptions" class="sortable-list connectList agile-list" ng-model="completedList">
-                        <li class="success-element" ng-repeat="task in completedList">
+                    <ul ui-sortable="sortableOptions" class="sortable-list connectList agile-list completed-list" ng-model="completedList">
+                        <li class="success-element" ng-repeat="task in completedList" id="{{task.id}}">
                             {{task.title}}
                             <div class="agile-detail">
                             	{{task.description}}
                             	<span class="clear"></span>
-                                <a href="#" class="pull-right btn btn-xs btn-white">Tag Name</a>
+                                <a href="#" class="pull-right btn btn-xs btn-white">{{task.fullname}}</a>
                                 <i class="fa fa-clock-o"></i> {{task.createdDate | date:'yyyy-MM-dd'}}
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
+            
         </div>
-
     </div>
     
-
 </div>
+<div ng-include="'views/project/iteration/bar'"></div>
