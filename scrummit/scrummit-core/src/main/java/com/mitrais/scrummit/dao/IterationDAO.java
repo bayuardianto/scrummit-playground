@@ -12,4 +12,5 @@ public interface IterationDAO extends CommonDAO<Iteration, String> {
 
 	public List<Iteration> findIterationByProject(Project project);
 	
+	public Iteration findByNameAndProject(String name, Project project);
 }

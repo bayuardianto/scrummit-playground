@@ -13,4 +13,6 @@ public interface IterationBO {
 	public List<Iteration> findByProject(Project project);
 	
 	public Iteration findLastIterationByProject(Project project);
+	
+	public Iteration findByNameAndProject(String name, Project project);
 }

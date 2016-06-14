@@ -21,6 +21,7 @@ import com.mitrais.scrummit.bo.ProjectBO;
 import com.mitrais.scrummit.model.Board;
 import com.mitrais.scrummit.model.Card;
 import com.mitrais.scrummit.model.Iteration;
+import com.mitrais.scrummit.model.Project;
 
 @RestController
 @RequestMapping("/rest/iteration")
@@ -38,8 +39,20 @@ public class IterationRestController {
 	ProjectBO projectBO;
 	
 	@RequestMapping(path = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iteration create(@RequestBody Iteration iteration) {
-        return iteBO.createIteration(iteration);
+    public @ResponseBody Map<String, Object> create(@RequestBody Iteration iteration) {
+		Map<String, Object> result = new HashMap();
+		Project project = projectBO.getProject(iteration.getProject().getId().toString());
+		Iteration existIt = iteBO.findByNameAndProject(iteration.getName(), project	);
+		
+		if (existIt != null){
+			logger.info("Existing Iteration: " + existIt.getId());
+			result.put("error", 1);
+			result.put("message", "Iteration name is existed in this project");
+		} else {
+			result.put("error",  0);
+			iteBO.createIteration(iteration);
+		}
+		return result;
     }
 	
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -62,6 +75,7 @@ public class IterationRestController {
 	@RequestMapping(path = "/board/{iteration}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Map<String, List<Card>> findIterationCards (@PathVariable("iteration") String iteration) {
 		Iteration it = iteBO.findById(iteration);
+		
 		List<Card> todoList = new ArrayList<>();
 		List<Card> inprogressList = new ArrayList<>();
 		List<Card> completedList = new ArrayList<>();
@@ -85,8 +99,16 @@ public class IterationRestController {
 	}
 	
 	@RequestMapping(path = "/board/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Board createBoard(@RequestBody Board board) {
-		return boardBO.createBoard(board);
+	public void createBoard(@RequestBody Board board) {
+		Board checkBoard = boardBO.findByIterationAndStatus(board.getIteration(), board.getStatus());
+		if (checkBoard == null){
+			boardBO.createBoard(board);
+		} else {
+			List<Card> cards = checkBoard.getCards();
+			cards.addAll(board.getCards());
+			checkBoard.setCards(cards);
+			boardBO.saveBoard(checkBoard);
+		}
 	}
 	
 	@RequestMapping(path = "/board/{iteration}/{start}/{receive}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -101,8 +123,17 @@ public class IterationRestController {
 		if (receive>=0) {
 			List<Card> receiveCards = input.get("receive");
 			board = boardBO.findByIterationAndStatus(it, receive);
-			board.setCards(receiveCards);
-			boardBO.saveBoard(board);
+			if (board == null) {
+				board = new Board();
+				board.setStatus(receive);
+				board.setIteration(it);
+				board.setCards(receiveCards);
+				boardBO.createBoard(board);
+			} else {
+				board.setCards(receiveCards);
+				boardBO.saveBoard(board);
+			}
+			
 		}
 		
 		return true;

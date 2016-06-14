@@ -169,7 +169,7 @@ function ProjectDetailController($scope, $http, $location, $stateParams, UserSer
 	$scope.iterationName = "Iteration";
 	
 	(function init() {
-		
+		IterationService.setPrjDetailCtrl($scope);
 		IterationService.getLastIteration($scope.name, function(data){
 			if (data.id != null) {
 				$scope.iterationName = data.name
@@ -283,27 +283,73 @@ function CardController($scope, $uibModal) {
 	}
 }
 
-function CardModalController($scope, CardService, FlashService, OrganizationMemberService) {
+function CardModalController($scope, $http, $uibModalInstance, CardService, FlashService, OrganizationMemberService, $stateParams, ProjectDetailService, IterationService) {
 	
 	$scope.orgmembers = OrganizationMemberService.query();
 
+	var ic = this;
+	$scope.projectName = $stateParams.name;
+	$scope.projectId = "";
+
+	this.getIterations = getIterations;
+
+	(function init() {
+		getIterations();
+	})();
+
+    function getIterations() {
+
+		ProjectDetailService.getProjectByName($scope.projectName, function(data){
+			$scope.projectId = data.id;
+			IterationService.getIterationsByProject(data.id, function(iterationData){
+				if (data == null) {
+					$scope.iterations = [];
+				} else {
+					$scope.iterations = iterationData;
+				}
+			});
+		});
+    }
+
+    $scope.addTask = function (){
+        angular.element(document.getElementById('space-for-task')).append("<div class='form-group'><div class='col-sm-4'><input type='text' id='title' placeholder='Description' class='form-control'></div><div class='form-group'><div class='col-sm-4'><input type='text' id='title' placeholder='Owner' class='form-control'></div><div class='form-group'><div class='col-sm-4'><input type='text' id='title' placeholder='Status' class='form-control'></div>");
+    }
+
     $scope.saveCard = function (){
         var newCard = $scope.card;
+        //console.log(newCard.assignee);
+        console.log(newCard.iteration);
 
-        var iteration = {"ref": "iteration", "id" : newCard.iteration};
+        var iteration = {"ref": "iterations", "id" : newCard.iteration};
+        //var assignee = {"ref": "organizationMembers", "id": newCard.assignee};
         newCard.iteration = iteration;
+        //newCard.assignee = assignee;
         CardService.saveCard(newCard, function(response){
             $scope.dataLoading = true;
-            if (response && response.error == 0){
+            if (response.success == true){
                 FlashService.Success(response.message);
+                console.log(response.message);
+                $http.post('rest/iteration/board/', {'iteration': {'id': response.iteration.id}, 'status': response.status, 'cards': [{'id': response.id}]}).success(function(data){
+                	console.log("Creating/Updating board for new card");
+                	IterationService.getPrjDetailCtrl().loadBoard(response.iteration.id);
+                });
             }else{
 		    	$scope.dataLoading = false;
+		    	console.log(response.message);
             }
         });
         $scope.card = null;
     };
+    
+    $scope.cancel = function() {
+    	$uibModalInstance.dismiss('cancel');
+    }
 
-
+    $scope.getAllCards = function(){
+        CardService.getAllCards(function(response){
+            console.log(response[0]);
+        })
+    }
 }
 
 function IterationController($scope, $uibModal, $stateParams, ProjectDetailService, IterationService) {
@@ -355,7 +401,6 @@ function IterationModalController($scope, FlashService, $uibModalInstance, Itera
 	$scope.daterange = {startDate: null, endDate: null};
 	
 	$scope.ok = function () {
-		console.log("Name: " + iteration.iterationName);
         $uibModalInstance.close();
     };
 
@@ -372,10 +417,15 @@ function IterationModalController($scope, FlashService, $uibModalInstance, Itera
 			"startDate": $scope.daterange.startDate, 
 			"endDate": $scope.daterange.endDate
 		}, function(data){
-			console.log(data.name);
-			parentCtrl.refreshIterations();
+			if (data.error == 0) {
+				parentCtrl.refreshIterations();
+				$uibModalInstance.close();
+			} else {
+				alert(data.message);
+			}
+			
 		});
-    	$uibModalInstance.close();
+    	
     }
 }
 
@@ -546,13 +596,23 @@ function ProjectController($scope, $location ,ProjectService,
 	};
 };
 
+function BacklogController($scope, $location, BacklogService){
+    $scope.backlogs = [];
+    angular.element(document).ready(function () {
+        BacklogService.getBacklogs(function(response){
+            backlogs = response;
+        });
+	});
+};
+
 function ProjectModalController($scope, $uibModalInstance, ProjectService, id) {
 	$scope.id = id;
-	
+
 
 	$scope.ok = function () {
 		ProjectService.delete({project: id.id}, function (response) {
 			$uibModalInstance.close();
+
 		});
 	};
 

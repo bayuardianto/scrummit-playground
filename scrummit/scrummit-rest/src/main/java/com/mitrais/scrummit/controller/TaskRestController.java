@@ -1,17 +1,23 @@
 package com.mitrais.scrummit.controller;
 
-import com.mitrais.scrummit.bo.CardBO;
-import com.mitrais.scrummit.bo.IterationBO;
-import com.mitrais.scrummit.bo.TaskBO;
-import com.mitrais.scrummit.model.Task;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.mitrais.scrummit.bo.CardBO;
+import com.mitrais.scrummit.bo.IterationBO;
+import com.mitrais.scrummit.bo.TaskBO;
+import com.mitrais.scrummit.model.Task;
 
 @RestController
 @RequestMapping("/rest/task/")
@@ -19,13 +25,13 @@ public class TaskRestController {
     private static final Log log = LogFactory.getLog(TaskRestController.class);
 
     @Autowired
-    private TaskBO taskBO;
+    private TaskBO           taskBO;
 
     @Autowired
-    private CardBO cardBO;
+    private CardBO           cardBO;
 
     @Autowired
-    private IterationBO iterationBO;
+    private IterationBO      iterationBO;
 
     @RequestMapping(path = "/card/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<Task> listAllCard(@PathVariable("id") String id) {
@@ -33,8 +39,7 @@ public class TaskRestController {
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    Task getTaskById(@PathVariable("id") String id) {
+    public @ResponseBody Task getTaskById(@PathVariable("id") String id) {
         return taskBO.getById(id);
     }
 
