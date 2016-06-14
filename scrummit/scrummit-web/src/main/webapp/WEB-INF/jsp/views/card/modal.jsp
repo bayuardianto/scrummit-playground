@@ -39,9 +39,8 @@
 						<div class="form-group">
 							<label for="iteration">Iteration</label> <select
 								class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty"
-								name="iteration" ng-model="card.iteration">
-								<option value="57550b64e98498f242f4a6ef">Iteration 1</option>
-								<option value="57566b925e061750d20c861f">Iteration 2</option>
+								name="iteration" ng-model="card.iteration"
+								ng-options="iteration.id as iteration.name for iteration in iterations">
 							</select>
 						</div>
 					</div>
@@ -70,26 +69,26 @@
 							ng-options="orgmember.userId as orgmember.fullName for orgmember in orgmembers">
 						</select>
 					</div>
-					<div class="col-xs-6">
-						<div class="form-group">
-							<label for="status">Status</label> <select
-								class="form-control m-b" name="status" ng-model="card.status">
-								<option value='0'>Todo</option>
-								<option value='1'>In Progress</option>
-								<option value='2'>Completed</option>
-							</select>
-						</div>
+					<div class="col-xs-6 form-group">
+						<label for="status">Status</label> <select
+							class="form-control m-b" name="status" ng-model="card.status">
+							<option value='0'>Todo</option>
+							<option value='1'>In Progress</option>
+							<option value='2'>Completed</option>
+						</select>
 					</div>
 				</div>
+				<div class = "form-group">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" ng-click="addTask()">Add Task</button>
+                </div>
 
-
+                <div class="hr-line-dashed"></div>
+                <div id="space-for-task"></div>
 			</div>
-
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-primary" ng-click="saveCard()">Save</button>
-			<button type="button" class="btn btn-white" ng-click="close()">Save
-				and Close</button>
+			<button type="button" class="btn btn-white" ng-click="cancel()">Close</button>
 		</div>
 	</form>
 </div>
