@@ -21,6 +21,7 @@ import com.mitrais.scrummit.bo.ProjectBO;
 import com.mitrais.scrummit.model.Board;
 import com.mitrais.scrummit.model.Card;
 import com.mitrais.scrummit.model.Iteration;
+import com.mitrais.scrummit.model.Project;
 
 @RestController
 @RequestMapping("/rest/iteration")
@@ -38,8 +39,21 @@ public class IterationRestController {
 	ProjectBO projectBO;
 	
 	@RequestMapping(path = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iteration create(@RequestBody Iteration iteration) {
-        return iteBO.createIteration(iteration);
+    public @ResponseBody Map<String, Object> create(@RequestBody Iteration iteration) {
+		Map<String, Object> result = new HashMap();
+		Project project = projectBO.getProject(iteration.getProject().getId().toString());
+		Iteration existIt = iteBO.findByNameAndProject(iteration.getName(), project	);
+		
+		if (existIt != null){
+			logger.info("Existing Iteration: " + existIt.getId());
+			result.put("error", 1);
+			result.put("message", "Iteration name is existed in this project");
+		} else {
+			result.put("error",  0);
+			iteBO.createIteration(iteration);
+			
+		}
+		return result;
     }
 	
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

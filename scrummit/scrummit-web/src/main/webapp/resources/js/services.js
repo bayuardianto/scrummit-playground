@@ -261,7 +261,6 @@ function IterationService($http) {
     
     function create(iteration, callback) {
     	$http.post('rest/iteration/', iteration).success(function(response){
-    		console.log("Successfully created Iteration");
     		callback(response);
     	});
     }

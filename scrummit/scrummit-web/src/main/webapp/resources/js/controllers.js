@@ -355,7 +355,6 @@ function IterationModalController($scope, FlashService, $uibModalInstance, Itera
 	$scope.daterange = {startDate: null, endDate: null};
 	
 	$scope.ok = function () {
-		console.log("Name: " + iteration.iterationName);
         $uibModalInstance.close();
     };
 
@@ -372,10 +371,15 @@ function IterationModalController($scope, FlashService, $uibModalInstance, Itera
 			"startDate": $scope.daterange.startDate, 
 			"endDate": $scope.daterange.endDate
 		}, function(data){
-			console.log(data.name);
-			parentCtrl.refreshIterations();
+			if (data.error == 0) {
+				parentCtrl.refreshIterations();
+				$uibModalInstance.close();
+			} else {
+				alert(data.message);
+			}
+			
 		});
-    	$uibModalInstance.close();
+    	
     }
 }
 

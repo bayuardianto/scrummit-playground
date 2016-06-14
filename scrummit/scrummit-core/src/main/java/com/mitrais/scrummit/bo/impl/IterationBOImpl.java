@@ -38,4 +38,9 @@ public class IterationBOImpl extends BaseBOImpl<Iteration, IterationDAO> impleme
 			return new Iteration();
 	}
 
+	@Override
+	public Iteration findByNameAndProject(String name, Project project) {
+		return currentDAO.findByNameAndProject(name, project);
+	}
+
 }
