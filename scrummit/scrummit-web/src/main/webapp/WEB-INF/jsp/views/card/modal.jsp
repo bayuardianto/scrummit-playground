@@ -1,4 +1,4 @@
-<div class="inmodal" ng-controller="CardModalController">
+<div class="inmodal">
 	<div class="modal-header">
 		<h5 class="modal-title">Create Card</h5>
 	</div>
@@ -40,7 +40,7 @@
 							<label for="iteration">Iteration</label> <select
 								class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty"
 								name="iteration" ng-model="card.iteration"
-								ng-options="iteration.id as iteration.name for iteration in iterations">
+								ng-options="iteration.id as iteration.name for iteration in iterations" required>
 							</select>
 						</div>
 					</div>

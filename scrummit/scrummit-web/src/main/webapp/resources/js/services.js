@@ -249,8 +249,15 @@ function ProjectDetailService($http) {
 }
 
 function IterationService($http) {
+	var prjDetailCtrl = null;
 	var service = {
 			project: '',
+			setPrjDetailCtrl: function(ctrl){
+				prjDetailCtrl = ctrl;
+			},
+			getPrjDetailCtrl: function(){
+				return prjDetailCtrl;
+			},
 			iterations: []
 	};
     service.create = create;

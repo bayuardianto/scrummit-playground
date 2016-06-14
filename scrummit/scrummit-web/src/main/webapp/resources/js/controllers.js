@@ -169,7 +169,7 @@ function ProjectDetailController($scope, $http, $location, $stateParams, UserSer
 	$scope.iterationName = "Iteration";
 	
 	(function init() {
-		
+		IterationService.setPrjDetailCtrl($scope);
 		IterationService.getLastIteration($scope.name, function(data){
 			if (data.id != null) {
 				$scope.iterationName = data.name
@@ -283,7 +283,7 @@ function CardController($scope, $uibModal) {
 	}
 }
 
-function CardModalController($scope, CardService, FlashService, OrganizationMemberService, $stateParams, ProjectDetailService, IterationService) {
+function CardModalController($scope, $http, $uibModalInstance, CardService, FlashService, OrganizationMemberService, $stateParams, ProjectDetailService, IterationService) {
 	
 	$scope.orgmembers = OrganizationMemberService.query();
 
@@ -317,18 +317,22 @@ function CardModalController($scope, CardService, FlashService, OrganizationMemb
 
     $scope.saveCard = function (){
         var newCard = $scope.card;
-        console.log(newCard.assignee);
+        //console.log(newCard.assignee);
         console.log(newCard.iteration);
 
         var iteration = {"ref": "iterations", "id" : newCard.iteration};
-        var assignee = {"ref": "organizationMembers", "id": newCard.assignee};
+        //var assignee = {"ref": "organizationMembers", "id": newCard.assignee};
         newCard.iteration = iteration;
-        newCard.assignee = assignee;
+        //newCard.assignee = assignee;
         CardService.saveCard(newCard, function(response){
             $scope.dataLoading = true;
             if (response.success == true){
                 FlashService.Success(response.message);
                 console.log(response.message);
+                $http.post('rest/iteration/board/', {'iteration': {'id': response.iteration.id}, 'status': response.status, 'cards': [{'id': response.id}]}).success(function(data){
+                	console.log("Creating/Updating board for new card");
+                	IterationService.getPrjDetailCtrl().loadBoard(response.iteration.id);
+                });
             }else{
 		    	$scope.dataLoading = false;
 		    	console.log(response.message);
@@ -336,6 +340,10 @@ function CardModalController($scope, CardService, FlashService, OrganizationMemb
         });
         $scope.card = null;
     };
+    
+    $scope.cancel = function() {
+    	$uibModalInstance.dismiss('cancel');
+    }
 
     $scope.getAllCards = function(){
         CardService.getAllCards(function(response){
