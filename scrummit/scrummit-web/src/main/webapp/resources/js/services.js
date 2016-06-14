@@ -249,8 +249,15 @@ function ProjectDetailService($http) {
 }
 
 function IterationService($http) {
+	var prjDetailCtrl = null;
 	var service = {
 			project: '',
+			setPrjDetailCtrl: function(ctrl){
+				prjDetailCtrl = ctrl;
+			},
+			getPrjDetailCtrl: function(){
+				return prjDetailCtrl;
+			},
 			iterations: []
 	};
     service.create = create;
@@ -261,7 +268,6 @@ function IterationService($http) {
     
     function create(iteration, callback) {
     	$http.post('rest/iteration/', iteration).success(function(response){
-    		console.log("Successfully created Iteration");
     		callback(response);
     	});
     }
