@@ -186,10 +186,6 @@ function ProjectDetailController($scope, $http, $location, $stateParams, UserSer
 			$scope.iterationName = data.name;
 		});
 		
-		IterationService.getIterationById($scope.iteration, function(data){
-			$scope.iterationName = data.name;
-		});
-		
 		$http.get('rest/iteration/board/' + $scope.iteration).success(function(data){//get board information by iterationid
 			$scope.todoList = data.todoList;
 			$scope.inProgressList = data.inprogressList;
@@ -321,22 +317,31 @@ function CardModalController($scope, $http, $uibModalInstance, CardService, Flas
 
     $scope.saveCard = function (){
         var newCard = $scope.card;
-        //console.log(newCard.assignee);
+        console.log(newCard.assignee);
         console.log(newCard.iteration);
 
         var iteration = {"ref": "iterations", "id" : newCard.iteration};
-        //var assignee = {"ref": "organizationMembers", "id": newCard.assignee};
+        var assignee = {"ref": "organizationMembers", "id": newCard.assignee};
+        if (newCard.assignee == undefined){
+            assignee = null;
+        }
+        if (newCard.iteration == undefined){
+            iteration = null;
+        }
         newCard.iteration = iteration;
-        //newCard.assignee = assignee;
+        newCard.assignee = assignee;
         CardService.saveCard(newCard, function(response){
             $scope.dataLoading = true;
             if (response.success == true){
                 FlashService.Success(response.message);
+                console.log(response.response);
                 console.log(response.message);
-                $http.post('rest/iteration/board/', {'iteration': {'id': response.iteration.id}, 'status': response.status, 'cards': [{'id': response.id}]}).success(function(data){
-                	console.log("Creating/Updating board for new card");
-                	IterationService.getPrjDetailCtrl().loadBoard(response.iteration.id);
-                });
+                if (newCard.iteration !== null){
+                    $http.post('rest/iteration/board/', {'iteration': {'id': response.iteration.id}, 'status': response.status, 'cards': [{'id': response.id}]}).success(function(data){
+                        console.log("Creating/Updating board for new card");
+                        IterationService.getPrjDetailCtrl().loadBoard(response.iteration.id);
+                    });
+                }
             }else{
 		    	$scope.dataLoading = false;
 		    	console.log(response.message);
