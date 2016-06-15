@@ -431,11 +431,6 @@ function IterationModalController($scope, FlashService, $uibModalInstance, Itera
 		});
     	
     }
-			}
-			
-		});
-    	
-    }
 }
 
 function ProjectController($scope, $location ,ProjectService, 
