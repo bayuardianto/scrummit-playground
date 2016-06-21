@@ -286,6 +286,8 @@ function CardController($scope, $uibModal) {
 function CardModalController($scope, $http, $uibModalInstance, CardService, FlashService, OrganizationMemberService, $stateParams, ProjectDetailService, IterationService) {
 	
 	$scope.orgmembers = OrganizationMemberService.query();
+	$scope.tasks = [];
+	$scope.showMessage = 0;
 
 	var ic = this;
 	$scope.projectName = $stateParams.name;
@@ -312,16 +314,25 @@ function CardModalController($scope, $http, $uibModalInstance, CardService, Flas
     }
 
     $scope.addTask = function (){
-        angular.element(document.getElementById('space-for-task')).append("<div class='form-group'><div class='col-sm-4'><input type='text' id='title' placeholder='Description' class='form-control'></div><div class='form-group'><div class='col-sm-4'><input type='text' id='title' placeholder='Owner' class='form-control'></div><div class='form-group'><div class='col-sm-4'><input type='text' id='title' placeholder='Status' class='form-control'></div>");
+        $scope.tasks.push({
+            description: "",
+            owner: "",
+            status: ""
+        });
+        console.log($scope.tasks);
     }
 
     $scope.saveCard = function (){
-        var newCard = $scope.card;
-        console.log(newCard.assignee);
-        console.log(newCard.iteration);
+        var newCard = {};
+        var newTasks = [];
+        newCard = $scope.card;
+        newTasks = $scope.tasks;
 
-        var iteration = {"ref": "iterations", "id" : newCard.iteration};
-        var assignee = {"ref": "organizationMembers", "id": newCard.assignee};
+        console.log("assignee: " + newCard.assignee);
+        console.log("iteration:" + newCard.iteration);
+
+        var iteration = {"id" : newCard.iteration};
+        var assignee = {"id": newCard.assignee};
         if (newCard.assignee == undefined){
             assignee = null;
         }
@@ -334,7 +345,6 @@ function CardModalController($scope, $http, $uibModalInstance, CardService, Flas
             $scope.dataLoading = true;
             if (response.success == true){
                 FlashService.Success(response.message);
-                console.log(response.response);
                 console.log(response.message);
                 if (newCard.iteration !== null){
                     $http.post('rest/iteration/board/', {'iteration': {'id': response.iteration.id}, 'status': response.status, 'cards': [{'id': response.id}]}).success(function(data){
@@ -342,23 +352,37 @@ function CardModalController($scope, $http, $uibModalInstance, CardService, Flas
                         IterationService.getPrjDetailCtrl().loadBoard(response.iteration.id);
                     });
                 }
+                if (newTasks.length > 0){
+                    angular.forEach(newTasks, function(newTask, index){
+                        $http.post('rest/task/create/',{"description": newTask.description, "owner": {"id":newTask.owner}, "status": newTask.status, "card":{"id":response.id}}).success(function(data){
+                            console.log("Task #" + (index + 1) + " successfully saved!");
+                        });
+                    })
+                    $scope.tasks = {};
+                }
+                $scope.showMessage = 1;
             }else{
 		    	$scope.dataLoading = false;
 		    	console.log(response.message);
             }
         });
-        $scope.card = null;
+        $scope.card = {};
     };
-    
+
+    $scope.keypress = function(){
+        console.log('flash message should be disappear');
+        $scope.showMessage = 0;
+    };
+
     $scope.cancel = function() {
     	$uibModalInstance.dismiss('cancel');
-    }
+    };
 
     $scope.getAllCards = function(){
         CardService.getAllCards(function(response){
             console.log(response[0]);
-        })
-    }
+        });
+    };
 }
 
 function IterationController($scope, $uibModal, $stateParams, ProjectDetailService, IterationService) {
