@@ -20,15 +20,15 @@ public class Task extends Common implements Serializable {
     private ObjectId id;
 
     @DBRef()
-    @Field(value = "card_id")
-    private Card     cardId;
+    @Field(value = "card")
+    private Card     card;
     
     @Field(value = "status")
     private int      status;
     
-    @DBRef(db = SMConstant.SCRUMMIT_DB_CENTRAL_NAME)
-    @Field(value = "assigned_user")
-    private User     assignedUser;
+    @DBRef
+    @Field(value = "owner")
+    private OrganizationMember owner;
 
     @Field(value = "name")
     private String   name;
@@ -44,12 +44,12 @@ public class Task extends Common implements Serializable {
         this.id = id;
     }
 
-    public Card getCardId() {
-        return cardId;
+    public Card getCard() {
+        return card;
     }
 
-    public void setCardId(Card cardId) {
-        this.cardId = cardId;
+    public void setCard(Card card) {
+        this.card = card;
     }
 
     public int getStatus() {
@@ -58,14 +58,6 @@ public class Task extends Common implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    public User getAssignedUser() {
-        return assignedUser;
-    }
-
-    public void setAssignedUser(User assignedUser) {
-        this.assignedUser = assignedUser;
     }
 
     public String getName() {
@@ -82,5 +74,13 @@ public class Task extends Common implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public OrganizationMember getOwner() {
+        return owner;
+    }
+
+    public void setOwner(OrganizationMember owner) {
+        this.owner = owner;
     }
 }
