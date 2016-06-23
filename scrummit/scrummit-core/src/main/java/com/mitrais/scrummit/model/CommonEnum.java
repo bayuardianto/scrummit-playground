@@ -16,4 +16,24 @@ public class CommonEnum {
         SCRUM_MASTER,
         MEMBER
     }
+    
+    public enum LogItem {
+        PROJECT(1),ITERATION(2),CARD(3),TASK(4);
+
+        public int value;
+
+        private LogItem(int value){
+            this.value = value;
+        }
+    }
+
+    public enum LogType {
+        CREATE(1),UPDATE(2),DELETE(3);
+
+        public int value;
+
+        private LogType(int value){
+            this.value = value;
+        }
+    }
 }
