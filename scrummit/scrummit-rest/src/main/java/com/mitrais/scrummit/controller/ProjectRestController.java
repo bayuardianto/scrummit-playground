@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mitrais.scrummit.bo.ActionLogBO;
 import com.mitrais.scrummit.bo.OrganizationMemberBO;
 import com.mitrais.scrummit.model.*;
 import com.mitrais.scrummit.util.GlobalException;
@@ -23,10 +24,13 @@ import com.mitrais.scrummit.bo.ProjectBO;
 public class ProjectRestController {
     @Autowired
     private ProjectBO           projectBO;
-
+    
     @Autowired
     private OrganizationMemberBO organizationMemberBO;
 
+//    @Autowired
+//    private ActionLogBO actionLogBO;
+    
 //   private ProjectMapper projectMapper = new ProjectMapper();
 
     Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -59,6 +63,14 @@ public class ProjectRestController {
             throw new GlobalException("Invalid input parameters.");
 
         project = projectBO.createProject(project);
+//        if(project != null)
+//        {
+//        	ActionLog actionLog = new ActionLog();
+//        	actionLog.setLogItem(CommonEnum.LogItem.PROJECT.value);
+//        	actionLog.setLogType(CommonEnum.LogType.CREATE.value);
+//        	actionLogBO.insert(actionLog);
+//        }
+        	
         return new ResponseEntity<>(project, HttpStatus.OK);
     }
 

@@ -18,6 +18,8 @@ public class SmtpMailSender {
 
     public void send(String to, String subject, String plainTextbody, String htmlBody) throws MailException,
             MessagingException {
+    	
+    	try {
         MimeMessage mail = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mail, true);
         helper.setSubject(subject);
@@ -25,6 +27,10 @@ public class SmtpMailSender {
         helper.setText(htmlBody, true);
 
         mailSender.send(mail);
-
+    	}
+    	catch (MailException ex) {
+            System.err.println("Failed to send email.");
+            ex.printStackTrace();
+        }
     }
 }

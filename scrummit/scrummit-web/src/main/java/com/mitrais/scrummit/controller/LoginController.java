@@ -46,7 +46,15 @@ public class LoginController {
 		
         if (user != null && passwordEncoder.matches(rqUser.getPassword(), user.getPassword())) {
 			req.getSession().setAttribute("CURRENT_USER", user);
-			rs.put("success", "1");
+			if(user.getIsActivated())
+			{
+				rs.put("success", "1");
+			}
+			else
+			{
+				rs.put("success", "0");
+				rs.put("message", "This account is not yet activated.");
+			}
 		} else {
 			rs.put("success", "0");
 			rs.put("message", "Invalid Username or Password");
