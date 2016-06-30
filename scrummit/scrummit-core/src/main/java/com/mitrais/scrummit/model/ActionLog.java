@@ -13,7 +13,7 @@ import java.util.Date;
 
 @SuppressWarnings("serial")
 @Document(collection = "actionlogs")
-public class ActionLog implements Serializable {
+public class ActionLog extends Common implements Serializable {
     @Id
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId id;
@@ -29,13 +29,6 @@ public class ActionLog implements Serializable {
     
     @Field(value="user_comment")
     private String userComment;
-    
-    @Field(value="user_id")
-    private ObjectId userId;
-
-    @CreatedDate
-    @Field(value="log_date")
-    private Date logDate;
     
     public ActionLog() { super(); }
 
@@ -66,20 +59,4 @@ public class ActionLog implements Serializable {
     public String getUserComment() { return userComment; }
 
     public void setUserComment(String userComment) { this.userComment = userComment; }
-    
-    public ObjectId getUserId() {
-        return id;
-    }
-
-    public void setUserId(ObjectId userId) {
-        this.userId = userId;
-    }
-    
-    public Date getLogDate() {
-        return logDate;
-    }
-
-    public void setLogDate(Date logDate) {
-        this.logDate = logDate;
-    }
 }

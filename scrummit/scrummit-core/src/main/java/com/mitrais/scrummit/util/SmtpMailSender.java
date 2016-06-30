@@ -1,6 +1,7 @@
 package com.mitrais.scrummit.util;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class SmtpMailSender {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void send(String to, String subject, String plainTextbody, String htmlBody) throws MailException,
+    public void send(String to, String subject, String plainTextbody, String htmlBody) throws AddressException ,MailException,
             MessagingException {
     	
     	try {
@@ -28,7 +29,18 @@ public class SmtpMailSender {
 
         mailSender.send(mail);
     	}
+    	
+    	catch(AddressException ex) {
+    		System.err.println("Failed to send email. Address is not valid.");
+            ex.printStackTrace();
+    	}
+    	
     	catch (MailException ex) {
+            System.err.println("Failed to send email.");
+            ex.printStackTrace();
+        }
+    	
+    	catch (MessagingException ex) {
             System.err.println("Failed to send email.");
             ex.printStackTrace();
         }
