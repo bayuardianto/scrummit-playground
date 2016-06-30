@@ -28,11 +28,6 @@ public class ProjectRestController {
     @Autowired
     private OrganizationMemberBO organizationMemberBO;
 
-//    @Autowired
-//    private ActionLogBO actionLogBO;
-    
-//   private ProjectMapper projectMapper = new ProjectMapper();
-
     Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private static final String template = "You get project:  %s!";
@@ -63,13 +58,6 @@ public class ProjectRestController {
             throw new GlobalException("Invalid input parameters.");
 
         project = projectBO.createProject(project);
-//        if(project != null)
-//        {
-//        	ActionLog actionLog = new ActionLog();
-//        	actionLog.setLogItem(CommonEnum.LogItem.PROJECT.value);
-//        	actionLog.setLogType(CommonEnum.LogType.CREATE.value);
-//        	actionLogBO.insert(actionLog);
-//        }
         	
         return new ResponseEntity<>(project, HttpStatus.OK);
     }
@@ -217,23 +205,7 @@ public class ProjectRestController {
             {
                 projectView.setMembers(toListMemberView(project.getMembers()));
 
-//                List<MemberView> memberViews = new ArrayList<MemberView>();
-//                MemberView memberView = new MemberView();
-//                for(Member member : project.getMembers())
-//                {
-//                    OrganizationMember orgMember = organizationMemberBO.getByUserId(member.getUserId().toString());
-//                    if(orgMember != null) {
-//                        memberView.setUserId(orgMember.getUserId());
-//                        memberView.setUserName(orgMember.getFullName());
-//                    }
-//
-//                    memberView.setRole(member.getRole());
-//                    memberView.setRoleName(member.getRole() > -1 ? getRoleName(member.getRole()) : "");
-//                }
-//                memberViews.add(memberView);
-//                projectView.setMembers(memberViews);
             }
-
 
             projectViews.add(projectView);
         }

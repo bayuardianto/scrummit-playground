@@ -1,5 +1,8 @@
 package com.mitrais.scrummit.bo.impl;
 
+import java.util.List;
+
+import org.bson.types.ObjectId;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -57,5 +60,15 @@ public class UserBOImpl extends BaseBOImpl<User, UserDAO> implements UserBO {
 		
 		return currentDAO.findOne(id);
 	}
+	
+	@Override
+    public User findByEmail(String email) {
+        return currentDAO.findByEmail(email);
+    }
 
+	
+	@Override
+	public List<User> findByOrgId(ObjectId orgId) {
+		return currentDAO.findByOrgId(orgId);
+	}
 }

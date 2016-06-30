@@ -7,7 +7,9 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +26,7 @@ import com.mitrais.scrummit.config.SMConstant;
 import com.mitrais.scrummit.model.Organization;
 import com.mitrais.scrummit.model.OrganizationMember;
 import com.mitrais.scrummit.model.User;
+import com.mitrais.scrummit.util.GlobalException;
 import com.mitrais.scrummit.util.ScrummitUtil;
 import com.mitrais.scrummit.util.SmtpMailSender;
 
@@ -43,14 +46,34 @@ public class RegistrationController {
     @Autowired
     BCryptPasswordEncoder  encoder;
 
-
-
     @Autowired
     private SmtpMailSender mailSender;
-
+    
     @RequestMapping(path = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public User create(@RequestBody User user, HttpServletRequest request) throws MailException, MessagingException {
-        User savedUser = RegisterUserComplete(user);
+    public @ResponseBody Map<String, Object> create(@RequestBody User user, HttpServletRequest request) throws MailException, MessagingException {
+        
+    	//username & email validation
+    	Map<String, Object> response = new HashMap<String, Object>();
+    	User existUserName = userBO.findByUsername(user.getUsername());
+    	if(existUserName != null) {
+    		response.put("error", 1);
+            response.put("message", "The username you have entered is already registered.");
+            return response;
+    	}
+    	User existEmail = userBO.findByEmail(user.getEmail());
+    	if(existEmail != null) {
+    		response.put("error", 1);
+            response.put("message", "The email address you have entered is already registered.");
+            return response;
+    	}
+    	Organization existOrganization = organizationBO.getOrganizationByName(user.getAssocOrgId().getOrganizationName());
+    	if(existOrganization != null) {
+    		response.put("error", 1);
+            response.put("message", "The organization name you have entered is already registered.");
+            return response;
+    	}
+    	
+    	User savedUser = RegisterUserComplete(user);
         
         String path = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
                 + request.getContextPath();
@@ -61,7 +84,9 @@ public class RegistrationController {
                 "click this <a href=\"" + path + "/#/verified?key=" + savedUser.getActivationKey()
                         + "\">link</a> to activate your account <br>");
 
-        return savedUser;
+        response.put("error", 0);
+        response.put("message", "Account was created. You can login now. An email with verification link have been sent to your email, please activate your account.");
+        return response;
     }
 
     @RequestMapping(path = "/verify", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

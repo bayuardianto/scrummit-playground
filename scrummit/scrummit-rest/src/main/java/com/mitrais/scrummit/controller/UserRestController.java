@@ -1,7 +1,10 @@
 package com.mitrais.scrummit.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mitrais.scrummit.bo.UserBO;
+import com.mitrais.scrummit.model.Organization;
 import com.mitrais.scrummit.model.User;
 
 @RestController
@@ -80,4 +84,18 @@ public class UserRestController {
 		
 		return response;
     }
+	
+	@RequestMapping(value="/rest/userbyorg/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<User> getUserByOrgId(HttpServletRequest req) {
+		//User user = (User) this.getRequest().getSession().getAttribute("CURRENT_USER");
+		Organization organization = (Organization) req.getSession().getAttribute("CURRENT_ORG");
+		if(organization != null)
+		{
+			return userBo.findByOrgId(organization.getOrganizationId());
+		}
+		else
+		{
+			return null;
+		}
+	}
 }

@@ -58,7 +58,7 @@
 
 						<div class="form-group">
 							<label for="orgemail">Organization Email address</label> <input
-								type="orgemail" id="orgemail" class="form-control" required=""
+								type="email" id="orgemail" class="form-control" required=""
 								ng-model="user.assocOrgId.contacts.email">
 						</div>
 					</div>
@@ -70,7 +70,7 @@
 						</div>
 						<div class="form-group">
 							<label for="phone">Phone</label> <input type="text" id="phone"
-								class="form-control" required=""
+								class="form-control" required="" numbers-only
 								ng-model="user.assocOrgId.contacts.phone">
 						</div>
 					</div>
@@ -83,7 +83,7 @@
 						ng-click="goToLogin()">Login Now</a>
 				</div>
 
-				<div class="row text-center" ng-if="isNotsubmitted">
+				<div class="row text-center">
 					<div class="col-sm-4 col-sm-offset-4">
 						<input type="submit" class="btn btn-primary block full-width m-b"
 							value="Create account" />

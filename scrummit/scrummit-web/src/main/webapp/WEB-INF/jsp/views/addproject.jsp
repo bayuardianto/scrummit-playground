@@ -60,8 +60,10 @@
                 </div>
                 <div class="col-xs-12 col-md-4">
                     <%--<button class="btn btn-primary" ng-click="storeTemp()">Add Member</button>--%>
+                    <label for="btnAddMember"> </label>
+                    <div></div>
                     <input type="button" class="btn btn-primary block m-b"
-                           value="Add Member" ng-click="storeTemp()" />
+                           value="Add Member" ng-click="storeTemp()" id="btnAddMember" style="height:80%;"/>
                 </div>
             </div>
             <div></div>

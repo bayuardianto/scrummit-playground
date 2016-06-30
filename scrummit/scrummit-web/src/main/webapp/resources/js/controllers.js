@@ -47,6 +47,7 @@ function UserController($location, $cookies, UserService, FlashService) {
 	var uc = this;
 	this.update = update;
 	this.updatePassword = updatePassword;
+		
 	var ck = $cookies.getObject('globals') || {};
 	
 	(function initController() {
@@ -54,7 +55,7 @@ function UserController($location, $cookies, UserService, FlashService) {
 			UserService.GetByUsername(ck.currentUser.username, function (response){
 				if (response) {
 					uc.email = response.email;
-					uc.username = response.username
+					uc.username = response.username;
 					uc.firstname = response.firstName;
 					uc.lastname = response.lastName;
 					uc.fullname = response.fullname;
@@ -96,6 +97,32 @@ function UserController($location, $cookies, UserService, FlashService) {
 	}
 }
 
+function OrgMembersController($location, $http, $timeout, $scope, UserService) {
+	
+	var om = this;
+	this.add = add;
+	om.orgMember = {};
+	
+	om.orgMember.username = angular.copy(om.orgMember.firstname);
+	console.log(om.orgMember.username);
+	
+	if($location.path().toString().indexOf("add")<=-1) {
+		$http.get('rest/userbyorg/').
+	    success(function(data) {
+	    	$scope.orgMembers = data;
+	        $timeout(function(){
+				$('.table').trigger('footable_redraw');
+			}, 100);
+	        console.log($scope.orgMembers);
+	    });
+	}
+	
+	function add() {
+		console.log(om.orgMember);
+	}
+	
+};
+
 function RegistrationController($location, $scope, $http, FlashService){
 	$scope.isNotsubmitted = true;
 	$scope.activationKey = "";
@@ -103,11 +130,19 @@ function RegistrationController($location, $scope, $http, FlashService){
 		$scope.dataLoading = true;
 		var data = $scope.user;
 		$http.post("register/", data).success(function(data, status) {
-			FlashService.Success("Account was created. You can login now. An email with verification link have been sent to your email, please activate your account.");
+			//FlashService.Success("Account was created. You can login now. An email with verification link have been sent to your email, please activate your account.");
+			if(data.error == 1) {
+				FlashService.Error(data.message);
+			}
+			else {
+				FlashService.Success(data.message);
+			}
+				
 			$scope.dataLoading = false;
 			$scope.isNotsubmitted = false;
 		}).error(function(data, status) {
-			FlashService.Error("There was an error in creating your account, please try again");
+//			FlashService.Error("There was an error in creating your account, please try again");
+			FlashService.Error(data);
 			$scope.dataLoading = false;
 		});
 	}
@@ -677,4 +712,5 @@ angular
 	.controller('IterationController', IterationController)
 	.controller('IterationModalController', IterationModalController)
 	.controller('ProjectModalController', ProjectModalController)
+	.controller('OrgMembersController', OrgMembersController)
 	.controller('NotifModalController', NotifModalController);

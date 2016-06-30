@@ -140,6 +140,12 @@ function UserService($http) {
         });
     }
     
+    function GetByOrgId(callback) {
+    	$http.get('rest/userbyorg').success(function (data){
+    		callback(data);
+    	});
+    }
+    
     function GetById(id, callback) {
     	$http.get('rest/user/id/'+ id).success(function (data){
     		callback(data);

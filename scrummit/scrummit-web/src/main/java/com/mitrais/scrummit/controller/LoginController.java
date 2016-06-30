@@ -46,6 +46,7 @@ public class LoginController {
 		
         if (user != null && passwordEncoder.matches(rqUser.getPassword(), user.getPassword())) {
 			req.getSession().setAttribute("CURRENT_USER", user);
+			req.getSession().setAttribute("CURRENT_ORG", user.getAssocOrgId());
 			if(user.getIsActivated())
 			{
 				rs.put("success", "1");
@@ -53,7 +54,7 @@ public class LoginController {
 			else
 			{
 				rs.put("success", "0");
-				rs.put("message", "This account is not yet activated.");
+				rs.put("message", "This account has not been activated.");
 			}
 		} else {
 			rs.put("success", "0");
@@ -66,7 +67,7 @@ public class LoginController {
 	@RequestMapping(value = "/logout/", method = RequestMethod.POST)
 	public @ResponseBody Boolean logout(HttpServletRequest req) {
 		req.getSession().removeAttribute("CURRENT_USER");
-		
+		req.getSession().removeAttribute("CURRENT_ORG");
 		return true;
 	}
 }

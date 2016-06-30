@@ -27,7 +27,9 @@
 	                </div>
                 </div>
             </li>
-
+			<li ui-sref-active="active">
+                <a ui-sref="index.orgmembers"><i class="fa fa-users"></i> <span class="nav-label">Organization Members</span></a>
+            </li>
             <li ui-sref-active="active">
                 <a ui-sref="index.dashboard"><i class="fa fa-laptop"></i> <span class="nav-label">Dashboard</span> </a>
             </li>

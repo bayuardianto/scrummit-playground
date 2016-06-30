@@ -123,7 +123,33 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpPr
             controllerAs: 'pc',
             templateUrl: "views/addproject",
             controller: "ProjectController",
-            data: { pageTitle: 'Update Project' }})
+            data: { pageTitle: 'Update Project' }
+        })
+        .state('index.orgmembers', {
+        	url: "/orgmembers",
+        	templateUrl: "views/organizationmembers",
+        	controller: "OrgMembersController",
+        	data: { pageTitle: 'Organization Member List' },
+        	resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            files: ['resources/js/plugins/footable/footable.all.min.js', 'resources/css/plugins/footable/footable.core.css']
+                        },
+                        {
+                            name: 'ui.footable',
+                            files: ['resources/js/plugins/footable/angular-footable.js']
+                        }
+                    ]);
+                }
+            }
+        })
+        .state('index.addmember', {
+        	url: "orgmembers/add",
+        	templateUrl: "views/ormemberdetail",
+        	controller: "OrgMembersController",
+        	data: { pageTitle: 'Add Organization Member' }
+        })
         .state('401', {
         	url: "/401",
         	templateUrl: "401",
