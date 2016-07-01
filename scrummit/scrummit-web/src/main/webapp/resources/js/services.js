@@ -301,24 +301,70 @@ function OrganizationMemberService($resource) {
     return $resource('rest/orgmembers/:orgmember',{orgmember: "@orgmember"});
 }
 
-function CardService($http){
+function CardService($http, $q){
     var service = {};
     service.saveCard = saveCard;
+    service.getById = getById;
+    service.getTasksByCardId = getTasksByCardId;
     return service;
 
-    function saveCard(objCard, callback){
-        $http
-            .put('rest/card/create', objCard)
+
+    function getTasksByCardId (id){
+        var deferred = $q.defer();
+        $http.get('rest/task/bycardid/'+id)
+        .success(function(data){
+            deferred.resolve(data);
+        })
+        .error(function(data){
+            console.log("error");
+            deferred.resolve(data);
+        });
+        return deferred.promise;
+    }
+
+    function getById(id){
+        var deferred = $q.defer();
+        $http.get('rest/card/'+id)
+        .success(function(data){
+            deferred.resolve(data);
+        })
+        .error(function(data){
+            console.log("error");
+            deferred.resolve(data);
+        });
+        return deferred.promise;
+    }
+
+    function saveCard(objCard){
+        var deferred = $q.defer();
+
+        if (objCard.id !== undefined){
+            $http.put('rest/card/update', objCard)
             .success(function(response){
                 response.success = true;
-                response.message = "Card created!";
-                callback(response);
+                response.message = "Card updated!";
+                deferred.resolve(response);
             })
             .error(function(response){
                 response.success = false;
                 response.message = 'There was an error when saving Card, please try again!';
-                callback(response);
+                deferred.resolve(response);
+            });
+        }else{
+            $http.post('rest/card/create', objCard)
+            .success(function(response){
+                response.success = true;
+                response.message = "Card created!";
+                deferred.resolve(response);
             })
+            .error(function(response){
+                response.success = false;
+                response.message = 'There was an error when saving Card, please try again!';
+                deferred.resolve(response);
+            });
+        }
+
+        return deferred.promise;
     }
 }
 

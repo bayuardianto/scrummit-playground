@@ -26,9 +26,10 @@ public class Task extends Common implements Serializable {
     @Field(value = "status")
     private int      status;
     
-    @DBRef
+
     @Field(value = "owner")
-    private OrganizationMember owner;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId owner;
 
     @Field(value = "name")
     private String   name;
@@ -76,11 +77,11 @@ public class Task extends Common implements Serializable {
         this.description = description;
     }
 
-    public OrganizationMember getOwner() {
+    public ObjectId getOwner() {
         return owner;
     }
 
-    public void setOwner(OrganizationMember owner) {
+    public void setOwner(ObjectId owner) {
         this.owner = owner;
     }
 }

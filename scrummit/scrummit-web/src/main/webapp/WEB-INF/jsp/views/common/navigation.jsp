@@ -27,11 +27,11 @@
 	                </div>
                 </div>
             </li>
+            <li ui-sref-active="active">
+                <a ui-sref="index.dashboard"><i class="fa fa-tachometer"></i> <span class="nav-label">Dashboard</span> </a>
+            </li>
 			<li ui-sref-active="active">
                 <a ui-sref="index.orgmembers"><i class="fa fa-users"></i> <span class="nav-label">Organization Members</span></a>
-            </li>
-            <li ui-sref-active="active">
-                <a ui-sref="index.dashboard"><i class="fa fa-laptop"></i> <span class="nav-label">Dashboard</span> </a>
             </li>
             <li ui-sref-active="active">
                 <a ui-sref="index.projects"><i class="fa fa-desktop"></i> <span class="nav-label">Projects</span></a>

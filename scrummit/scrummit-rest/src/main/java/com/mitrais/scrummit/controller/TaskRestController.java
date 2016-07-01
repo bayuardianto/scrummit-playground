@@ -63,4 +63,7 @@ public class TaskRestController {
     public List<Task> getTaskByStatus(@PathVariable("status") int status) {
         return taskBO.getByStatus(status);
     }
+
+    @RequestMapping(path = "/bycardid/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Task> getTaskByCardId(@PathVariable("id") String id){return taskBO.listAll(new ObjectId(id));}
 }
