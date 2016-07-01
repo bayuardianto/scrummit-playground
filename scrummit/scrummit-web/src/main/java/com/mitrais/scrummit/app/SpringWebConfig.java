@@ -3,10 +3,7 @@ package com.mitrais.scrummit.app;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -21,7 +18,11 @@ import com.mitrais.scrummit.interceptor.AuthenInterceptor;
 @EnableWebMvc //<mvc:annotation-driven />
 @Configuration
 @ComponentScan(basePackages = "com.mitrais.scrummit")
-@PropertySource("classpath:mail.properties")
+@PropertySources({
+    @PropertySource(value = "classpath:mail.properties", ignoreResourceNotFound = true),
+    @PropertySource(value = "file:${catalina.home}/conf/mail.properties", ignoreResourceNotFound = true)
+})
+
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
  
 	@Value("${mail.protocol}")
