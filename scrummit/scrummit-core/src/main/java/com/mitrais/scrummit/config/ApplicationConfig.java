@@ -2,10 +2,7 @@ package com.mitrais.scrummit.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -19,7 +16,10 @@ import com.mongodb.MongoClient;
 @Configuration
 @EnableMongoRepositories(basePackages = "com.mitrais.scrummit.dao")
 @EnableAutoConfiguration
-@PropertySource(value = "classpath:mongo-config.properties")
+@PropertySources({
+    @PropertySource(value = "classpath:mongo-config.properties", ignoreResourceNotFound = true),
+    @PropertySource(value = "file:${catalina.home}/conf/mongo-config.properties", ignoreResourceNotFound = true)
+})
 @EnableAspectJAutoProxy()
 public class ApplicationConfig extends AbstractMongoConfiguration {
 
