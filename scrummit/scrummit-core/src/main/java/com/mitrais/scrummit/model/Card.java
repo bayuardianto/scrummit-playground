@@ -31,9 +31,9 @@ public class Card extends Common implements Serializable {
     @Field(value = "points")
     private int points;
 
-    @DBRef
-    @Field(value = "assignee")
-    private OrganizationMember assignee;
+    @Field(value = "owner")
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId owner;
 
     @Field(value = "epic_id")
     @JsonSerialize(using = ToStringSerializer.class)
@@ -102,12 +102,12 @@ public class Card extends Common implements Serializable {
         this.points = points;
     }
 
-    public OrganizationMember getAssignee() {
-        return assignee;
+    public ObjectId getOwner() {
+        return owner;
     }
 
-    public void setAssignee(OrganizationMember assignee) {
-        this.assignee = assignee;
+    public void setOwner(ObjectId owner) {
+        this.owner = owner;
     }
 
     public ObjectId getEpicId() {

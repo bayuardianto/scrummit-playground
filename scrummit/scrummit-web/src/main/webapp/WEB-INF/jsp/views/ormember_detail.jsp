@@ -1,3 +1,22 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Organization Members</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a ui-sref="index.dashboard">Home</a>
+            </li>
+			<li class="active">
+                <a>Organization Members</a>
+            </li>
+			<li class="active">
+                <strong>Add New Members</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
 <div class="signup-box loginscreen  animated fadeInDown">
     <div ng-controller="OrgMembersController as om">
     	<div class="text-center">
@@ -8,28 +27,24 @@
         
         	<div class="row">
         		<div class="col-xs-6">
-        		<div class="form-group">
+ 		            <div class="form-group">
+ 		            	<label for="username">Username</label>
+ 		            	<input type="text" id="username" name="username" ng-model="om.orgMember.username" class="form-control" ng-value={{om.orgMember.firstname}}>
+ 		            </div>
+            		<div class="form-group">
   						<label for="firstname">First Name ${url }</label>
 		                <input type="text" id="firstname" name="firstname" ng-model="om.orgMember.firstname" class="form-control" required="">
 		            </div>
-<!-- 		            <div class="form-group"> -->
-<!-- 		            	<label for="username">Username</label> -->
-<!-- 		            	<input type="text" id="username" name="username" ng-model="om.orgMember.username" class="form-control" required=""> -->
-<!-- 		            </div> -->
+        		</div>
+  				<div class="col-xs-6">
 		            <div class="form-group">
 		            	<label for="email">Email address</label>
 		                <input type="email" id="email" name="email" ng-model="om.orgMember.email" class="form-control" required="">
 		            </div>
-        		</div>
-  				<div class="col-xs-6">
-  					<div class="form-group">
+ 					<div class="form-group">
   						<label for="lastname">Last Name</label>
 		                <input type="text" id="lastname" class="form-control" name="lastname" ng-model="om.orgMember.lastname" required="">
 		            </div>
-<!-- 		            <div class="form-group"> -->
-<!-- 		            	<label for="password">Password</label> -->
-<!-- 		            	<input type="password" id="password" name="password" ng-model="om.orgMember.password" class="form-control" required=""> -->
-<!-- 		            </div> -->
   				</div>
         	</div>
         	<div

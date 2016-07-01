@@ -41,7 +41,7 @@
 	                    </a>
 	                    <ul uib-dropdown-menu class="animated fadeInDown m-t-xs pull-right">
 	                        <li>
-	                       		<a ng-click="openCreateCardModal('lg')">Add Card</a></li>
+	                       		<a ng-click="openCreateCardModal('lg',task.id)">Add Card</a></li>
 	                        
 	                    </ul>
                     </div>
@@ -49,11 +49,10 @@
 					<hr/>
                     <ul ui-sortable="sortableOptions" class="sortable-list connectList agile-list todo-list" ng-model="todoList">
                         <li class="warning-element" ng-repeat="task in todoList" id="{{task.id}}">
-                            {{task.title}}<br/>
+                            <b>{{task.title}}</b><span ng-click="openCreateCardModal('lg',task.id)" class="fa fa-pencil-square-o pull-right" title="Edit Card"></span>
                             <div class="agile-detail">
                             	{{task.description}}
                             	<span class="clear"></span>
-                                <a href="#" class="pull-right btn btn-xs btn-white">{{task.fullname}}</a>
                                 <i class="fa fa-clock-o"></i> {{task.createdDate | date:'yyyy-MM-dd'}}
                             </div>
                         </li>
@@ -79,12 +78,11 @@
 
                     <hr/>
                     <ul ui-sortable="sortableOptions" class="sortable-list connectList agile-list in-progress-list" ng-model="inProgressList">
-                        <li class="danger-element" ng-repeat="task in inProgressList" id="{{task.id}}">
-                            {{task.title}}
+                        <li class="danger-element" ng-repeat="task in inProgressList" id="{{task.id}}" >
+                            <b>{{task.title}}</b><span ng-click="openCreateCardModal('lg',task.id)" class="fa fa-pencil-square-o pull-right" title="Edit Card"></span>
                             <div class="agile-detail">
                             	{{task.description}}
                             	<span class="clear"></span>
-                                <a href="#" class="pull-right btn btn-xs btn-white">{{task.fullname}}</a>
                                 <i class="fa fa-clock-o"></i> {{task.createdDate | date:'yyyy-MM-dd'}}
                             </div>
                         </li>
@@ -111,11 +109,10 @@
                     <hr/>
                     <ul ui-sortable="sortableOptions" class="sortable-list connectList agile-list completed-list" ng-model="completedList">
                         <li class="success-element" ng-repeat="task in completedList" id="{{task.id}}">
-                            {{task.title}}
+                            <b>{{task.title}}</b><span ng-click="openCreateCardModal('lg',task.id)" class="fa fa-pencil-square-o pull-right" title="Edit Card"></span>
                             <div class="agile-detail">
                             	{{task.description}}
                             	<span class="clear"></span>
-                                <a href="#" class="pull-right btn btn-xs btn-white">{{task.fullname}}</a>
                                 <i class="fa fa-clock-o"></i> {{task.createdDate | date:'yyyy-MM-dd'}}
                             </div>
                         </li>

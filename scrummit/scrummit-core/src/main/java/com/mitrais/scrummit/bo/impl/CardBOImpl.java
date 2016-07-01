@@ -39,7 +39,7 @@ public class CardBOImpl extends BaseBOImpl<Card, CardDAO> implements CardBO {
             updateCard.setTitle(card.getTitle());
             updateCard.setDescription(card.getDescription());
             updateCard.setPoints(card.getPoints());
-            updateCard.setAssignee(card.getAssignee());
+            updateCard.setOwner(card.getOwner());
             updateCard.setEpicId(card.getEpicId());
             updateCard.setIteration(card.getIteration());
             updateCard.setTaskId(card.getTaskId());

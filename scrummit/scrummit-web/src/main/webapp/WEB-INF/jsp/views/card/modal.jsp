@@ -18,32 +18,19 @@
 					<div class="col-xs-6">
 						<div class="form-group">
 							<label for="points">Points</label>
-							<select class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty" ng-model="card.points" >
-								<option value="0">0 points</option>
-								<option value="1">1 points</option>
-								<option value="2">2 points</option>
-								<option value="3">3 points</option>
-								<option value="5">5 points</option>
-								<option value="8">8 points</option>
-								<option value="13">13 points</option>
-								<option value="20">20 points</option>
-								<option value="40">40 points</option>
-								<option value="100">100 points</option>
-							</select>
+                            <select class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty" ng-model="card.points" ng-options="convertToInt(k) as v for (k,v) in points"></select>
 						</div>
 						<div class="form-group">
 							<label for="iteration">Iteration</label>
 							<select class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty"  ng-model="card.iteration"
-							    ng-options="iteration.id as iteration.name for iteration in iterations" required>
+							    ng-options="item.id as item.name for item in iterations" >
 							</select>
 						</div>
 					</div>
 					<div class="col-xs-6">
 						<div class="form-group">
 							<label for="epic">Epic</label>
-							<select class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty"  ng-model="card.epic">
-								<option value="574fbf39e96aa23add1f059e">Epic 1</option>
-							</select>
+                            <select class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty" ng-model="card.epic" ng-options="convertToInt(k) as v for (k,v) in epic"></select>
 						</div>
 						<div class="form-group">
 							<label for="estimate">Estimate</label>
@@ -53,18 +40,14 @@
 				</div>
 				<div class="form-group row">
 					<div class="col-xs-6">
-						<label for="assignee">Assignee</label>
-						<select class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty"  ng-model="card.assignee"
+						<label>Owner</label>
+						<select class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty"  ng-model="card.owner"
 							ng-options="orgmember.userId as orgmember.fullName for orgmember in orgmembers">
 						</select>
 					</div>
 					<div class="col-xs-6 form-group">
 						<label for="status">Status</label>
-						<select class="form-control m-b"  ng-model="card.status">
-							<option value='0'>Todo</option>
-							<option value='1'>In Progress</option>
-							<option value='2'>Completed</option>
-						</select>
+						<select class="form-control m-b" ng-model="card.status" ng-options="convertToInt(k) as v for (k,v) in status"></select>
 					</div>
 				</div>
                 <div class="hr-line-dashed"></div>
@@ -74,7 +57,7 @@
                 <div ng-repeat="task in tasks">
                     <div class="form-group row">
                         <div class='col-sm-4'>
-                            <input type='text' placeholder='Task Name' class='form-control' ng-model="task.description">
+                            <input type='text' placeholder='Task Name' class='form-control m-b' ng-model="task.description">
                         </div>
                         <div class='col-sm-4'>
                             <select class="form-control m-b ng-pristine ng-untouched ng-valid ng-empty" ng-model="task.owner"
@@ -82,11 +65,8 @@
                             </select>
                         </div>
                         <div class='col-sm-4'>
-                            <select class="form-control m-b" ng-model="task.status">
-                                <option value='0'>Todo</option>
-                                <option value='1'>In Progress</option>
-                                <option value='2'>Completed</option>
-                            </select>
+                            <select class="form-control m-b" ng-model="task.status" style="float:left;width: 90% !important" ng-options="convertToInt(k) as v for (k,v) in status"></select>
+                            <span class="fa fa-trash-o" style="padding-left: 10px;padding-top: 12px;cursor: pointer" ng-click="#" aria-hidden="true"></span>
                         </div>
                     </div>
                 </div>

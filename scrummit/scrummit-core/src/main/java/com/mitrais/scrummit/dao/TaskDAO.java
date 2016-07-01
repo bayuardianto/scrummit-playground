@@ -11,7 +11,7 @@ import com.mitrais.scrummit.model.Task;
 @Repository
 public interface TaskDAO extends CommonDAO<Task, String> {
 
-    @Query(value = "{'owner.$id' : ?0}")
+    @Query(value = "{'card.$id' : ?0}")
     public List<Task> findByCardId(ObjectId cardId);
 
     public List<Task> findByStatus(int status);
