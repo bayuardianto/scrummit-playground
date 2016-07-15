@@ -97,15 +97,19 @@ function UserController($location, $cookies, UserService, FlashService) {
 	}
 }
 
-function OrgMembersController($location, $http, $timeout, $scope, UserService) {
-	
+function OrgMembersController($location, $http, $timeout, $scope, UserService, FlashService) {
 	var om = this;
-	this.add = add;
 	om.orgMember = {};
-	
+
 	om.orgMember.username = angular.copy(om.orgMember.firstname);
 	console.log(om.orgMember.username);
-	
+
+    UserService.GetSession().then(function(data){
+        console.log(data);
+        console.log(data.assocOrgId.organizatioName);
+        $scope.defaultOrg = data;
+    });
+
 	if($location.path().toString().indexOf("add")<=-1) {
 		$http.get('rest/userbyorg/').
 	    success(function(data) {
@@ -116,11 +120,48 @@ function OrgMembersController($location, $http, $timeout, $scope, UserService) {
 	        console.log($scope.orgMembers);
 	    });
 	}
-	
-	function add() {
-		console.log(om.orgMember);
+
+	$scope.addMember = function () {
+
+        var memberData = {
+            username: $scope.member.username,
+            password: $scope.member.password,
+            email: $scope.member.email,
+            firstName: $scope.member.firstName,
+            lastName: $scope.member.lastName,
+            assocOrgId: {
+                organizationId: $scope.defaultOrg.assocOrgId.organizationId,
+                organizatioName: $scope.defaultOrg.assocOrgId.organizatioName,
+                dbSettings: {
+                    dbName: $scope.defaultOrg.assocOrgId.dbSettings.dbName
+                }
+            }
+        };
+
+        $scope.isNotsubmitted = true;
+        $scope.activationKey = "";
+
+        UserService.AddOrgMember(memberData).then(function(data){
+            if(data.error == 1){
+                FlashService.Error(data.message);
+            }else{
+                FlashService.Success(data.message);
+            }
+            $scope.timerMsg();
+            $scope.dataLoading = false;
+            $scope.isNotSubmitted = false;
+        }, function(data){
+            FlashService.Error(data.message);
+            $scope.isNotSubmitted = false;
+        });
 	}
-	
+
+	$scope.timerMsg = function(){
+        $scope.alertDisplayed = true;
+        $timeout(function() {
+            $scope.alertDisplayed = false;
+        }, 5000)
+	}
 };
 
 function RegistrationController($location, $scope, $http, FlashService){

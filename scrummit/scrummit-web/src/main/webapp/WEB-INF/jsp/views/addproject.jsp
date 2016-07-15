@@ -50,8 +50,7 @@
                 </div>
                 <div class="col-xs-4">
                     <div class="form-group">
-                        <label></label>
-                        <span class="input-group-btn">
+                        <span class="input-group-btn" style="padding-top: 25px;">
                             <input type="button" class="btn btn-primary block m-b btn-sm" value="Add Member" ng-click="storeTemp()" />
                         </span>
                     </div>

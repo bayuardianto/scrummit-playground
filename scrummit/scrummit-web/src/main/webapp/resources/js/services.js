@@ -124,15 +124,44 @@ var Base64 = {
     }
 };
 
-function UserService($http) {
+function UserService($http, $q) {
 	var service = {};
 	 
     service.GetByUsername = GetByUsername;
     service.UpdateUser = UpdateUser;
     service.ChangePassword = ChangePassword;
     service.GetById = GetById;
+    service.GetSession = GetSession;
+    service.AddOrgMember = AddOrgMember;
 
     return service;
+
+    function AddOrgMember (userMember) {
+        var deferred = $q.defer();
+        $http.post("register/addmember",userMember)
+        .success(function(data, status){
+            console.log("add member org succeed");
+            deferred.resolve(data);
+        })
+        .error(function(data, status){
+            console.log("error");
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    }
+
+    function GetSession(){
+        var deferred = $q.defer();
+        $http.get('rest/getcurrentuser/ ')
+        .success(function(data){
+            deferred.resolve(data);
+        })
+        .error(function(data){
+            console.log("error");
+            deferred.resolve(data);
+        });
+        return deferred.promise;
+    }
 
     function GetByUsername(username, callback) {
         $http.get('rest/user/' + username).success(function (data){

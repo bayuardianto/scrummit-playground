@@ -98,4 +98,10 @@ public class UserRestController {
 			return null;
 		}
 	}
+
+	@RequestMapping(value = "/rest/getcurrentuser", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public User GetCurrectUser(HttpServletRequest req){
+		User user = (User) req.getSession().getAttribute("CURRENT_USER");
+		return userBo.findById(String.valueOf(user.getId()));
+	}
 }

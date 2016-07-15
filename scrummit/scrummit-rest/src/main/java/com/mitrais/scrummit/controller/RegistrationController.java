@@ -149,4 +149,67 @@ public class RegistrationController {
         return savedUser;
 
     }
+
+    @RequestMapping(path = "/addmember", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Map<String, Object> addMember(@RequestBody User user, HttpServletRequest request) throws MailException, MessagingException {
+
+        //username & email validation
+        Map<String, Object> response = new HashMap<String, Object>();
+        User existUserName = userBO.findByUsername(user.getUsername());
+        if(existUserName != null) {
+            response.put("error", 1);
+            response.put("message", "The username you have entered is already registered.");
+            return response;
+        }
+        User existEmail = userBO.findByEmail(user.getEmail());
+        if(existEmail != null) {
+            response.put("error", 1);
+            response.put("message", "The email address you have entered is already registered.");
+            return response;
+        }
+
+        User savedUser = RegisterMemberComplete(user);
+
+        String path = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+                + request.getContextPath();
+
+        mailSender.send(savedUser.getEmail(), "Scrummit Account verification",
+                "click this link to activate your account\n " + path + "/#/verified?key="
+                        + savedUser.getActivationKey(),
+                "click this <a href=\"" + path + "/#/verified?key=" + savedUser.getActivationKey()
+                        + "\">link</a> to activate your account <br>");
+
+        response.put("error", 0);
+        response.put("message", "New organization member has been added. An email with verification link have been sent for activation.");
+        return response;
+    }
+
+    private User RegisterMemberComplete(User user) {
+
+        User savedUser = null;
+        if (null != user.getAssocOrgId()) {
+            //String tenantName = ScrummitUtil.generateTenantName(user);
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String hashedPassword = encoder.encode(user.getPassword());
+            user.setPassword(hashedPassword);
+            user.setIsActivated(false);
+            user.setActivationKey(encoder.encode(user.getUsername() + user.getEmail()));
+
+
+            savedUser = userBO.insert(user);
+
+            /*To help tenantResolver find the correct tenantDB, where no user
+            login here, usually on registration only */
+            organizationMemberBO.setTenantName(user.getAssocOrgId().getDbSettings().getDbName());
+
+            OrganizationMember member = new OrganizationMember();
+            member.setAccessRights(SMConstant.ORGANIZATION_MEMMBER_ACCESS_RIGHT_MEMBER);
+            member.setFullName(user.getFirstName()+" "+user.getLastName());
+            member.setIsActive(true);
+            member.setUserId(user.getId());
+            organizationMemberBO.insert(member);
+        }
+        return savedUser;
+
+    }
 }

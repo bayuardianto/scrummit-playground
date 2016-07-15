@@ -15,7 +15,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 public class OrganizationMemberCustomDAO extends CommonCustomDAO<OrganizationMember, String> {
     public List<OrganizationMember> getOrgMembers() {
         Query query = new Query();
-        query.limit(10);
         query.with(new Sort(Sort.Direction.ASC, "fullname"));
 
         return mongoTemplate.find(query, OrganizationMember.class);
