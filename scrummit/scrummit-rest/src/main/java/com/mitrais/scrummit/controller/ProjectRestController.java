@@ -143,9 +143,9 @@ public class ProjectRestController {
 
     private List<MemberView> toListMemberView(List<Member> members) {
         List<MemberView> memberViews = new ArrayList<MemberView>();
-        MemberView memberView = new MemberView();
         for(Member member : members)
         {
+            MemberView memberView = new MemberView();
             memberView.setUserId(member.getUserId());
             OrganizationMember orgMember = organizationMemberBO.getByUserId(member.getUserId().toString());
             if(orgMember != null) {
@@ -154,8 +154,9 @@ public class ProjectRestController {
 
             memberView.setRole(member.getRole());
             memberView.setRoleName(member.getRole() > -1 ? getRoleName(member.getRole()) : "");
+            memberViews.add(memberView);
         }
-        memberViews.add(memberView);
+
         return memberViews;
     }
 
