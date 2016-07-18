@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mitrais.scrummit.bo.UserBO;
 import com.mitrais.scrummit.model.User;
+import com.mitrais.utils.ServiceUtils;
 
 @Controller
 public class LoginController {
@@ -40,7 +42,14 @@ public class LoginController {
 	@RequestMapping(value = "/login/authenticate/", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody Map<String, String> authenticate(@RequestBody User rqUser, HttpServletRequest req) {
 		
-        User user = userBO.findByUsername(rqUser.getUsername());
+		User user = /*userBO.findByUsername(rqUser.getUsername());*/null;
+        try {
+        	Map<String,String> map = new HashMap<String,String>();
+        	map.put("username", "arifpurwandaru");
+			user = new ObjectMapper().readValue(ServiceUtils.call("findByUsername",map), User.class);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		Map<String, String> rs = new HashMap<>();
 		

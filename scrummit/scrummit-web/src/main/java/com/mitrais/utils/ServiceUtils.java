@@ -8,18 +8,14 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.KeyStore;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mitrais.scrummit.model.User;
+import org.springframework.core.io.ClassPathResource;
 
 public class ServiceUtils {
 	public static final String contextRoot = "https://localhost:12001/";
@@ -78,9 +74,12 @@ public class ServiceUtils {
 		SSLSocketFactory sslFactory = null;
 
 		try{
-			InputStream is = new FileInputStream("D:\\workspace\\arifpurwandaru.keystore");
+			ClassPathResource classPathResource = new ClassPathResource("arifpurwandaru.keystore");
+
+	        InputStream inputStream = classPathResource.getInputStream();
+	        
 			KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
-			ks.load(is, "password".toCharArray());
+			ks.load(inputStream, "password".toCharArray());
 			TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 			tmf.init(ks);
 			SSLContext ctx = SSLContext.getInstance("TLS");
