@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.KeyStore;
@@ -16,6 +17,8 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
 import org.springframework.core.io.ClassPathResource;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ServiceUtils {
 	public static final String contextRoot = "https://localhost:12001/";
@@ -55,6 +58,37 @@ public class ServiceUtils {
 	
 	}
 	
+	public static String postObject(Object o, String link) throws MalformedURLException,IOException{
+
+		URL url = new URL(contextRoot+link);
+		HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+		conn.setDoOutput(true);
+		conn.setRequestMethod("POST");
+		conn.setRequestProperty("Content-Type", "application/json");
+		conn.setRequestProperty("connection", "close");
+		conn.setSSLSocketFactory(generateSslSocketFactory());
+		
+		
+		String input = new ObjectMapper().writeValueAsString(o);
+
+		OutputStream os = conn.getOutputStream();
+		os.write(input.getBytes());
+		os.flush();
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(
+				(conn.getInputStream())));
+
+		String output;
+		StringBuffer sb = new StringBuffer();
+		while ((output = br.readLine()) != null) {
+			sb.append(output);
+		}
+
+		conn.disconnect();
+		
+		return sb.toString();
+
+	}
 	/*public static void main(String[] args){
 		try{
 			Map<String,String> map = new HashMap<String,String>();

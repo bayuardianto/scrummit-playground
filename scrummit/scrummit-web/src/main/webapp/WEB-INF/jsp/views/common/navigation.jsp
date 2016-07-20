@@ -36,6 +36,9 @@
             <li ui-sref-active="active">
                 <a ui-sref="index.projects"><i class="fa fa-desktop"></i> <span class="nav-label">Projects</span></a>
             </li>
+            <li ui-sref-active="active">
+                <a ui-sref="index.menu"><i class="fa fa-medium"></i> <span class="nav-label">Menu</span></a>
+            </li>
         </ul>
 
     </div>

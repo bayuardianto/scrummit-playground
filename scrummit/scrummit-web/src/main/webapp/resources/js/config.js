@@ -56,6 +56,26 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpPr
                 }
             }
         })
+        .state('index.menu', {
+            controller: "MenuController",
+            url: "/menu",
+            templateUrl: "views/menufirst",
+            controllerAs: "vm",
+            data: { pageTitle: 'Menu' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            files: ['resources/js/plugins/footable/footable.all.min.js', 'resources/css/plugins/footable/footable.core.css']
+                        },
+                        {
+                            name: 'ui.footable',
+                            files: ['resources/js/plugins/footable/angular-footable.js']
+                        }
+                    ]);
+                }
+            }
+        })
         .state('login', {
         	controller: "LoginController",
         	url: "/login",

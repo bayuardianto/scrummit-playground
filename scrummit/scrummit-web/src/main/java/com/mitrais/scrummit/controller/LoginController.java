@@ -45,7 +45,7 @@ public class LoginController {
 		User user = /*userBO.findByUsername(rqUser.getUsername());*/null;
         try {
         	Map<String,String> map = new HashMap<String,String>();
-        	map.put("username", "arifpurwandaru");
+        	map.put("username", rqUser.getUsername());
 			user = new ObjectMapper().readValue(ServiceUtils.call("findByUsername",map), User.class);
 		}catch (Exception e) {
 			e.printStackTrace();
