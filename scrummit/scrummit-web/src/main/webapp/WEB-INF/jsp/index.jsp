@@ -33,6 +33,10 @@
 
 	<link href="${contextPath}/resources/css/plugins/datapicker/angular-datapicker.css" rel="stylesheet">
 	<link href="${contextPath}/resources/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
+	
+	<!-- Treetable -->
+    <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/plugins/treetable/jquery.treetable.css" />
+    <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/plugins/treetable/jquery.treetable.theme.default.css" />
 </head>
 
 <!-- ControllerAs syntax -->
@@ -59,6 +63,10 @@
 <!-- Custom and plugin javascript -->
 <script src="${contextPath}/resources/js/inspinia.js"></script>
 
+<!-- Treetable -->
+<script src="${contextPath}/resources/js/plugins/treetable/jquery.treetable.js"></script>
+
+
 <!-- Main Angular scripts-->
 <script src="${contextPath}/resources/js/angular/angular.min.js"></script>
 <script src="${contextPath}/resources/js/angular/angular-cookies.min.js"></script>
@@ -68,6 +76,7 @@
 <script src="${contextPath}/resources/js/angular/angular-resource.min.js"></script>
 <script src="${contextPath}/resources/js/plugins/daterangepicker/angular-daterangepicker.js"></script>
 <script src="${contextPath}/resources/js/plugins/moment/moment.min.js"></script>
+<script src="${contextPath}/resources/js/plugins/treetable/angular-treetable.js"></script>
 
 
 <!-- Anglar App Script -->

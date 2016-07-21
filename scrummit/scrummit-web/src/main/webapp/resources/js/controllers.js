@@ -822,6 +822,46 @@ function NotifModalController($scope, $uibModalInstance, message) {
 }
 
 
+
+function MenuController($scope, $location, $http, MenuService) {
+	MenuService.testAja('').then(function(data){
+        $scope.usre = data;
+    });
+	
+	MenuService.retrieve1stLevelMenu().then(function(data){
+		$scope.zmenus = data;
+	});
+	
+	
+	
+}
+
+function TreeTableController($scope, $q, $http, ngTreetableParams, MenuService){
+	
+		
+	function ngiclikan(){
+		var deferred = $q.defer();
+        MenuService.retrieve1stLevelMenu().then(function(data){
+        	deferred.resolve(data);
+    	});
+        return deferred.promise;
+	}
+	var jancok = ngiclikan();
+	
+	$scope.expanded_params = new ngTreetableParams({
+        getNodes: function(parent) {
+            return parent ? parent.children : jancok;
+        },
+        getTemplate: function(node) {
+            return 'tree_node';
+        },
+        options: {
+            initialState: 'expanded'
+        }
+    });
+
+}
+
 angular
 	.module('inspinia')
 	.controller('MainCtrl', MainCtrl)
@@ -837,4 +877,6 @@ angular
 	.controller('IterationModalController', IterationModalController)
 	.controller('ProjectModalController', ProjectModalController)
 	.controller('OrgMembersController', OrgMembersController)
-	.controller('NotifModalController', NotifModalController);
+	.controller('NotifModalController', NotifModalController)
+	.controller('MenuController', MenuController)
+	.controller('TreeTableController',TreeTableController);

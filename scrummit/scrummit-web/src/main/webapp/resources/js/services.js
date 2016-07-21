@@ -397,6 +397,41 @@ function CardService($http, $q){
     }
 }
 
+var zserverPath="https://localhost:12001/";
+
+function MenuService($http, $q){
+	 var service = {};
+	 service.testAja = testAja;
+	 service.retrieve1stLevelMenu = retrieve1stLevelMenu;
+	 
+	 return service;
+	 function testAja(id){
+	        var deferred = $q.defer();
+	        $http.get('https://localhost:12001/tesOneUser')
+	        .success(function(data){
+	            deferred.resolve(data);
+	        })
+	        .error(function(data){
+	            console.log("error");
+	            deferred.resolve(data);
+	        });
+	        return deferred.promise;
+	    }
+	 
+	 function retrieve1stLevelMenu(){
+		 var deferred = $q.defer();
+		 $http.get(zserverPath+"firstLevelMenu")
+		 .success(function(data){
+			 deferred.resolve(data);
+		 })
+		 .error(function(){
+			 console.log("error retrieve1stLevelMenu");
+			 deferred.resolve(data);
+		 });
+		 return deferred.promise;
+	 }
+}
+
 angular
     .module('inspinia')
     .factory('AuthenticationService', AuthenticationService)
@@ -406,4 +441,5 @@ angular
     .factory('OrganizationMemberService', OrganizationMemberService)
     .factory('CardService', CardService)
     .factory('IterationService', IterationService)
-    .factory('ProjectDetailService', ProjectDetailService);
+    .factory('ProjectDetailService', ProjectDetailService)
+    .factory('MenuService', MenuService);

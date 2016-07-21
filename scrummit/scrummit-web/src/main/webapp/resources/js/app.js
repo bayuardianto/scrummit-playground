@@ -9,6 +9,7 @@
         'ui.bootstrap',                 // Ui Bootstrap
         'ngCookies',
         'ngResource',
-        'daterangepicker'
+        'daterangepicker',
+        'ngTreetable'
     ])
 })();
