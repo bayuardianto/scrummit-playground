@@ -828,35 +828,33 @@ function MenuController($scope, $location, $http, MenuService) {
         $scope.usre = data;
     });
 	
-	MenuService.retrieve1stLevelMenu().then(function(data){
+	/*MenuService.retrieve1stLevelMenu().then(function(data){
 		$scope.zmenus = data;
-	});
+	});*/
 	
 	
 	
 }
 
 function TreeTableController($scope, $q, $http, ngTreetableParams, MenuService){
-	
-		
-	function ngiclikan(){
+	function ambildatamenu(){
 		var deferred = $q.defer();
         MenuService.retrieve1stLevelMenu().then(function(data){
         	deferred.resolve(data);
     	});
         return deferred.promise;
 	}
-	var jancok = ngiclikan();
+	var datamnu = ambildatamenu();
 	
 	$scope.expanded_params = new ngTreetableParams({
         getNodes: function(parent) {
-            return parent ? parent.children : jancok;
+            return parent ? parent.children : datamnu;
         },
         getTemplate: function(node) {
             return 'tree_node';
         },
         options: {
-            initialState: 'expanded'
+//            initialState: 'expanded'
         }
     });
 
